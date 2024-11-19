@@ -4,6 +4,7 @@ import { Link } from "expo-router";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
 import { useContext } from "react";
 import { getUserList } from "../api";
+import { loadingDisplay } from "../components/loading-display";
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
@@ -22,7 +23,7 @@ const index = () => {
     });
   }, []);
 
-  if (isLoading) return <Text>Loading...</Text>;
+  if (isLoading) return <loadingDisplay />;
 
   return (
     <View>
