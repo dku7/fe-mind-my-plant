@@ -1,26 +1,28 @@
 import { View, Text } from "react-native";
-import React, { useState, createContext, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
 import { getUserList } from "../api";
-import ReactDOM from "react-dom/client";
+import { LoggedInUserContext } from "../contexts/loggedInUser";
 
 const signin = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
-  const loggedInUser = useContext(userContext);
+  const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
 
   const userAuthentication = () => {
-    getUserList().then((users) => {
-      const currentUser = users.filter((eachUser) => {
-        return eachUser.username === user && eachUser.password === password;
+    getUserList()
+      .then((users) => {
+        const currentUser = users.filter((eachUser) => {
+          return eachUser.username === user && eachUser.password === password;
+        });
+        setLoggedInUser(currentUser[0]);
+      })
+      .then(() => {
+        console.log(loggedInUser);
       });
-      console.log(currentUser[0].user_id);
-    });
   };
-
-  const handleSignIn = (e) => {};
 
   return (
     <SafeAreaView style={styles.container}>

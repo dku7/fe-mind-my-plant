@@ -9,3 +9,9 @@ export const getUserList = () => {
     return users.data.items;
   });
 };
+
+export const registerUser = (newUser) => {
+  return apiClient.post("/users", newUser).then((response) => {
+    console.log(response);
+  });
+};
