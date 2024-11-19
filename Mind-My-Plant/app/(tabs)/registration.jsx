@@ -7,22 +7,24 @@ import { useState } from "react";
 import { registerUser } from "../api";
 
 const registration = () => {
-  const [registrationDetails, setRegistrationDetails] = useState({});
-
-  /*  const { username, firstname, surname, email, password, postcode, city } =
-    registrationDetails; */
+  const [registrationDetails, setRegistrationDetails] = useState({
+    first_name: "",
+    last_name: "",
+    email: "",
+    username: "",
+    password: "",
+  });
 
   const onChange = (e) => {
     setRegistrationDetails({
       ...registrationDetails,
-      [e.target.name]: e.target.value,
+      [e.target.placeholder]: e.target.value,
     });
-    console.log(registrationDetails);
   };
 
   const handleRegistrationSubmit = () => {
     registerUser(registrationDetails).then((response) => {
-      console.log(response);
+      return response;
     });
   };
 
@@ -34,17 +36,17 @@ const registration = () => {
           style={styles.input}
           type="text"
           onChange={onChange}
-          placeholder="firstname"
-          name="firstname"
-          value={registrationDetails.firstname}
+          placeholder="first_name"
+          name="first_name"
+          value={registrationDetails.first_name}
         />
         <TextInput
           style={styles.input}
           type="text"
           onChange={onChange}
-          placeholder="surname"
-          name="surname"
-          value={registrationDetails.surname}
+          placeholder="last_name"
+          name="last_name"
+          value={registrationDetails.last_name}
         />
         <TextInput
           style={styles.input}
@@ -70,23 +72,6 @@ const registration = () => {
           name="password"
           value={registrationDetails.password}
         />
-        <TextInput
-          style={styles.input}
-          type="text"
-          onChange={onChange}
-          placeholder="postcode"
-          name="postcode"
-          value={registrationDetails.postcode}
-        />
-        <TextInput
-          style={styles.input}
-          type="text"
-          onChange={onChange}
-          placeholder="city"
-          name="city"
-          value={registrationDetails.city}
-        />
-
         <Pressable onPress={handleRegistrationSubmit}>
           <Text>Button</Text>
         </Pressable>

@@ -12,6 +12,6 @@ export const getUserList = () => {
 
 export const registerUser = (newUser) => {
   return apiClient.post("/users", newUser).then((response) => {
-    console.log(response);
+    return response.data;
   });
 };

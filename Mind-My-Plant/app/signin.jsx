@@ -3,26 +3,30 @@ import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { TextInput } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
-import { getUserList } from "../api";
-import { LoggedInUserContext } from "../contexts/loggedInUser";
+import { getUserList } from "./api";
+import { LoggedInUserContext } from "./contexts/loggedInUser";
+import { Redirect } from "expo-router";
 
 const signin = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
 
   const userAuthentication = () => {
-    getUserList()
-      .then((users) => {
-        const currentUser = users.filter((eachUser) => {
-          return eachUser.username === user && eachUser.password === password;
-        });
-        setLoggedInUser(currentUser[0]);
-      })
-      .then(() => {
-        console.log(loggedInUser);
+    setErrorMsg("");
+    getUserList().then((users) => {
+      const currentUser = users.filter((eachUser) => {
+        return eachUser.username === user && eachUser.password === password;
       });
+      if (currentUser.length > 0) {
+        setLoggedInUser(currentUser[0]);
+        localStorage.setItem("user_id", currentUser[0].user_id);
+      } else setErrorMsg("Sorry, sign-in details incorrect");
+    });
   };
+
+  if (loggedInUser) return <Redirect href="/" />;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -38,7 +42,10 @@ const signin = () => {
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={userAuthentication}>Sign In</button>
+        <button disabled={!user || !password} onClick={userAuthentication}>
+          Sign In
+        </button>
+        <Text>{errorMsg}</Text>
       </View>
     </SafeAreaView>
   );

@@ -1,7 +1,6 @@
 import { View, Text } from "react-native";
 import React, { useContext } from "react";
 import { StyleSheet } from "react-native";
-import { ImageBackground } from "react-native";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -10,7 +9,7 @@ const jobs = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputcontainer}>
-        <Text>jobs {loggedInUser.username}</Text>
+        <Text>jobs {loggedInUser?.username}</Text>
       </View>
     </SafeAreaView>
   );
