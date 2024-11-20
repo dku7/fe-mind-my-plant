@@ -11,7 +11,12 @@ export const getUserList = () => {
 };
 
 export const registerUser = (newUser) => {
-  return apiClient.post("/users", newUser).then((response) => {
-    return response.data;
-  });
+  return apiClient
+    .post("/users", newUser)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((response) => {
+      return Promise.reject(response.status);
+    });
 };
