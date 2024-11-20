@@ -5,6 +5,7 @@ import { LoggedInUserContext } from "../contexts/loggedInUser";
 import { useContext } from "react";
 import { getUserList } from "../api";
 import loadingDisplay from "../components/loading-display";
+import SignIn from "../signin";
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
@@ -36,19 +37,18 @@ const index = () => {
             Welcome Back {loggedInUser.username}
           </Text>
         ) : (
-          <View className="p-4 ">
-            <Link href="./registration" asChild>
-              <Pressable className="border w-24 rounded-md py-1 px-4 mb-3 bg-green-700 text-center text-base text-gray-200 border-green-700">
-                Sign Up
-              </Pressable>
-            </Link>
-
-            <Link href="../signin" asChild>
-              <Pressable className="border w-24 rounded-md py-1 px-4 mb-3 bg-green-700 text-center text-base text-gray-200 border-green-700">
-                Sign In
-              </Pressable>
-            </Link>
-          </View>
+          <>
+            <View className="mt-64">
+              <SignIn />
+            </View>
+            <View className="mt-1 px-16 flex text-center">
+              <Link href="../components/registration" asChild>
+                <Pressable className="mt-1 mx-16 py-2 border-green-700 rounded-md bg-green-700 text-gray-200 font-bold">
+                  Sign Up
+                </Pressable>
+              </Link>
+            </View>
+          </>
         )}
       </View>
     </>
