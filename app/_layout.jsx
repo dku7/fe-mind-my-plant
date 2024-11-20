@@ -30,7 +30,7 @@ export default function RootLayout() {
 
   return (
     <LoggedInUserProvider>
-      <Stack>
+      <Stack >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
       </Stack>

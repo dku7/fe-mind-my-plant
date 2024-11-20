@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React, { useState, useContext } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { TextInput } from "react-native-gesture-handler";
+import { Pressable, TextInput } from "react-native-gesture-handler";
 import { StyleSheet } from "react-native";
 import { getUserList } from "./api";
 import { LoggedInUserContext } from "./contexts/loggedInUser";
@@ -29,23 +29,26 @@ const signin = () => {
   if (loggedInUser) return <Redirect href="/" />;
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.inputcontainer}>
-        <Text>Sign In</Text>
+    <SafeAreaView>
+      <View className="mt-24 px-16 flex">
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 mb-4 text-lg"
           placeholder="Username"
           onChange={(e) => setUser(e.target.value)}
         />
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-lg"
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button disabled={!user || !password} onClick={userAuthentication}>
+        <Pressable
+          className="mt-12 mx-16 py-2 border-green-700  rounded-md bg-green-700 text-gray-200 font-bold"
+          disabled={!user || !password}
+          onClick={userAuthentication}
+        >
           Sign In
-        </button>
-        <Text>{errorMsg}</Text>
+        </Pressable>
+        <Text className="text-center mt-4 text-lg">{errorMsg}</Text>
       </View>
     </SafeAreaView>
   );
@@ -57,7 +60,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    backgroundColor: "#88CC7F",
   },
   inputcontainer: {
     flexDirection: "column",
