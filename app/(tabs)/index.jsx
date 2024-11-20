@@ -4,7 +4,8 @@ import { Link } from "expo-router";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
 import { useContext } from "react";
 import { getUserList } from "../api";
-import { loadingDisplay } from "../components/loading-display";
+import loadingDisplay from "../components/loading-display";
+
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
@@ -26,26 +27,28 @@ const index = () => {
   if (isLoading) return <loadingDisplay />;
 
   return (
-    <View>
-      <Text>Home</Text>
-      {loggedInUser ? (
-        <Text>Welcome Back {loggedInUser.username}</Text>
-      ) : (
-        <>
-          <Link href="./registration" asChild>
-            <Pressable>
-              <Text>Sign Up</Text>
-            </Pressable>
-          </Link>
+    <>
+      <View>
+        <Text className="font-bold text-5xl pt-4 pb-5 bg-green-900 text-white text-center">Mind My Plants</Text>
+        {loggedInUser ? (
+          <Text className="mt-3 ml-3 text-xl">Welcome Back {loggedInUser.username}</Text>
+        ) : (
+          <>
+            <Link href="./registration" asChild>
+              <Pressable>
+                <Text>Sign Up</Text>
+              </Pressable>
+            </Link>
 
-          <Link href="../signin" asChild>
-            <Pressable>
-              <Text>Sign In</Text>
-            </Pressable>
-          </Link>
-        </>
-      )}
-    </View>
+            <Link href="../signin" asChild>
+              <Pressable>
+                <Text>Sign In</Text>
+              </Pressable>
+            </Link>
+          </>
+        )}
+      </View>
+    </>
   );
 };
 
