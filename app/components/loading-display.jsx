@@ -1,3 +1,3 @@
-const loadingDisplay = () => <Text>Loading...</Text>;
+const LoadingDisplay = () => <Text>Loading...</Text>;
 
-export default loadingDisplay;
+export default LoadingDisplay;

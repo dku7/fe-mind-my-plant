@@ -4,8 +4,6 @@ import { Link } from "expo-router";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
 import { useContext } from "react";
 import { getUserList } from "../api";
-import loadingDisplay from "../components/loading-display";
-
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
@@ -29,9 +27,20 @@ const index = () => {
   return (
     <>
       <View>
-        <Text className="font-bold text-5xl pt-4 pb-5 bg-green-900 text-white text-center">Mind My Plants</Text>
+        <Text className="font-bold text-5xl pt-4 pb-5 bg-green-900 text-white text-center">
+          Mind My Plants
+        </Text>
         {loggedInUser ? (
-          <Text className="mt-3 ml-3 text-xl">Welcome Back {loggedInUser.username}</Text>
+          <>
+            <Text className="mt-3 ml-3 text-xl">
+              Welcome Back {loggedInUser.username}
+            </Text>
+            <Link href="../profile" asChild>
+              <Pressable>
+                <Text>Profile</Text>
+              </Pressable>
+            </Link>
+          </>
         ) : (
           <>
             <Link href="./registration" asChild>

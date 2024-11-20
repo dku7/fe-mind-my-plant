@@ -10,3 +10,5 @@ export const LoggedInUserProvider = ({ children }) => {
     </LoggedInUserContext.Provider>
   );
 };
+
+export default LoggedInUserProvider;
