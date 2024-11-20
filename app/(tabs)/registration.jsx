@@ -16,100 +16,130 @@ const registration = () => {
     username: "",
     password: "",
   });
+  const [isPosting, setIsPosting] = useState("");
+  const [isValid, setIsValid] = useState(true);
+  const [isValidMsg, setIsValidMsg] = useState("");
+  const [isErrorMsg, setIsErrorMsg] = useState("");
 
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
-
-  /*
-  happy path :)
-  - we post the new user and get a new user_id from api ✅
-  - save the new user_id in localStorage ✅
-  - set context for the new user ✅
-  - display welcome message for the new user  ✅
-  - show two buttons: ✅
-  - 1) go home  ✅
-  - 2) complete profile  ✅
-
-  - add isPosting state
-  - submit button should be disable if all the required fields are not input
-
-
-  sad path :(
-  - there is an error returned from api: 
-  - check the status code:
-  -   if code = 409 display 'username or email already exists' else generic error message
-  */
 
   const onChange = (e) => {
     setRegistrationDetails({
       ...registrationDetails,
       [e.target.placeholder]: e.target.value,
     });
+    if (
+      registrationDetails.username.length > 0 &&
+      registrationDetails.password.length > 0 &&
+      registrationDetails.email.length > 0 &&
+      registrationDetails.first_name.length > 0 &&
+      registrationDetails.last_name.length > 0
+    ) {
+      setIsValid(true);
+    }
   };
 
   const handleRegistrationSubmit = () => {
-    registerUser(registrationDetails).then((newUser) => {
-      console.log(newUser);
+    if (
+      registrationDetails.username.length > 0 &&
+      registrationDetails.password.length > 0 &&
+      registrationDetails.email.length > 0 &&
+      registrationDetails.first_name.length > 0 &&
+      registrationDetails.last_name.length > 0
+    ) {
+      setIsErrorMsg("");
+      setIsPosting("Registering...");
+      registerUser(registrationDetails)
+        .then((newUser) => {
+          console.log(newUser);
 
-      setLoggedInUser(newUser);
-      localStorage.setItem("user_id", newUser.user_id);
-
-      return newUser;
-    });
+          setLoggedInUser(newUser);
+          localStorage.setItem("user_id", newUser.user_id);
+          setIsPosting("");
+          setIsValidMsg("");
+          return newUser;
+        })
+        .catch((statusCode) => {
+          if (statusCode === 409) {
+            setIsErrorMsg("Username or Email already exists");
+            setIsPosting("");
+          } else {
+            setIsErrorMsg(
+              "Error: Unable to create account. Please try again later."
+            );
+            setIsPosting("");
+          }
+        });
+    } else {
+      setIsValid(false);
+      setIsValidMsg("Please fill out all fields to register!");
+      setIsErrorMsg("");
+      setIsPosting("");
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.inputcontainer}>
-        <Text>registration</Text>
-        <TextInput
-          style={styles.input}
-          type="text"
-          onChange={onChange}
-          placeholder="first_name"
-          name="first_name"
-          value={registrationDetails.first_name}
-        />
-        <TextInput
-          style={styles.input}
-          type="text"
-          onChange={onChange}
-          placeholder="last_name"
-          name="last_name"
-          value={registrationDetails.last_name}
-        />
-        <TextInput
-          style={styles.input}
-          type="email"
-          onChange={onChange}
-          placeholder="email"
-          name="email"
-          value={registrationDetails.email}
-        />
-        <TextInput
-          style={styles.input}
-          type="text"
-          onChange={onChange}
-          placeholder="username"
-          name="username"
-          value={registrationDetails.username}
-        />
-        <TextInput
-          style={styles.input}
-          type="text"
-          onChange={onChange}
-          placeholder="password"
-          name="password"
-          value={registrationDetails.password}
-        />
-        <Pressable onPress={handleRegistrationSubmit}>
-          <Text>Register</Text>
-        </Pressable>
-      </View>
+      {!loggedInUser && (
+        <View style={styles.inputcontainer}>
+          <>
+            <Text>registration</Text>
+            <TextInput
+              style={styles.input}
+              type="text"
+              onChange={onChange}
+              placeholder="first_name"
+              name="first_name"
+              value={registrationDetails.first_name}
+            />
+            <TextInput
+              style={styles.input}
+              type="text"
+              onChange={onChange}
+              placeholder="last_name"
+              name="last_name"
+              value={registrationDetails.last_name}
+            />
+            <TextInput
+              style={styles.input}
+              type="email"
+              onChange={onChange}
+              placeholder="email"
+              name="email"
+            />
+            <TextInput
+              style={styles.input}
+              type="text"
+              onChange={onChange}
+              placeholder="username"
+              name="username"
+              value={registrationDetails.username}
+              aria-required="true"
+            />
+            <TextInput
+              style={styles.input}
+              type="text"
+              onChange={onChange}
+              placeholder="password"
+              name="password"
+              value={registrationDetails.password}
+              aria-required="true"
+            />
+            <Pressable onPress={handleRegistrationSubmit}>
+              <Text>Register</Text>
+            </Pressable>
+          </>
+        </View>
+      )}
+
+      {!isValid && <Text>{isValidMsg}</Text>}
+      <Text>{isPosting}</Text>
+      <Text>{isErrorMsg}</Text>
 
       {loggedInUser && (
         <View>
           <Text>Welcome to Mind My Plants, {loggedInUser?.first_name}</Text>
-          <Link href="./index" asChild>
+          <Link href="./" asChild>
             <Pressable>
               <Text>Go to Homepage</Text>
             </Pressable>
