@@ -6,8 +6,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { LoggedInUserProvider } from "./contexts/loggedInUser";
-import '../global.css'
-
+import "../global.css";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -30,9 +29,10 @@ export default function RootLayout() {
 
   return (
     <LoggedInUserProvider>
-      <Stack >
+      <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
+        <Stack.Screen name="profile" />
       </Stack>
       <StatusBar style="auto" />
     </LoggedInUserProvider>

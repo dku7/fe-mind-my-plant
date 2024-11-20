@@ -20,3 +20,16 @@ export const registerUser = (newUser) => {
       return Promise.reject(response.status);
     });
 };
+
+export const updateProfile = (updateData, user_id) => {
+  return apiClient
+    .post(`/users/${user_id}`, updateData)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((response) => {
+      return Promise.reject(response.status);
+    });
+};
+
+export default apiClient;

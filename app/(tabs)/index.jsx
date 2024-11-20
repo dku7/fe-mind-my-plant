@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { getUserList } from "../api";
 import loadingDisplay from "../components/loading-display";
 
+
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const savedUserId = localStorage.getItem("user_id");
@@ -32,9 +33,17 @@ const index = () => {
           Mind My Plants
         </Text>
         {loggedInUser ? (
-          <Text className="mt-3 ml-3 text-xl">
-            Welcome Back {loggedInUser.username}
-          </Text>
+          <>
+            <Text className="mt-3 ml-3 text-xl">
+              Welcome Back {loggedInUser.username}
+            </Text>
+            <Link href="../profile" asChild>
+              <Pressable>
+                <Text>Profile</Text>
+              </Pressable>
+            </Link>
+          </>
+
         ) : (
           <View className="p-4 ">
             <Link href="./registration" asChild>
