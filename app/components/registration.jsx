@@ -51,8 +51,6 @@ const registration = () => {
       setIsPosting("Registering...");
       registerUser(registrationDetails)
         .then((newUser) => {
-          console.log(newUser);
-
           setLoggedInUser(newUser);
           localStorage.setItem("user_id", newUser.user_id);
           setIsPosting("");
