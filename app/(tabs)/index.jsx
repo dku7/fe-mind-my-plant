@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, ImageBackground } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link } from "expo-router";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
@@ -6,6 +6,9 @@ import { useContext } from "react";
 import { getUserList } from "../api";
 import loadingDisplay from "../components/loading-display";
 import SignIn from "../signin";
+import { SafeAreaView } from "react-native-safe-area-context";
+import aloePlant from "../../assets/images/aloe-aloe-plant.gif"
+
 
 
 const index = () => {
@@ -28,7 +31,7 @@ const index = () => {
   if (isLoading) return <loadingDisplay />;
 
   return (
-    <>
+    <SafeAreaView className="flex">
       <View>
         <Text className="font-bold text-5xl pt-4 pb-5 bg-green-900 text-white text-center">
           Mind My Plants
@@ -47,6 +50,8 @@ const index = () => {
 
         ) : (
           <>
+          <ImageBackground 
+      source={aloePlant}/>
             <View className="mt-64">
               <SignIn />
             </View>
@@ -60,7 +65,7 @@ const index = () => {
           </>
         )}
       </View>
-    </>
+    </SafeAreaView>
   );
 };
 
