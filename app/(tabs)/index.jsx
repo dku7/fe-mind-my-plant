@@ -4,6 +4,8 @@ import { Link } from "expo-router";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
 import { useContext } from "react";
 import { getUserList } from "../api";
+import loadingDisplay from "../components/loading-display";
+
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
@@ -41,20 +43,21 @@ const index = () => {
               </Pressable>
             </Link>
           </>
+
         ) : (
-          <>
+          <View className="p-4 ">
             <Link href="./registration" asChild>
-              <Pressable>
-                <Text>Sign Up</Text>
+              <Pressable className="border w-24 rounded-md py-1 px-4 mb-3 bg-green-700 text-center text-base text-gray-200 border-green-700">
+                Sign Up
               </Pressable>
             </Link>
 
             <Link href="../signin" asChild>
-              <Pressable>
-                <Text>Sign In</Text>
+              <Pressable className="border w-24 rounded-md py-1 px-4 mb-3 bg-green-700 text-center text-base text-gray-200 border-green-700">
+                Sign In
               </Pressable>
             </Link>
-          </>
+          </View>
         )}
       </View>
     </>
