@@ -106,21 +106,21 @@ const registration = () => {
         </Pressable>
       </View>
 
-      {/* {loggedInUser && ( */}
-      <View>
-        <Text>Welcome to Mind My Plants, {loggedInUser?.first_name}</Text>
-        <Link href="./index" asChild>
-          <Pressable>
-            <Text>Go to Homepage</Text>
-          </Pressable>
-        </Link>
-        <Link href="../profile" asChild>
-          <Pressable>
-            <Text>Complete My Profile</Text>
-          </Pressable>
-        </Link>
-      </View>
-      {/* )} */}
+      {loggedInUser && (
+        <View>
+          <Text>Welcome to Mind My Plants, {loggedInUser?.first_name}</Text>
+          <Link href="./index" asChild>
+            <Pressable>
+              <Text>Go to Homepage</Text>
+            </Pressable>
+          </Link>
+          <Link href="../profile" asChild>
+            <Pressable>
+              <Text>Complete My Profile</Text>
+            </Pressable>
+          </Link>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
