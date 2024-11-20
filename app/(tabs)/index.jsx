@@ -6,7 +6,6 @@ import { useContext } from "react";
 import { getUserList } from "../api";
 import loadingDisplay from "../components/loading-display";
 
-
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const savedUserId = localStorage.getItem("user_id");
@@ -29,23 +28,27 @@ const index = () => {
   return (
     <>
       <View>
-        <Text className="font-bold text-5xl pt-4 pb-5 bg-green-900 text-white text-center">Mind My Plants</Text>
+        <Text className="font-bold text-5xl pt-4 pb-5 bg-green-900 text-white text-center">
+          Mind My Plants
+        </Text>
         {loggedInUser ? (
-          <Text className="mt-3 ml-3 text-xl">Welcome Back {loggedInUser.username}</Text>
+          <Text className="mt-3 ml-3 text-xl">
+            Welcome Back {loggedInUser.username}
+          </Text>
         ) : (
-          <>
+          <View className="p-4 ">
             <Link href="./registration" asChild>
-              <Pressable>
-                <Text>Sign Up</Text>
+              <Pressable className="border w-24 rounded-md py-1 px-4 mb-3 bg-green-700 text-center text-base text-gray-200 border-green-700">
+                Sign Up
               </Pressable>
             </Link>
 
             <Link href="../signin" asChild>
-              <Pressable>
-                <Text>Sign In</Text>
+              <Pressable className="border w-24 rounded-md py-1 px-4 mb-3 bg-green-700 text-center text-base text-gray-200 border-green-700">
+                Sign In
               </Pressable>
             </Link>
-          </>
+          </View>
         )}
       </View>
     </>
