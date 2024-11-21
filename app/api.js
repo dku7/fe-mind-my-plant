@@ -54,4 +54,15 @@ export const getOwnerPlants = (owner_id) => {
     });
 };
 
+export const getPlantsSummary = () => {
+  return apiClient
+    .get("/plants_summary")
+    .then((response) => {
+      return response.data.items;
+    })
+    .catch((response) => {
+      return Promise.reject(response.status);
+    });
+};
+
 export default apiClient;
