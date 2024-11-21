@@ -1,15 +1,19 @@
 import { Text, View } from "react-native";
 import { LoggedInUserContext } from "./contexts/loggedInUser";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { Pressable, TextInput } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet } from "react-native";
-import { updateProfile } from "./api";
+import { updateProfile, getOwnerPlants } from "./api";
+import PlantCard from "./PlantCard";
+import { ScrollView } from "react-native-gesture-handler";
 
 const Profile = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const savedUserId = localStorage.getItem("user_id");
   const [sucessMsg, setSucessMsg] = useState("");
+  const [currentPlants, setCurrentPlants] = useState([]);
+
   const [profileDetails, setProfileDetails] = useState({
     first_name: loggedInUser.first_name,
     last_name: loggedInUser.last_name,
@@ -20,6 +24,16 @@ const Profile = () => {
     postcode: loggedInUser.postcode || "",
     city: loggedInUser.city || "",
   });
+
+  useEffect(() => {
+    getOwnerPlants(savedUserId)
+      .then((plants) => {
+        setCurrentPlants(plants);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const onChange = (e) => {
     setProfileDetails({
@@ -40,7 +54,7 @@ const Profile = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text>{loggedInUser.username}'s Profile Page</Text>
       <View style={styles.inputcontainer}>
         <>
@@ -115,7 +129,10 @@ const Profile = () => {
           <Text>{sucessMsg}</Text>
         </>
       </View>
-    </SafeAreaView>
+      {currentPlants.map((plant) => {
+        return <PlantCard plant={plant} key={plant.plant_id} />;
+      })}
+    </ScrollView>
   );
 };
 
