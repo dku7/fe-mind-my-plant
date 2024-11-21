@@ -32,4 +32,26 @@ export const updateProfile = (updateData, user_id) => {
     });
 };
 
+export const getJobsList = () => {
+  return apiClient
+    .get("/owners/ads")
+    .then((response) => {
+      return response.data.items;
+    })
+    .catch((response) => {
+      return Promise.reject(response.status);
+    });
+};
+
+export const getOwnerPlants = (owner_id) => {
+  return apiClient
+    .get(`/owners/${owner_id}/plants`)
+    .then((response) => {
+      return response.data.items;
+    })
+    .catch((response) => {
+      return Promise.reject(response.status);
+    });
+};
+
 export default apiClient;
