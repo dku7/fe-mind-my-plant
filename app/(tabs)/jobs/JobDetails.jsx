@@ -32,29 +32,36 @@ const JobDetails = () => {
   if (error) return <Text>{error}</Text>;
 
   return (
-    <SafeAreaView className="bg-white">
-      <Text className="font-bold text-5xl pt-4 pb-5 bg-green-900 text-white text-center">
+    <SafeAreaView>
+      <Text className="font-bold text-5xl pt-4 pb-5 bg-green-900 text-lg text-white text-lg text-center mb-10">
         Job Details
       </Text>
-      <View className="text-lg">
-        <Text className="text-lg">Owner: {job.owner_first_name}</Text>
-        <Text className="text-lg">{job.city}</Text>
-        <Text className="text-lg">
-          <Text className="text-lg  font-bold"></Text>
-          {new Date(job.start_date).toLocaleDateString()} -{" "}
+      <View className="text-lg flex-row flex-wrap justify-center">
+        <Text className="text-lg text-center w-full mb-1">
+          Owner: {job.owner_first_name}
+        </Text>
+        <Text className="text-lg text-center w-full mb-1">
+          Location: {job.city}
+        </Text>
+        <Text className="text-lg text-center w-full mb-1">
+          Dates: {new Date(job.start_date).toLocaleDateString()} -{" "}
           {new Date(job.end_date).toLocaleDateString()}
         </Text>
-        <Text className="text-lg">£ {job.daily_rate}</Text>
-        <Text className="text-lg">
-          {`${job.job_length} day${job.job_length === 1 ? "" : "s"} `}
+        <Text className="text-lg text-center w-full mb-1">
+          Daily rate: £ {job.daily_rate}
         </Text>
-        <Text className="text-lg">
-          {`${job.number_of_plants} plant${
+        <Text className="text-lg text-center w-full mb-1">
+          {`${job.job_length ?? 0} day${job.job_length === 1 ? "" : "s"} `}
+        </Text>
+        <Text className="text-lg text-center w-full mb-1">
+          {`${job.number_of_plants ?? 0} plant${
             job.number_of_plants === 1 ? "" : "s"
           } `}
         </Text>
-        <Text className="text-lg">{job.job_instructions}</Text>
-        <Pressable className="mt-12 py-2 border-green-700 w-32 text-center rounded-md bg-green-700 text-gray-200 font-bold">
+        <Text className="text-lg text-center w-full mb-1">
+          {job.job_instructions}
+        </Text>
+        <Pressable className="mt-12 py-2 border-green-700 w-32 text-center rounded-md bg-green-700 text-lg text-gray-200 font-bold">
           Apply
         </Pressable>
       </View>
