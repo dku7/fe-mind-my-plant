@@ -65,4 +65,10 @@ export const getPlantsSummary = () => {
     });
 };
 
+export const getJobById = (owner_id, job_id) => {
+  return apiClient
+    .get(`/owners/${owner_id}/ads/${job_id}`)
+    .then((response) => response.data.items[0]);
+};
+
 export default apiClient;

@@ -33,6 +33,10 @@ export default function RootLayout() {
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="profile" />
+        <Stack.Screen
+          name="(tabs)/jobs/JobDetails"
+          initialParams={{ owner_id: 1 }}
+        />
       </Stack>
       <StatusBar style="auto" />
     </LoggedInUserProvider>

@@ -8,7 +8,6 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { Pressable } from "react-native-gesture-handler";
-import { Link } from "react-native";
 
 const JobCard = ({ job }) => {
   const cardClassName =
@@ -19,7 +18,11 @@ const JobCard = ({ job }) => {
   return (
     <SafeAreaView className="bg-white">
       <View className={cardClassName}>
-        <Pressable>
+        <Pressable
+          onPress={() =>
+            navigation.navigate("(tabs)/jobs/JobDetails", { owner_id: 1 })
+          }
+        >
           <Text className="text-lg text-gray-200">
             <Entypo
               className="ml-1 pr-2"
