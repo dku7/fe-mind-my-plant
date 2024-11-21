@@ -1,42 +1,38 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import { Image } from 'expo-image';
+import { SafeAreaView } from "react-native-safe-area-context";
+import Entypo from '@expo/vector-icons/Entypo';
+import Foundation from '@expo/vector-icons/Foundation';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 const JobCard = ({ job }) => {
+ const cardClassName = job.last_minute === "TRUE" ? "bg-[rgb(125,85,22)] m-4 p-3 rounded-xl" : "bg-[#167d29] m-4 p-3 rounded-xl"
+
   return (
-    <View style={styles.card}>
-      <Text style={styles.heading}>Job ID: {job.job_id}</Text>
-      <Text style={styles.text}>
-        <Text style={styles.label}>Owner: </Text>
-        {job.owner_first_name} {job.owner_last_name}
-      </Text>
-      <Text style={styles.text}>
-        <Text style={styles.label}>Location: </Text>
+    <SafeAreaView className="bg-white">
+    <View className={cardClassName}>
+      <Text className="text-lg text-gray-200" >
+      <Entypo className='ml-1 pr-2' name="location-pin" size={24} color="black" />
         {job.city}
       </Text>
-      <Text style={styles.text}>
-        <Text style={styles.label}>Start Date: </Text>
-        {new Date(job.start_date).toLocaleDateString()}
+      <Text className="text-lg text-gray-200">
+        <Text className="text-lg text-gray-200 font-bold"><Foundation className='ml-2 pr-3' name="calendar" size={24} color="black" /></Text>
+        {new Date(job.start_date).toLocaleDateString()} - {new Date(job.end_date).toLocaleDateString()}
       </Text>
-      <Text style={styles.text}>
-        <Text style={styles.label}>End Date: </Text>
-        {new Date(job.end_date).toLocaleDateString()}
+      <Text className="text-lg text-gray-200">
+      <FontAwesome5 className='ml-1 pr-2' name="money-bill-wave" size={18} color="black" />£ {job.daily_rate}
       </Text>
-      <Text style={styles.text}>
-        <Text style={styles.label}>Daily Rate: </Text>${job.daily_rate}
+      <Text className="text-lg text-gray-200" >
+      <Entypo className='ml-1 pr-2' name="location-pin" size={24} color="black" />
+        {`${job.job_length} day${job.job_length === 1 ? '' : 's'} `}
       </Text>
-      <Text style={styles.text}>
-        <Text style={styles.label}>Status: </Text>
-        {job.status === 1 ? "Active" : "Inactive"}
-      </Text>
-      <Text style={styles.text}>
-        <Text style={styles.label}>Last Minute: </Text>
-        {job.lastminute === "TRUE" ? "Yes" : "No"}
-      </Text>
-      <Text style={styles.text}>
-        <Text style={styles.label}>Star Rating: </Text>
-        {job.star_rating ? `${job.star_rating}/5` : "Not Rated"}
-      </Text>
+      <Text className="text-lg text-gray-200"><MaterialCommunityIcons className='ml-1 pr-2' name="flower" size={24} color="black" />{`${job.number_of_plants} plant${job.number_of_plants === 1 ? '' : 's'} `}</Text>
+      <Image source='https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcTWzSdYX_EN4q3_w7SlCTRh9C3wpiUQRNpdF_20mbucy61Mj_uvIIFNnrN7pUGI0hoW66mnimJFukFTUuJr2TRJpCtwMacekoSj0sUhhPpyAFdZ-B8bjZ5NWdnNho1hfQzhKVqJetM&usqp=CAc'/>
     </View>
+    </SafeAreaView>
   );
 };
 
