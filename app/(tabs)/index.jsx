@@ -7,9 +7,7 @@ import { getUserList } from "../api";
 import loadingDisplay from "../components/loading-display";
 import SignIn from "../signin";
 import { SafeAreaView } from "react-native-safe-area-context";
-import aloePlant from "../../assets/images/aloe-aloe-plant.gif"
-
-
+import aloePlant from "../../assets/images/aloe-aloe-plant.gif";
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
@@ -47,11 +45,9 @@ const index = () => {
               </Pressable>
             </Link>
           </>
-
         ) : (
           <>
-          <ImageBackground 
-      source={aloePlant}/>
+            <ImageBackground source={aloePlant} />
             <View className="mt-64">
               <SignIn />
             </View>
