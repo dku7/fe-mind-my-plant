@@ -6,13 +6,17 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { StyleSheet } from "react-native";
 import { updateProfile, getOwnerPlants } from "./api";
 import PlantCard from "./PlantCard";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import AddPlantModal from "./AddPlantModal";
+import { getPlantsSummary } from "./api";
 
 const Profile = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const savedUserId = localStorage.getItem("user_id");
   const [sucessMsg, setSucessMsg] = useState("");
   const [currentPlants, setCurrentPlants] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [plants, setPlants] = useState([]);
 
   const [profileDetails, setProfileDetails] = useState({
     first_name: loggedInUser.first_name,
@@ -35,6 +39,16 @@ const Profile = () => {
       });
   }, []);
 
+  useEffect(() => {
+    getPlantsSummary()
+      .then((plants) => {
+        setPlants(plants);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+
   const onChange = (e) => {
     setProfileDetails({
       ...profileDetails,
@@ -51,6 +65,10 @@ const Profile = () => {
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleAddPlants = (selectedPlants) => {
+    setPlants((prev) => [...prev, ...selectedPlants]);
   };
 
   return (
@@ -129,6 +147,20 @@ const Profile = () => {
           <Text>{sucessMsg}</Text>
         </>
       </View>
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => setModalVisible(true)}
+        >
+          <Text style={styles.addButtonText}>Add New Plants</Text>
+        </TouchableOpacity>
+        <AddPlantModal
+          visible={modalVisible}
+          onClose={() => setModalVisible(false)}
+          plants={plants}
+          onAddPlants={handleAddPlants}
+        />
+      </View>
       {currentPlants.map((plant) => {
         return <PlantCard plant={plant} key={plant.plant_id} />;
       })}
@@ -138,11 +170,34 @@ const Profile = () => {
 
 export default Profile;
 
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     width: "100%",
+//     backgroundColor: "#88CC7F",
+//   },
+// inputcontainer: {
+//   flexDirection: "column",
+//   width: "100%",
+//   alignItems: "center",
+//   pointerEvents: "auto",
+// },
+// input: {
+//   flex: 1,
+//   borderColor: "black",
+//   borderWidth: 1,
+//   borderRadius: 5,
+//   alignItems: "center",
+//   fontSize: 18,
+// },
+// });
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: "100%",
-    backgroundColor: "#88CC7F",
+    // justifyContent: "center",
+    // alignItems: "center",
+    backgroundColor: "#fff",
   },
   inputcontainer: {
     flexDirection: "column",
@@ -157,5 +212,67 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: "center",
     fontSize: 18,
+  },
+  addButton: {
+    backgroundColor: "#4CAF50",
+    padding: 15,
+    borderRadius: 10,
+  },
+  addButtonText: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  modalContainer: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#f8f8f8",
+  },
+  card: {
+    flexDirection: "row",
+    marginBottom: 15,
+    padding: 10,
+    backgroundColor: "#fff",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  image: {
+    width: 60,
+    height: 60,
+    borderRadius: 8,
+    marginRight: 10,
+  },
+  cardInfo: {
+    flex: 1,
+    justifyContent: "center",
+  },
+  commonName: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  scientificName: {
+    fontSize: 14,
+    color: "#666",
+  },
+  quantityControl: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  button: {
+    padding: 10,
+    backgroundColor: "#e0e0e0",
+    borderRadius: 5,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  quantityText: {
+    marginHorizontal: 10,
+    fontSize: 16,
   },
 });
