@@ -52,13 +52,9 @@ const Profile = () => {
 
   const postPlantFunc = (newPlantsArr) => {
     newPlantsArr.forEach((plant) => {
-      postNewOwnerPlants(plant, loggedInUser.user_id)
-        .then((newPlants) => {
-          console.log(newPlants, "Success!");
-        })
-        .catch((error) => {
-          console.log(error, "Error");
-        });
+      postNewOwnerPlants(plant, loggedInUser.user_id).catch((error) => {
+        console.log(error, "Error");
+      });
     });
   };
 
@@ -88,13 +84,11 @@ const Profile = () => {
   };
 
   const handlePlantUpdate = (plantToUpdate) => {
-    patchPutOwnerPlantsQuantity(plantToUpdate, loggedInUser.user_id)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
+    patchPutOwnerPlantsQuantity(plantToUpdate, loggedInUser.user_id).catch(
+      (error) => {
         console.log(error);
-      });
+      }
+    );
   };
 
   const handleAddPlants = (selectedPlants) => {

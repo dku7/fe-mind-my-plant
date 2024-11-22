@@ -46,6 +46,11 @@ const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
     setSelectedPlants({});
   };
 
+  const handleCloseAddPlants = () => {
+    onClose();
+    setSelectedPlants({});
+  };
+
   return (
     <Modal visible={visible} animationType="slide" transparent={false}>
       <View style={styles.modalContainer}>
@@ -82,7 +87,7 @@ const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
           )}
         />
         <Button title="Add Plants" onPress={handleAddPlants} />
-        <Button title="Close" onPress={onClose} />
+        <Button title="Close" onPress={handleCloseAddPlants} />
       </View>
     </Modal>
   );
