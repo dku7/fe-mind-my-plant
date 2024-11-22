@@ -94,4 +94,10 @@ export const patchPutOwnerPlants = (plant, user_id, newCareInstructions) => {
     });
 };
 
+export const postJobRequest = (sitter_id, job_id) => {
+  return apiClient
+    .post(`/sitters/${sitter_id}/requests`, { job_id: job_id })
+    .then((response) => response);
+};
+
 export default apiClient;
