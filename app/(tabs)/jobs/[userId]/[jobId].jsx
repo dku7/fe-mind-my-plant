@@ -14,6 +14,7 @@ const JobDetails = () => {
   const [requests, setRequests] = useState(0);
   const { userId, jobId } = useLocalSearchParams();
   const [feedbackMsg, setFeedbackMsg] = useState("");
+  const applicationSuccessful = "Your application has been posted successfully."
 
   const handlePostRequest = () => {
     setFeedbackMsg("Posting application...");
@@ -23,7 +24,8 @@ const JobDetails = () => {
 
     postJobRequest(loggedInUser.user_id, jobId)
       .then((response) =>
-        setFeedbackMsg("Your application has been posted successfully.")
+        setFeedbackMsg(applicationSuccessful)
+      
       )
       .catch((error) => {
         setRequests((curRequests) => {
@@ -89,7 +91,8 @@ const JobDetails = () => {
         </Text>
         <Pressable
           onPress={handlePostRequest}
-          className="mt-12 py-2 border-green-700 w-32 text-center rounded-md bg-green-700 text-lg text-gray-200 font-bold"
+          disabled={feedbackMsg === applicationSuccessful}
+          className={feedbackMsg === applicationSuccessful ? "mt-12 py-2 border-green-700 w-32 text-center rounded-md bg-gray-300 text-lg text-black font-bold" : "mt-12 py-2 border-green-700 w-32 text-center rounded-md bg-green-700 text-lg text-gray-200 font-bold"}
         >
           Apply
         </Pressable>
@@ -100,3 +103,4 @@ const JobDetails = () => {
 };
 
 export default JobDetails;
+
