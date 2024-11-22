@@ -5,12 +5,19 @@ import Foundation from "@expo/vector-icons/Foundation";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { getOwnerPlants } from "@/app/api";
+import { getOwnerPlants, sendJobRequest } from "@/app/api";
 
 import { getJobById } from "@/app/api";
 import { useLocalSearchParams } from "expo-router";
+import { handleUrlParams } from "expo-router/build/fork/getStateFromPath-forks";
+import { LoggedInUserContext } from "@/app/contexts/loggedInUser";
+import { useContext } from "react";
 
 const JobDetails = () => {
+
+  const { loggedInUser } = useContext(LoggedInUserContext);
+  console.log(loggedInUser, "HERERERERER")
+  
   const [job, setJob] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -35,6 +42,10 @@ const JobDetails = () => {
 
   if (isLoading) return <Text>Loading....</Text>;
   if (error) return <Text>{error}</Text>;
+
+  const handleOnPress = () => {
+     sendJobRequest(loggedInUser.user_id, Number(jobId))
+  }
 
   return (
     <SafeAreaView>
@@ -68,7 +79,7 @@ const JobDetails = () => {
         <Text className="text-lg  w-full mb-1">
             Number of reqests: {job.no_of_requests}
           </Text>
-        <Pressable className="mt-12 py-2 border-green-700 w-32 text-center rounded-md bg-green-700 text-lg text-gray-200 font-bold">
+        <Pressable onPress={handleOnPress} className="mt-12 py-2 border-green-700 w-32 text-center rounded-md bg-green-700 text-lg text-gray-200 font-bold">
           Apply
         </Pressable>
       </View>

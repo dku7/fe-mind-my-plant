@@ -77,4 +77,10 @@ export const getJobById = (owner_id, job_id) => {
     .then((response) => response.data.items[0]);
 };
 
+export const sendJobRequest = (sitterId, jobId) => {
+  return apiClient
+  .post(`sitters/${sitterId}/requests`, jobId)
+  .then((response) => console.log(response))
+}
+
 export default apiClient;
