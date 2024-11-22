@@ -21,7 +21,7 @@ const signin = () => {
       });
       if (currentUser.length > 0) {
         setLoggedInUser(currentUser[0]);
-        console.log(loggedInUser);
+        console.log('signin', currentUser[0]);
         localStorage.setItem("user_id", currentUser[0].user_id);
       } else setErrorMsg("Sorry, sign-in details incorrect");
     });

@@ -10,15 +10,24 @@ import Feather from "@expo/vector-icons/Feather";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { Button } from "react-native";
+import { useRouter } from "expo-router";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const router = useRouter()
 
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        headerShown: false,
+        headerShown: true,
+        headerTitle: 'Mind My Plants',
+        headerTitleAlign: 'center',
+        headerTitleStyle: {fontSize: 30, fontWeight: 'bold'},
+        headerStyle: {backgroundColor: 'green'},
+        headerTintColor: 'white',
+        headerLeft: () => <Button title='Home' onPress={() => {router.push('/')}}></Button>,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
@@ -53,7 +62,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="jobs"
+        name="jobs/index"
         options={{
           title: "Jobs",
           tabBarIcon: ({ color }) => (
@@ -70,6 +79,10 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen name="jobs/layout" options={{ href: null }} />
+      <Tabs.Screen name="jobs/JobCard" options={{ href: null }} />
+      <Tabs.Screen name="jobs/[userId]/[jobId]" options={{ href: null }} />
+      <Tabs.Screen name="jobs/addjobs" options={{ href: null }} />
     </Tabs>
   );
 }
