@@ -35,8 +35,12 @@ const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
     const selectedPlantList = plants.filter(
       (plant) => selectedPlants[plant.plant_id]
     );
-    console.log(selectedPlantList);
+    selectedPlantList.forEach((item) => {
+      item.quantity = selectedPlants[item.plant_id];
+    });
+    onAddPlants(selectedPlantList);
     onClose();
+    setSelectedPlants({});
   };
 
   return (

@@ -17,7 +17,6 @@ const Profile = () => {
   const [currentPlants, setCurrentPlants] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [plants, setPlants] = useState([]);
-
   const [profileDetails, setProfileDetails] = useState({
     first_name: loggedInUser.first_name,
     last_name: loggedInUser.last_name,
@@ -47,20 +46,27 @@ const Profile = () => {
       .catch((error) => {
         console.log(error);
       });
-  });
+  }, []);
 
-  const onChange = (e) => {
+  // const onChange = (e) => {
+  //   setProfileDetails({
+  //     ...profileDetails,
+  //     [e.target.placeholder]: e.target.value,
+  //   });
+  // };
+  const onChange = (name, value) => {
     setProfileDetails({
       ...profileDetails,
-      [e.target.placeholder]: e.target.value,
+      [name]: value,
     });
   };
 
   const handleProfileUpdate = () => {
     updateProfile(profileDetails, loggedInUser.user_id)
       .then((updatedUser) => {
-        console.log(updatedUser);
         setSucessMsg("Update Successful!");
+        setProfileDetails(updatedUser);
+        setLoggedInUser(updatedUser);
       })
       .catch((error) => {
         console.log(error);
@@ -68,85 +74,132 @@ const Profile = () => {
   };
 
   const handleAddPlants = (selectedPlants) => {
-    setPlants((prev) => [...prev, ...selectedPlants]);
+    setCurrentPlants((prev) => {
+      const updatedCurrent = [...prev];
+
+      selectedPlants.forEach((selectedPlant) => {
+        const existingPlant = updatedCurrent.find(
+          (plant) => plant.plant_id === selectedPlant.plant_id
+        );
+
+        if (existingPlant) {
+          existingPlant.quantity =
+            (existingPlant.quantity || 1) + (selectedPlant.quantity || 1);
+        } else {
+          updatedCurrent.push({
+            ...selectedPlant,
+            quantity: selectedPlant.quantity || 1,
+          });
+        }
+      });
+
+      return updatedCurrent;
+    });
   };
 
   return (
     <ScrollView style={styles.container}>
       <Text>{loggedInUser.username}'s Profile Page</Text>
-      <View style={styles.inputcontainer}>
-        <>
-          <Text>Update Profile Information</Text>
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="first_name"
-            name="first_name"
-            value={profileDetails.first_name}
-          />
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="last_name"
-            name="last_name"
-            value={profileDetails.last_name}
-          />
-          <TextInput
-            style={styles.input}
-            type="email"
-            onChange={onChange}
-            placeholder="email"
-            name="email"
-            value={profileDetails.email}
-          />
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="avatar_url"
-            name="avatar_url"
-            value={profileDetails.avatar_url}
-          />
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="password"
-            name="password"
-            value={profileDetails.password}
-          />
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="street_address"
-            name="street_address"
-            value={profileDetails.street_address}
-          />
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="postcode"
-            name="postcode"
-            value={profileDetails.postcode}
-          />
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="city"
-            name="city"
-            value={profileDetails.city}
-          />
-          <Pressable onPress={handleProfileUpdate}>
-            <Text>Update</Text>
-          </Pressable>
-          <Text>{sucessMsg}</Text>
-        </>
+
+      <Text>Update Profile Information</Text>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>First Name:</Text>
+        <TextInput
+          style={styles.input}
+          type="text"
+          onChangeText={(text) => onChange("first_name", text)}
+          placeholder="Enter First Name"
+          name="first_name"
+          value={profileDetails.first_name}
+        />
       </View>
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Last Name:</Text>
+        <TextInput
+          style={styles.input}
+          type="text"
+          onChangeText={(text) => onChange("last_name", text)}
+          placeholder="Enter Last Name"
+          name="last_name"
+          value={profileDetails.last_name}
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Email:</Text>
+        <TextInput
+          style={styles.input}
+          type="email"
+          onChangeText={(text) => onChange("email", text)}
+          placeholder="Enter Email"
+          name="email"
+          value={profileDetails.email}
+        />
+      </View>
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Avatar URL:</Text>
+        <TextInput
+          style={styles.input}
+          type="text"
+          onChangeText={(text) => onChange("avatar_url", text)}
+          placeholder="Enter Avatar URL"
+          name="avatar_url"
+          value={profileDetails.avatar_url}
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Password:</Text>
+        <TextInput
+          style={styles.input}
+          type="password"
+          onChangeText={(text) => onChange("password", text)}
+          placeholder="Enter Password"
+          name="password"
+          value={profileDetails.password}
+          secureTextEntry={true} // Secure input for password
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Street Address:</Text>
+        <TextInput
+          style={styles.input}
+          type="text"
+          onChangeText={(text) => onChange("street_address", text)}
+          placeholder="Enter Street Address"
+          name="street_address"
+          value={profileDetails.street_address}
+        />
+      </View>
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>Postcode:</Text>
+        <TextInput
+          style={styles.input}
+          type="text"
+          onChangeText={(text) => onChange("postcode", text)}
+          placeholder="Enter Postcode"
+          name="postcode"
+          value={profileDetails.postcode}
+        />
+      </View>
+
+      <View style={styles.inputGroup}>
+        <Text style={styles.label}>City:</Text>
+        <TextInput
+          style={styles.input}
+          type="text"
+          onChangeText={(text) => onChange("city", text)}
+          placeholder="Enter City"
+          name="city"
+          value={profileDetails.city}
+        />
+      </View>
+      <Pressable style={styles.button} onPress={handleProfileUpdate}>
+        <Text style={styles.buttonText}>Update</Text>
+      </Pressable>
+
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.addButton}
@@ -162,35 +215,19 @@ const Profile = () => {
         />
       </View>
       {currentPlants.map((plant) => {
-        return <PlantCard plant={plant} key={plant.plant_id} />;
+        return (
+          <PlantCard
+            plant={plant}
+            key={plant.plant_id}
+            user_id={loggedInUser.user_id}
+          />
+        );
       })}
     </ScrollView>
   );
 };
 
 export default Profile;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     width: "100%",
-//     backgroundColor: "#88CC7F",
-//   },
-// inputcontainer: {
-//   flexDirection: "column",
-//   width: "100%",
-//   alignItems: "center",
-//   pointerEvents: "auto",
-// },
-// input: {
-//   flex: 1,
-//   borderColor: "black",
-//   borderWidth: 1,
-//   borderRadius: 5,
-//   alignItems: "center",
-//   fontSize: 18,
-// },
-// });
 
 const styles = StyleSheet.create({
   container: {
@@ -205,13 +242,64 @@ const styles = StyleSheet.create({
     alignItems: "center",
     pointerEvents: "auto",
   },
-  input: {
-    flex: 1,
-    borderColor: "black",
-    borderWidth: 1,
-    borderRadius: 5,
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 16,
+    color: "#333",
+    textAlign: "center",
+  },
+  inputGroup: {
+    flexDirection: "row",
     alignItems: "center",
-    fontSize: 18,
+    marginBottom: 12,
+    paddingRight: 50,
+  },
+  label: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#555",
+    textAlign: "right", // Align text to the right
+    marginRight: 8, // Space between label and input
+  },
+  input: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 12,
+    fontSize: 16,
+    color: "#333",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  button: {
+    backgroundColor: "#4CAF50",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 4,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  successMsg: {
+    marginTop: 16,
+    color: "#4CAF50",
+    textAlign: "center",
+    fontSize: 16,
   },
   addButton: {
     backgroundColor: "#4CAF50",
