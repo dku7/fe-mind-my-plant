@@ -9,6 +9,8 @@ import PlantCard from "./PlantCard";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import AddPlantModal from "./AddPlantModal";
 import { getPlantsSummary } from "./api";
+import { postNewOwnerPlants } from "./api";
+import { patchPutOwnerPlantsQuantity } from "./api";
 
 const Profile = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
@@ -48,6 +50,14 @@ const Profile = () => {
       });
   }, []);
 
+  const postPlantFunc = (newPlantsArr) => {
+    newPlantsArr.forEach((plant) => {
+      postNewOwnerPlants(plant, loggedInUser.user_id).catch((error) => {
+        console.log(error, "Error");
+      });
+    });
+  };
+
   // const onChange = (e) => {
   //   setProfileDetails({
   //     ...profileDetails,
@@ -73,10 +83,17 @@ const Profile = () => {
       });
   };
 
+  const handlePlantUpdate = (plantToUpdate) => {
+    patchPutOwnerPlantsQuantity(plantToUpdate, loggedInUser.user_id).catch(
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
+
   const handleAddPlants = (selectedPlants) => {
     setCurrentPlants((prev) => {
       const updatedCurrent = [...prev];
-
       selectedPlants.forEach((selectedPlant) => {
         const existingPlant = updatedCurrent.find(
           (plant) => plant.plant_id === selectedPlant.plant_id
@@ -84,12 +101,14 @@ const Profile = () => {
 
         if (existingPlant) {
           existingPlant.quantity =
-            (existingPlant.quantity || 1) + (selectedPlant.quantity || 1);
+            existingPlant.quantity + selectedPlant.quantity;
+          handlePlantUpdate(existingPlant);
         } else {
           updatedCurrent.push({
             ...selectedPlant,
-            quantity: selectedPlant.quantity || 1,
+            quantity: selectedPlant.quantity,
           });
+          postPlantFunc(selectedPlants);
         }
       });
 
@@ -212,6 +231,7 @@ const Profile = () => {
           onClose={() => setModalVisible(false)}
           plants={plants}
           onAddPlants={handleAddPlants}
+          postPlantFunc={postPlantFunc}
         />
       </View>
       {currentPlants.map((plant) => {

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { LoggedInUserContext } from "./contexts/loggedInUser";
 import {
   View,
   Text,
@@ -12,6 +13,7 @@ import {
 
 const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
   const [selectedPlants, setSelectedPlants] = useState({});
+  const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
 
   const handleIncrease = (plantId) => {
     setSelectedPlants((prev) => ({
@@ -37,8 +39,14 @@ const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
     );
     selectedPlantList.forEach((item) => {
       item.quantity = selectedPlants[item.plant_id];
+      item.user_id = loggedInUser.user_id;
     });
     onAddPlants(selectedPlantList);
+    onClose();
+    setSelectedPlants({});
+  };
+
+  const handleCloseAddPlants = () => {
     onClose();
     setSelectedPlants({});
   };
@@ -79,32 +87,9 @@ const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
           )}
         />
         <Button title="Add Plants" onPress={handleAddPlants} />
-        <Button title="Close" onPress={onClose} />
+        <Button title="Close" onPress={handleCloseAddPlants} />
       </View>
     </Modal>
-  );
-};
-
-const App = () => {
-  const handleAddPlants = (selectedPlants) => {
-    setMyPlants((prev) => [...prev, ...selectedPlants]);
-  };
-
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.addButtonText}>Add New Plants</Text>
-      </TouchableOpacity>
-      <PlantModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        plants={plants}
-        onAddPlants={handleAddPlants}
-      />
-    </View>
   );
 };
 
