@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ImageBackground } from "react-native";
+import { View, Text, Pressable, ImageBackground, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link } from "expo-router";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
@@ -8,6 +8,7 @@ import loadingDisplay from "../components/loading-display";
 import SignIn from "../signin";
 import { SafeAreaView } from "react-native-safe-area-context";
 import aloePlant from "../../assets/images/aloe-aloe-plant.gif"
+import { StyleSheet } from "nativewind";
 
 
 
@@ -15,6 +16,9 @@ const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const savedUserId = localStorage.getItem("user_id");
   const [isLoading, setIsLoading] = useState(true);
+
+
+ 
 
   useEffect(() => {
     getUserList().then((users) => {
@@ -29,6 +33,9 @@ const index = () => {
   }, []);
 
   if (isLoading) return <loadingDisplay />;
+ let avatarImg
+  if(loggedInUser){avatarImg = loggedInUser.avatar_url }
+  
 
   return (
     <SafeAreaView className="flex">
@@ -39,9 +46,11 @@ const index = () => {
             <Text className="mt-3 ml-3 text-xl">
               Welcome Back {loggedInUser.username}
             </Text>
+            <avatarImg />
             <Link href="../profile" asChild>
               <Pressable>
-                <Text>Profile</Text>
+              <Image source={{uri: avatarImg}} style={{ width: 100, height: 100 }} />   
+              <Image source={{ uri: avatarImg }} style={styles.image} />          
               </Pressable>
             </Link>
           </>
@@ -67,4 +76,13 @@ const index = () => {
   );
 };
 
+
 export default index;
+
+const styles = StyleSheet.create({
+ image: {
+    width: 100,
+    height: 100,
+    resizeMode: "cover",
+  }
+})
