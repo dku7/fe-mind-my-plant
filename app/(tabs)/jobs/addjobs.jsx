@@ -5,6 +5,7 @@ import { Pressable, TextInput } from "react-native-gesture-handler";
 import { useContext } from "react";
 import { LoggedInUserContext } from "../../contexts/loggedInUser"
 import { postUserJobs } from "@/app/api";
+import { router } from "expo-router";
 
 const addjobs = () => {
 
@@ -15,16 +16,20 @@ const addjobs = () => {
   const [dailyRate, setDailyRate] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [message, setMessage] = useState("");
+  const savedUserId = localStorage.getItem("user_id");
+
+  const theUser = loggedInUser? loggedInUser : savedUserId
   const handleJobSubmit = () => {
     setJobBody("");
     // if(jobBody.start_date && jobBody.end_date && jobBody.daily_rate && jobBody.jobDescription){
-    postUserJobs(loggedInUser.user_id, {
+    postUserJobs((theUser), {
       start_date: startDate,
       end_date: endDate,
       daily_rate: dailyRate,
       job_instructions: jobDescription,
     }).then((response) => {
-      console.log(response, "in file");
+      setMessage("Job posted successfully")
+      router.push('/jobs')
     });
     //     else {
     //       setMessage('Please complete all fields')
@@ -33,7 +38,7 @@ const addjobs = () => {
 
   return (
     <SafeAreaView>
-      {loggedInUser && (
+      {theUser && (
         <View className="mx-16">
           <Text className="font-bold text-2xl mb-5">Add Job</Text>
           <Text>Start Date</Text>
@@ -78,7 +83,7 @@ const addjobs = () => {
       {/* {!isValid && <Text>{isValidMsg}</Text>} */}
       {/* <Text>{isPosting}</Text>
       <Text>{isErrorMsg}</Text> */}
-      {!loggedInUser && (
+      {!theUser && (
         <View>
           <Text>Welcome to Mind My Plants, {loggedInUser?.first_name}</Text>
         </View>
