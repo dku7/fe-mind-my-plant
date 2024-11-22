@@ -77,4 +77,21 @@ export const getJobById = (owner_id, job_id) => {
     .then((response) => response.data.items[0]);
 };
 
+export const patchPutOwnerPlants = (plant, user_id, newCareInstructions) => {
+  const updatedPlant = {
+    owner_id: user_id,
+    plant_id: plant.plant_id,
+    instructions: newCareInstructions,
+    quantity: plant.quantity,
+  };
+  return apiClient
+    .put(`/owners/${user_id}/plants`, updatedPlant)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((response) => {
+      return Promise.reject(response.status);
+    });
+};
+
 export default apiClient;
