@@ -5,9 +5,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Entypo from "@expo/vector-icons/Entypo";
 import Foundation from "@expo/vector-icons/Foundation";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import { Pressable } from "react-native-gesture-handler";
+
 
 const JobCard = ({ job }) => {
   const cardClassName =
@@ -18,11 +18,6 @@ const JobCard = ({ job }) => {
   return (
     <SafeAreaView className="bg-white">
       <View className={cardClassName}>
-        <Pressable
-          onPress={() =>
-            navigation.navigate("(tabs)/jobs/JobDetails", { owner_id: 1 })
-          }
-        >
           <Text className="text-lg text-gray-200">
             <Entypo
               className="ml-1 pr-2"
@@ -73,7 +68,6 @@ const JobCard = ({ job }) => {
               job.number_of_plants === 1 ? "" : "s"
             } `}
           </Text>
-        </Pressable>
       </View>
     </SafeAreaView>
   );

@@ -6,6 +6,8 @@ import JobCard from "./JobCard";
 import { Image } from "expo-image";
 import { getJobsList } from "../../api";
 import { ScrollView } from "react-native-gesture-handler";
+import { Link } from "expo-router";
+import { Pressable } from "react-native";
 
 const jobs = () => {
   const { loggedInUser } = useContext(LoggedInUserContext);
@@ -21,9 +23,18 @@ const jobs = () => {
     <ScrollView style={styles.container}>
       <View style={styles.inputcontainer}>
         <Text>jobs {loggedInUser?.username}</Text>
+        <View>
+        <Link href="jobs/addjobs"><Pressable className="mt-12 mx-16 py-2 border-green-700  rounded-md bg-green-700 text-gray-200 font-bold" >Add New Job</Pressable></Link>
+      </View>
       </View>
       {currentJobs.map((job) => {
-        return <JobCard job={job} key={job.job_id} />;
+        const userId = job.owner_id;
+        const jobId = job.job_id;
+        return (
+          <Link href={`/jobs/${userId}/${jobId}`}>
+            <JobCard job={job} key={job.job_id} />
+          </Link>
+        );
       })}
     </ScrollView>
   );

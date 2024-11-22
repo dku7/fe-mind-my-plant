@@ -65,6 +65,12 @@ export const getPlantsSummary = () => {
     });
 };
 
+export const postUserJobs = (ownerId, jobBody) => {
+  return apiClient.post(`/owners/${ownerId}/ads`, jobBody).then((response) => {
+    return response;
+  });
+};
+
 export const getJobById = (owner_id, job_id) => {
   return apiClient
     .get(`/owners/${owner_id}/ads/${job_id}`)

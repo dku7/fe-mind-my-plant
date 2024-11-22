@@ -33,9 +33,7 @@ const index = () => {
   return (
     <SafeAreaView className="flex">
       <View>
-        <Text className="font-bold text-5xl pt-4 pb-5 bg-green-900 text-white text-center">
-          Mind My Plants
-        </Text>
+
         {loggedInUser ? (
           <>
             <Text className="mt-3 ml-3 text-xl">
