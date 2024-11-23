@@ -36,15 +36,15 @@ const index = () => {
 
   return (
     <SafeAreaView className="flex">
-      <View>
+      <View className="mt-5">
         {loggedInUser ? (
           <>
             <Text className="mt-3 ml-3 text-xl font-custom">
-              Welcome Back {loggedInUser.username}
+              Welcome back, {loggedInUser.username}!
             </Text>
             <View style={styles.pressable}>
               <Link href="../profile" asChild>
-                <Pressable s>
+                <Pressable>
                   <Image source={{ uri: avatarImg }} style={styles.avatar} />
                 </Pressable>
               </Link>
@@ -71,34 +71,13 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 100,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
   },
   pressable: {
     position: "absolute",
     top: 50,
     left: 50,
-    backgroundColor: "red",
     width: 100,
     height: 100,
-    borderRadius: 50,
-    shadowColor: "black",
-    shadowOffset: { height: 2 },
-    shadowOpacity: 0.3,
-  },
-  background: {
-    flex: 1,
-    height: 300,
-    marginTop: 50,
-    width: 300,
-    borderRadius: 130,
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
   text: {
     fontFamily: 'DM Sans'

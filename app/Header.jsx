@@ -5,7 +5,7 @@ import { StyleSheet } from "nativewind";
 export default function NewHeader() {
   return (
     <Image
-      style={{height: 80}}
+      style={{height: 70}}
       source={require("@/assets/images/header.png")}
     />
   );
