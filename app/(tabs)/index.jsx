@@ -1,4 +1,4 @@
-import { View, Text, Pressable, ImageBackground, Image} from "react-native";
+import { View, Text, Pressable, Image} from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link } from "expo-router";
 import { LoggedInUserContext } from "../contexts/loggedInUser";

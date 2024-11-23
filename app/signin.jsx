@@ -24,7 +24,7 @@ const signin = () => {
         setLoggedInUser(currentUser[0]);
         console.log('signin', currentUser[0]);
         localStorage.setItem("user_id", currentUser[0].user_id);
-      } else setErrorMsg("Sorry, sign-in details incorrect");
+      } else setErrorMsg("Sorry, your sign-in details are incorrect");
     });
   };
 
@@ -43,22 +43,22 @@ const signin = () => {
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
         />
+        </View>
+        <View className="flex-row justify-center mt-4 ">
         <Pressable
-          className="mt-3 mx-16 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom"
+          className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom"
           disabled={!user || !password}
           onClick={userAuthentication}
         >
           Sign In
         </Pressable>
-      </View>
-      <Text className="text-center mt-1 text-lg">{errorMsg}</Text>
-      <View className="mt-1 px-16 flex text-center">
               <Link href="../components/registration" asChild>
-                <Pressable className="mb-20mt-1 mx-16 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom">
+                <Pressable className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom">
                   Sign Up
                 </Pressable>
               </Link>
             </View >
+            <Text className="text-center mt-1 text-lg font-custom">{errorMsg}</Text>
     </SafeAreaView>
   );
 };
