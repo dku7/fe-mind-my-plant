@@ -1,15 +1,12 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import React from "react";
+import { Image } from "expo-image";
+import { StyleSheet } from "nativewind";
 
-const Header = (props) => {
+export default function NewHeader() {
   return (
-    <View style={{flexDirection:'row', margin:15 }}>
-      <Text style={{fontWeight:'bold', fontSize:30, color:'white'}}>
-        {props.name}
-      </Text>
-        
-    </View>
-  )
+    <Image
+      style={{height: 80}}
+      source={require("@/assets/images/header.png")}
+    />
+  );
 }
-
-export default Header

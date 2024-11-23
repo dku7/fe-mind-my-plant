@@ -1,16 +1,12 @@
 import { Tabs} from "expo-router";
 import React from "react";
-import { Platform } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
-import TabBarBackground from "@/components/ui/TabBarBackground";
-import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import "../../global.css";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import { Button } from "react-native";
 import { useRouter } from "expo-router";
 import { StyleSheet } from "nativewind";
 
