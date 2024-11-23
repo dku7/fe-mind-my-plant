@@ -9,6 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import aloePlant from "../../assets/images/MMPimg.png";
 import { StyleSheet } from "nativewind";
 
+
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const savedUserId = localStorage.getItem("user_id");
@@ -71,6 +72,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 100,
+    borderColor: 'black'
   },
   pressable: {
     position: "absolute",
@@ -81,5 +83,17 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'DM Sans'
-  }
+  },
+  background: {
+    flex: 1,
+    height: 300,
+    marginTop: 50,
+    width: 300,
+    borderRadius: 130,
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

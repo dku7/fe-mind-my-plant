@@ -19,13 +19,14 @@ const jobs = () => {
   }, []);
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.inputcontainer}>
-        <Text>jobs {loggedInUser?.username}</Text>
-        <View>
-        <Link href="jobs/addjobs"><Pressable className="mt-12 mx-16 py-2 border-green-700  rounded-md bg-green-700 text-gray-200 font-bold" >Add New Job</Pressable></Link>
+    <ScrollView className="flex items-center">
+      <View className="mt-5 flex items-center" >
+        <Text className="font-custom text-xl">{loggedInUser?.username}, please find a list of jobs below</Text>
+        <View className="my-3">
+        <Link className='items-center'href="jobs/addjobs"><Pressable className=" mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 shadow-md font-bold font-custom justify-center items-center flex" >Add New Job</Pressable></Link>
       </View>
       </View>
+      <View className="flex items-center">
       {currentJobs.map((job) => {
         const userId = job.owner_id;
         const jobId = job.job_id;
@@ -35,30 +36,31 @@ const jobs = () => {
           </Link>
         );
       })}
+      </View>
     </ScrollView>
   );
 };
 
 export default jobs;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    width: "100%",
-    backgroundColor: "white",
-  },
-  inputcontainer: {
-    flexDirection: "column",
-    width: "100%",
-    alignItems: "center",
-    pointerEvents: "auto",
-  },
-  input: {
-    flex: 1,
-    borderColor: "black",
-    borderWidth: 1,
-    borderRadius: 5,
-    alignItems: "center",
-    fontSize: 18,
-  },
-});
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     width: "100%",
+//     backgroundColor: "white",
+//   },
+//   inputcontainer: {
+//     flexDirection: "column",
+//     width: "100%",
+//     alignItems: "center",
+//     pointerEvents: "auto",
+//   },
+//   input: {
+//     flex: 1,
+//     borderColor: "black",
+//     borderWidth: 1,
+//     borderRadius: 5,
+//     alignItems: "center",
+//     fontSize: 18,
+//   },
+// });

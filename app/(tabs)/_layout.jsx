@@ -76,10 +76,10 @@ export default function TabLayout() {
         }}
       />
      
-      <Tabs.Screen name="jobs/layout" options={{ href: null }} />
-      <Tabs.Screen name="jobs/JobCard" options={{ href: null }} />
-      <Tabs.Screen name="jobs/[userId]/[jobId]" options={{ href: null }} />
-      <Tabs.Screen name="jobs/addjobs" options={{ href: null }} />
+      <Tabs.Screen name="jobs/layout" options={{tabBarStyle: { backgroundColor: "#BC6C25", height: 55}, href: null }} />
+      <Tabs.Screen name="jobs/JobCard" options={{tabBarStyle: { backgroundColor: "#BC6C25", height: 55}, href: null }} />
+      <Tabs.Screen name="jobs/[userId]/[jobId]" options={{tabBarStyle: { backgroundColor: "#BC6C25", height: 55}, href: null }} />
+      <Tabs.Screen name="jobs/addjobs" options={{ tabBarStyle: { backgroundColor: "#BC6C25", height: 55}, href: null }} />
    
     </Tabs>
   );
