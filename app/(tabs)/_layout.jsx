@@ -10,24 +10,19 @@ import Feather from "@expo/vector-icons/Feather";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import { Button } from "react-native";
 import { useRouter } from "expo-router";
+
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const router = useRouter()
 
+
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
-        headerShown: true,
-        headerTitle: 'Mind My Plants',
-        headerTitleAlign: 'center',
-        headerTitleStyle: {fontSize: 30, fontWeight: 'bold'},
-        headerStyle: {backgroundColor: 'green'},
-        headerTintColor: 'white',
-        headerLeft: () => <Button title='Home' onPress={() => {router.push('/')}}></Button>,
+        headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({

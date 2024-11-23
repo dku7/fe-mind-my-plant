@@ -3,7 +3,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { LoggedInUserContext } from "../../contexts/loggedInUser";
 import JobCard from "./JobCard";
-import { Image } from "expo-image";
 import { getJobsList } from "../../api";
 import { ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
