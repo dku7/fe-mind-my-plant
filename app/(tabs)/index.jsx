@@ -4,11 +4,15 @@ import { Link } from "expo-router";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
 import { useContext } from "react";
 import { getUserList } from "../api";
-import SignIn from "../signin";
+import SignIn from "../Authentication/signin";
 import { SafeAreaView } from "react-native-safe-area-context";
 import aloePlant from "../../assets/images/MMPimg.png";
 import { StyleSheet } from "nativewind";
+
+import { Redirect } from "expo-router";
+
 import CareGuides from "./Careguides";
+
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
@@ -51,14 +55,7 @@ const index = () => {
               <CareGuides/>
               </View>
             </View>
-          </>
-        ) : (
-          <SafeAreaView style={styles.container}>
-            <Image source={aloePlant} style={styles.background} />
-            <View className="mt-1">
-              <SignIn />
-            </View>
-          </SafeAreaView>
+          <Redirect href="/Authentication/signin" />
         )}
       </View>
     </SafeAreaView>
