@@ -43,6 +43,18 @@ export const getJobsList = () => {
     });
 };
 
+export const getOwnersJobs = (owner_id) => {
+  return apiClient
+    .get(`/owners/${owner_id}/ads`)
+    .then((response) => {
+      console.log(response, "<<<<>GGGG");
+      return response.data.items;
+    })
+    .catch((response) => {
+      return Promise.reject(response.status);
+    });
+};
+
 export const getOwnerPlants = (owner_id) => {
   return apiClient
     .get(`/owners/${owner_id}/plants`)
