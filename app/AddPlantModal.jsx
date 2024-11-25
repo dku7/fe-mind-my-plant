@@ -12,6 +12,7 @@ import {
 } from "react-native";
 
 const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
+  // selectedPlants are those in the 'basket' on this page, to be added to the owners list
   const [selectedPlants, setSelectedPlants] = useState({});
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
 
@@ -26,7 +27,7 @@ const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
     setSelectedPlants((prev) => {
       const newQuantity = (prev[plantId] || 0) - 1;
       if (newQuantity <= 0) {
-        const { [plantId]: _, ...rest } = prev;
+        const { [plantId]: removedQuantity, ...rest } = prev;
         return rest;
       }
       return { ...prev, [plantId]: newQuantity };

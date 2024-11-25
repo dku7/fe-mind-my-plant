@@ -1,24 +1,33 @@
-import { Text, View } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  Pressable,
+  TextInput,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { LoggedInUserContext } from "./contexts/loggedInUser";
-import { useContext, useState, useEffect } from "react";
-import { Pressable, TextInput } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet } from "react-native";
-import { updateProfile, getOwnerPlants } from "./api";
+import {
+  updateProfile,
+  getOwnerPlants,
+  getPlantsSummary,
+  postNewOwnerPlants,
+  patchPutOwnerPlantsQuantity,
+} from "./api";
 import PlantCard from "./PlantCard";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import AddPlantModal from "./AddPlantModal";
-import { getPlantsSummary } from "./api";
-import { postNewOwnerPlants } from "./api";
-import { patchPutOwnerPlantsQuantity } from "./api";
+import SitterProfile from "./SitterProfile";
 
 const Profile = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const savedUserId = localStorage.getItem("user_id");
   const [sucessMsg, setSucessMsg] = useState("");
-  const [currentPlants, setCurrentPlants] = useState([]);
+  const [currentOwnerPlants, setCurrentOwnerPlants] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [plants, setPlants] = useState([]);
+  const [allPlantsList, setAllPlantsList] = useState([]);
+  const [ownerView, setOwnerView] = useState(true);
   const [profileDetails, setProfileDetails] = useState({
     first_name: loggedInUser.first_name,
     last_name: loggedInUser.last_name,
@@ -33,7 +42,7 @@ const Profile = () => {
   useEffect(() => {
     getOwnerPlants(savedUserId)
       .then((plants) => {
-        setCurrentPlants(plants);
+        setCurrentOwnerPlants(plants);
       })
       .catch((error) => {
         console.log(error);
@@ -43,7 +52,7 @@ const Profile = () => {
   useEffect(() => {
     getPlantsSummary()
       .then((plants) => {
-        setPlants(plants);
+        setAllPlantsList(plants);
       })
       .catch((error) => {
         console.log(error);
@@ -58,12 +67,6 @@ const Profile = () => {
     });
   };
 
-  // const onChange = (e) => {
-  //   setProfileDetails({
-  //     ...profileDetails,
-  //     [e.target.placeholder]: e.target.value,
-  //   });
-  // };
   const onChange = (name, value) => {
     setProfileDetails({
       ...profileDetails,
@@ -74,9 +77,12 @@ const Profile = () => {
   const handleProfileUpdate = () => {
     updateProfile(profileDetails, loggedInUser.user_id)
       .then((updatedUser) => {
-        setSucessMsg("Update Successful!");
+        setSucessMsg("Profile Details Update Successful!");
         setProfileDetails(updatedUser);
         setLoggedInUser(updatedUser);
+        setTimeout(() => {
+          setSucessMsg("");
+        }, 3000);
       })
       .catch((error) => {
         console.log(error);
@@ -92,7 +98,7 @@ const Profile = () => {
   };
 
   const handleAddPlants = (selectedPlants) => {
-    setCurrentPlants((prev) => {
+    setCurrentOwnerPlants((prev) => {
       const updatedCurrent = [...prev];
       selectedPlants.forEach((selectedPlant) => {
         const existingPlant = updatedCurrent.find(
@@ -117,11 +123,22 @@ const Profile = () => {
   };
 
   return (
-    <ScrollView>
-      <Text className="font-custom text-xl text-center my-1">{loggedInUser.username}'s Profile Page</Text>
 
-      <Text className="font-custom text-lg my-1 mx-5 mb-5">Update Profile Information</Text>
+    <ScrollView style={styles.container}>
+      <Pressable
+        style={[
+          styles.switchButton,
+          ownerView ? styles.ownerView : styles.sitterView,
+        ]}
+        onPress={() => setOwnerView(!ownerView)}
+      >
+        <Text style={styles.switchButtonText}>
+          {ownerView ? "Switch to Sitter View" : "Switch to Owner View"}
+        </Text>
+      </Pressable>
 
+      <Text>{loggedInUser.username}'s Profile Page</Text>
+      <Text>Update Profile Information</Text>
       <View className="font-custom mx-5">
         <Text className="my-2">First Name:</Text>
         <TextInput
@@ -177,7 +194,7 @@ const Profile = () => {
           placeholder="Enter Password"
           name="password"
           value={profileDetails.password}
-          secureTextEntry={true} // Secure input for password
+          secureTextEntry={true}
         />
       </View>
 
@@ -219,30 +236,39 @@ const Profile = () => {
        onPress={handleProfileUpdate}>
         Update
       </Pressable>
-    <Text className="font-custom text-lg my-1 mx-5 my-5">Add or remove plants from your profile below:</Text>
-      <View>
-        <Pressable className="mx-20 my-3 py-2 border-[#6A994E] rounded-md bg-[#6A994E] shadow-md"
-          onPress={() => setModalVisible(true)}
-        >
-          <Text className="mx-10 text-base text-gray-50 font-bold font-custom text-center">Add New Plants</Text>
-        </Pressable>
-        <AddPlantModal
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-          plants={plants}
-          onAddPlants={handleAddPlants}
-          postPlantFunc={postPlantFunc}
-        />
-      </View>
-      {currentPlants.map((plant) => {
-        return (
-          <PlantCard
-            plant={plant}
-            key={plant.plant_id}
-            user_id={loggedInUser.user_id}
-          />
-        );
-      })}
+      <Text>{sucessMsg}</Text>
+
+      {ownerView ? (
+        <>
+          <View style={styles.container}>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => setModalVisible(true)}
+            >
+              <Text style={styles.addButtonText}>Add New Plants</Text>
+            </TouchableOpacity>
+            <AddPlantModal
+              visible={modalVisible}
+              onClose={() => setModalVisible(false)}
+              plants={allPlantsList}
+              onAddPlants={handleAddPlants}
+              postPlantFunc={postPlantFunc}
+            />
+          </View>
+          {currentOwnerPlants.map((plant) => {
+            return (
+              <PlantCard
+                plant={plant}
+                key={plant.plant_id}
+                user_id={loggedInUser.user_id}
+              />
+            );
+          })}
+        </>
+      ) : (
+        <SitterProfile />
+      )}
+
     </ScrollView>
   );
 };
@@ -250,54 +276,75 @@ const Profile = () => {
 export default Profile;
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   // justifyContent: "center",
-  //   // alignItems: "center",
-  //   backgroundColor: "#fff",
-  // },
-  // inputcontainer: {
-  //   flexDirection: "column",
-  //   width: "100%",
-  //   alignItems: "center",
-  //   pointerEvents: "auto",
-  // },
-  // title: {
-  //   fontSize: 24,
-  //   fontWeight: "bold",
-  //   marginBottom: 16,
-  //   color: "#333",
-  //   textAlign: "center",
-  // },
-  // inputGroup: {
-  //   flexDirection: "row",
-  //   alignItems: "center",
-  //   marginBottom: 12,
-  //   paddingRight: 50,
-  // },
-  // label: {
-  //   flex: 1,
-  //   fontSize: 14,
-  //   fontWeight: "500",
-  //   color: "#555",
-  //   textAlign: "right", // Align text to the right
-  //   marginRight: 8, // Space between label and input
-  // },
-  // input: {
-  //   backgroundColor: "#fff",
-  //   borderWidth: 1,
-  //   borderColor: "#ccc",
-  //   borderRadius: 8,
-  //   padding: 10,
-  //   marginBottom: 12,
-  //   fontSize: 16,
-  //   color: "#333",
-  //   shadowColor: "#000",
-  //   shadowOffset: { width: 0, height: 1 },
-  //   shadowOpacity: 0.1,
-  //   shadowRadius: 2,
-  //   elevation: 2,
-  // },
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  switchButton: {
+    marginTop: 20,
+    marginBottom: 20,
+    padding: 10,
+    borderRadius: 8,
+    alignSelf: "center",
+  },
+  switchButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  ownerView: {
+    backgroundColor: "#4CAF50",
+  },
+  sitterView: {
+    backgroundColor: "#FF5722",
+  },
+  container: {
+    flex: 1,
+    // justifyContent: "center",
+    // alignItems: "center",
+    backgroundColor: "#fff",
+  },
+  inputcontainer: {
+    flexDirection: "column",
+    width: "100%",
+    alignItems: "center",
+    pointerEvents: "auto",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 16,
+    color: "#333",
+    textAlign: "center",
+  },
+  inputGroup: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 12,
+    paddingRight: 50,
+  },
+  label: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#555",
+    textAlign: "right",
+    marginRight: 8,
+  },
+  input: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 12,
+    fontSize: 16,
+    color: "#333",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
   button: {
     backgroundColor: "#4CAF50",
     paddingVertical: 12,
