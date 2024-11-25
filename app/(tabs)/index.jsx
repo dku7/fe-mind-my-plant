@@ -13,7 +13,6 @@ import { Redirect } from "expo-router";
 
 import CareGuides from "./Careguides";
 
-
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const savedUserId = localStorage.getItem("user_id");
@@ -52,9 +51,11 @@ const index = () => {
                 </Pressable>
               </Link>
               <View className="border rounded-md flex-wrap">
-              <CareGuides/>
+                <CareGuides />
               </View>
             </View>
+          </>
+        ) : (
           <Redirect href="/Authentication/signin" />
         )}
       </View>
