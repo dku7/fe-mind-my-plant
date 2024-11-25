@@ -40,41 +40,41 @@ const addjobs = () => {
     <SafeAreaView>
       {theUser && (
         <View className="mx-16">
-          <Text className="font-bold text-2xl mb-5">Add Job</Text>
-          <Text>Start Date</Text>
-          <TextInput
+          <Text className=" font-custom text-2xl mt-5 mb-5">Please fill out the form below to add a job to the site: </Text>
+          <Text className="font-custom mb-1 text-base">Start Date</Text>
+          <TextInput 
             onChange={(e) => setStartDate(e.target.value)}
-            className="border rounded mb-4"
+            className="font-custom border rounded py-1 mb-4"
             type="date"
-            placeholder="MM/DD/YYYY"
+            placeholder=" MM/DD/YYYY"
             name="start_date"
           />
-          <Text>End Date</Text>
+          <Text className="font-custom mb-1 text-base">End Date</Text>
           <TextInput
             onChange={(e) => setEndDate(e.target.value)}
-            className="border rounded mb-4"
+            className="font-custom border rounded py-1 mb-4"
             type="date"
-            placeholder="DD/MM/YYYY"
+            placeholder=" DD/MM/YYYY"
             name="end_date"
           />
-          <Text>Daily Rate (£)</Text>
+          <Text className="font-custom mb-1 text-base">Daily Rate (£)</Text>
           <TextInput
             onChange={(e) => setDailyRate(e.target.value)}
-            className="border rounded mb-4"
+            className="font-custom border rounded py-1 mb-4"
             type="number"
-            placeholder="0"
+            placeholder=" 0"
             name="daily_rate"
           />
-          <Text>Job Description</Text>
+          <Text className="font-custom mb-1 text-base">Job Description</Text>
           <TextInput
             onChange={(e) => setJobDescription(e.target.value)}
             className="border rounded mb-4 py-8"
             type="text"
-            placeholder="(500)"
+            placeholder=" (500)"
             name="job_description"
             aria-required="true"
           />
-          <Pressable onPress={handleJobSubmit}>
+          <Pressable className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom items-center shadow-md" onPress={handleJobSubmit}>
             <Text>Add Job</Text>
             <Text>{message}</Text>
           </Pressable>

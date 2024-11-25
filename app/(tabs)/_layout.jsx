@@ -1,16 +1,12 @@
 import { Tabs} from "expo-router";
 import React from "react";
-import { Platform } from "react-native";
 import { HapticTab } from "@/components/HapticTab";
-import TabBarBackground from "@/components/ui/TabBarBackground";
-import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import "../../global.css";
 import Feather from "@expo/vector-icons/Feather";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
-import { Button } from "react-native";
 import { useRouter } from "expo-router";
 import { StyleSheet } from "nativewind";
 
@@ -39,7 +35,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarStyle: { backgroundColor: "#BC6C25", height: 55},
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55},
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="home-assistant"
@@ -53,7 +49,7 @@ export default function TabLayout() {
         name="sitters"
         options={{
           title: "Sitters",
-          tabBarStyle: { backgroundColor: "#BC6C25", height: 55},
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55},
           tabBarIcon: ({ color }) => (
             <FontAwesome6 name="hand-holding-droplet" size={24} color="rgb(254, 250, 224)" />
           ),
@@ -63,7 +59,7 @@ export default function TabLayout() {
         name="jobs/index"
         options={{
           title: "Jobs",
-          tabBarStyle: { backgroundColor: "#BC6C25", height: 55},
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55},
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="clipboard-list" size={24} color="rgb(254, 250, 224)" />
           ),
@@ -73,17 +69,17 @@ export default function TabLayout() {
         name="messages"
         options={{
           title: "Messages",
-          tabBarStyle: { backgroundColor: "#BC6C25", height: 55},
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55},
           tabBarIcon: ({ color }) => (
             <Feather name="send" size={24} color="rgb(254, 250, 224)"/>
           ),
         }}
       />
      
-      <Tabs.Screen name="jobs/layout" options={{ href: null }} />
-      <Tabs.Screen name="jobs/JobCard" options={{ href: null }} />
-      <Tabs.Screen name="jobs/[userId]/[jobId]" options={{ href: null }} />
-      <Tabs.Screen name="jobs/addjobs" options={{ href: null }} />
+      <Tabs.Screen name="jobs/layout" options={{tabBarStyle: { backgroundColor: "#D77F33", height: 55}, href: null }} />
+      <Tabs.Screen name="jobs/JobCard" options={{tabBarStyle: { backgroundColor: "#D77F33", height: 55}, href: null }} />
+      <Tabs.Screen name="jobs/[userId]/[jobId]" options={{tabBarStyle: { backgroundColor: "#D77F33", height: 55}, href: null }} />
+      <Tabs.Screen name="jobs/addjobs" options={{ tabBarStyle: { backgroundColor: "#D77F33", height: 55}, href: null }} />
    
     </Tabs>
   );

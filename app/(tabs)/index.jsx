@@ -9,6 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import aloePlant from "../../assets/images/MMPimg.png";
 import { StyleSheet } from "nativewind";
 
+
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const savedUserId = localStorage.getItem("user_id");
@@ -36,15 +37,15 @@ const index = () => {
 
   return (
     <SafeAreaView className="flex">
-      <View>
+      <View className="mt-5">
         {loggedInUser ? (
           <>
             <Text className="mt-3 ml-3 text-xl font-custom">
-              Welcome Back {loggedInUser.username}
+              Welcome back, {loggedInUser.username}!
             </Text>
             <View style={styles.pressable}>
               <Link href="../profile" asChild>
-                <Pressable s>
+                <Pressable>
                   <Image source={{ uri: avatarImg }} style={styles.avatar} />
                 </Pressable>
               </Link>
@@ -71,22 +72,17 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 100,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
+    borderColor: 'black'
   },
   pressable: {
     position: "absolute",
     top: 50,
     left: 50,
-    backgroundColor: "red",
     width: 100,
     height: 100,
-    borderRadius: 50,
-    shadowColor: "black",
-    shadowOffset: { height: 2 },
-    shadowOpacity: 0.3,
+  },
+  text: {
+    fontFamily: 'DM Sans'
   },
   background: {
     flex: 1,
@@ -100,7 +96,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  text: {
-    fontFamily: 'DM Sans'
-  }
 });

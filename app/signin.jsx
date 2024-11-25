@@ -42,23 +42,24 @@ const signin = () => {
           className="border rounded-md p-1 text-lg font-custom"
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
+          secureTextEntry={true}
         />
         </View>
         <View className="flex-row justify-center mt-4 ">
         <Pressable
-          className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom"
+          className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md"
           disabled={!user || !password}
           onClick={userAuthentication}
         >
           Sign In
         </Pressable>
               <Link href="../components/registration" asChild>
-                <Pressable className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom">
+                <Pressable className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md">
                   Sign Up
                 </Pressable>
               </Link>
             </View >
-            <Text className="text-center mt-1 text-lg font-custom">{errorMsg}</Text>
+            <Text className="text-center mt-1 text-lg">{errorMsg}</Text>
     </SafeAreaView>
   );
 };
