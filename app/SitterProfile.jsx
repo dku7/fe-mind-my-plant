@@ -6,6 +6,7 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
 import { LoggedInUserContext } from "./contexts/loggedInUser";
 import { getSitterJobs } from "./api";
@@ -17,16 +18,20 @@ const SitterProfile = () => {
   );
   const [jobs, setJobs] = useState([]);
   const [successMsg, setSuccessMsg] = useState("");
+  const [jobFilter, setJobFilter] = useState(1);
 
   useEffect(() => {
     getSitterJobs(loggedInUser.user_id)
       .then((fetchedJobs) => {
-        setJobs(fetchedJobs);
+        const filteredJobs = fetchedJobs.filter((job) => {
+          return job.status === jobFilter;
+        });
+        setJobs(filteredJobs);
       })
       .catch((error) => {
         console.error("Error fetching jobs:", error);
       });
-  }, [loggedInUser.user_id]);
+  }, [loggedInUser.user_id, jobFilter]);
 
   const handleDescriptionUpdate = () => {
     console.log("need to figure out endpoint");
@@ -55,17 +60,48 @@ const SitterProfile = () => {
       {successMsg ? <Text style={styles.successMsg}>{successMsg}</Text> : null}
 
       <Text style={styles.sectionTitle}>Your Jobs:</Text>
+
+      <Pressable
+        styles={styles.button}
+        onPress={() => {
+          setJobFilter(1);
+        }}
+      >
+        <Text styles={styles.buttonText}>Upcoming</Text>
+      </Pressable>
+      <Pressable
+        styles={styles.button}
+        onPress={() => {
+          setJobFilter(2);
+        }}
+      >
+        <Text styles={styles.buttonText}>Current</Text>
+      </Pressable>
+      <Pressable
+        styles={styles.button}
+        onPress={() => {
+          setJobFilter(3);
+        }}
+      >
+        <Text styles={styles.buttonText}>Past</Text>
+      </Pressable>
+
       {jobs.length > 0 ? (
         jobs.map((job) => (
           <View key={job.job_id} style={styles.card}>
             <Text style={styles.jobTitle}>Owner: {job.owner_first_name}</Text>
-            <Text style={styles.jobDetails}>Start: {job.start_date}</Text>
-            <Text style={styles.jobDetails}>End: {job.end_date}</Text>
             <Text style={styles.jobDetails}>
-              Street Address: {job.street_address}
+              Start:{new Date(job.start_date).toLocaleDateString()}
             </Text>
+            <Text style={styles.jobDetails}>
+              End: {new Date(job.start_date).toLocaleDateString()}
+            </Text>
+            {job.status === 2 && (
+              <Text style={styles.jobDetails}>
+                Street Address: {job.street_address}
+              </Text>
+            )}
             <Text style={styles.jobDetails}>Daily Rate: {job.daily_rate}</Text>
-            <Text style={styles.jobDetails}>Job Status: {job.status}</Text>
           </View>
         ))
       ) : (
@@ -106,11 +142,11 @@ const styles = StyleSheet.create({
     height: 100,
   },
   button: {
-    backgroundColor: "#4CAF50",
-    alignItems: "center",
+    padding: 10,
+    backgroundColor: "#e0e0e0",
+    borderRadius: 5,
   },
   buttonText: {
-    color: "#fff",
     fontSize: 16,
     fontWeight: "bold",
   },
