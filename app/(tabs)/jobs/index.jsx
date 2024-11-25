@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { LoggedInUserContext } from "../../contexts/loggedInUser";
 import JobCard from "./JobCard";
-import { getJobsList } from "../../api";
+import { getJobsList, getOwnersJobs } from "../../api";
 import { ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
 import { Pressable } from "react-native";
@@ -11,32 +11,72 @@ import { Pressable } from "react-native";
 const jobs = () => {
   const { loggedInUser } = useContext(LoggedInUserContext);
   const [currentJobs, setCurrentJobs] = useState([]);
+  const [ownerJobs, setOwnerJobs] = useState([]);
+  const [ownerView, setOwnerView] = useState(true);
 
   useEffect(() => {
-    getJobsList(21).then((response) => {
+    getJobsList().then((response) => {
       setCurrentJobs(response);
+    });
+  }, []);
+
+  useEffect(() => {
+    getOwnersJobs(loggedInUser.user_id).then((response) => {
+      setOwnerJobs(response);
     });
   }, []);
 
   return (
     <ScrollView className="flex items-center">
-      <View className="mt-5 flex items-center" >
-        <Text className="font-custom text-xl">{loggedInUser?.username}, please find a list of jobs below</Text>
-        <View className="my-3">
-        <Link className='items-center'href="jobs/addjobs"><Pressable className=" mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 shadow-md font-bold font-custom justify-center items-center flex" >Add New Job</Pressable></Link>
-      </View>
-      </View>
-      <View className="flex items-center">
-      {currentJobs.map((job) => {
-        const userId = job.owner_id;
-        const jobId = job.job_id;
-        return (
-          <Link href={`/jobs/${userId}/${jobId}`}>
-            <JobCard job={job} key={job.job_id} />
-          </Link>
-        );
-      })}
-      </View>
+      <Pressable
+        className=" mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 shadow-md font-bold font-custom justify-center items-center flex"
+        onPress={() => setOwnerView(!ownerView)}
+      >
+        <Text>
+          {ownerView ? "Switch to Sitter View" : "Switch to Owner View"}
+        </Text>
+      </Pressable>
+      {ownerView ? (
+        <>
+          <View className="my-3">
+            <Link className="items-center" href="jobs/addjobs">
+              <Pressable className=" mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 shadow-md font-bold font-custom justify-center items-center flex">
+                Add New Job
+              </Pressable>
+            </Link>
+          </View>
+          <View className="flex items-center">
+            {ownerJobs.map((job) => {
+              const userId = job.owner_id;
+              const jobId = job.job_id;
+              return (
+                <Link href={`/jobs/${userId}/${jobId}`}>
+                  <JobCard job={job} key={job.job_id} />
+                </Link>
+              );
+            })}
+          </View>
+        </>
+      ) : (
+        <>
+          <View className="mt-5 flex items-center">
+            <Text className="font-custom text-xl">
+              {loggedInUser?.username}, please find a list of jobs below
+            </Text>
+          </View>
+          <View className="flex items-center">
+            {currentJobs.map((job) => {
+              const userId = job.owner_id;
+              const jobId = job.job_id;
+              return (
+                <Link href={`/jobs/${userId}/${jobId}`}>
+                  <JobCard job={job} key={job.job_id} />
+                </Link>
+              );
+            })}
+          </View>
+        </>
+      )}
     </ScrollView>
   );
 };

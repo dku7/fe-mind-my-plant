@@ -11,9 +11,11 @@ import { StyleSheet } from "nativewind";
 import { Button } from "react-native";
 import { useRouter } from "expo-router";
 
+
 import { Redirect } from "expo-router";
 
 import CareGuides from "./Careguides";
+
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
