@@ -8,7 +8,11 @@ import SignIn from "../Authentication/signin";
 import { SafeAreaView } from "react-native-safe-area-context";
 import aloePlant from "../../assets/images/MMPimg.png";
 import { StyleSheet } from "nativewind";
+
 import { Redirect } from "expo-router";
+
+import CareGuides from "./Careguides";
+
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
@@ -47,16 +51,11 @@ const index = () => {
                   <Image source={{ uri: avatarImg }} style={styles.avatar} />
                 </Pressable>
               </Link>
+              <View className="border rounded-md flex-wrap">
+              <CareGuides/>
+              </View>
             </View>
-          </>
-        ) : (
           <Redirect href="/Authentication/signin" />
-          // <SafeAreaView style={styles.container}>
-          //   <Image source={aloePlant} style={styles.background} />
-          //   <View className="mt-1">
-          //     <SignIn />
-          //   </View>
-          // </SafeAreaView>
         )}
       </View>
     </SafeAreaView>
