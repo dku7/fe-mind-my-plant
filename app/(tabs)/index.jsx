@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Image} from "react-native";
+import { View, Text, Pressable, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link } from "expo-router";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
@@ -8,14 +8,12 @@ import SignIn from "../signin";
 import { SafeAreaView } from "react-native-safe-area-context";
 import aloePlant from "../../assets/images/MMPimg.png";
 import { StyleSheet } from "nativewind";
-
+import CareGuides from "./Careguides";
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const savedUserId = localStorage.getItem("user_id");
   const [isLoading, setIsLoading] = useState(true);
- 
-
 
   useEffect(() => {
     getUserList().then((users) => {
@@ -49,14 +47,17 @@ const index = () => {
                   <Image source={{ uri: avatarImg }} style={styles.avatar} />
                 </Pressable>
               </Link>
+              <View className="border rounded-md flex-wrap">
+              <CareGuides/>
+              </View>
             </View>
           </>
         ) : (
           <SafeAreaView style={styles.container}>
-            <Image source={aloePlant} style={styles.background}/>
+            <Image source={aloePlant} style={styles.background} />
             <View className="mt-1">
               <SignIn />
-              </View>
+            </View>
           </SafeAreaView>
         )}
       </View>
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 100,
-    borderColor: 'black'
+    borderColor: "black",
   },
   pressable: {
     position: "absolute",
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
     height: 100,
   },
   text: {
-    fontFamily: 'DM Sans'
+    fontFamily: "DM Sans",
   },
   background: {
     flex: 1,
