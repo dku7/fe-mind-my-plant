@@ -1,8 +1,12 @@
-import React, { useEffect } from "react";
-import { View, Text, StyleSheet, Image, FlatList } from "react-native";
-import { TextInput, TouchableOpacity } from "react-native-gesture-handler";
-import { useState } from "react";
-import { patchPutOwnerPlants } from "./api";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { router } from "expo-router";
+import { Pressable, TextInput } from "react-native-gesture-handler";
+import {
+  deletePlant,
+  patchPutOwnerPlants,
+  patchPutOwnerPlantsQuantity,
+} from "./api";
 
 const PlantCard = ({ plant, user_id }) => {
   const [careInstructions, setCareInstructions] = useState(plant.instructions);
@@ -13,6 +17,46 @@ const PlantCard = ({ plant, user_id }) => {
       (response) => {}
     );
   };
+
+  const [removePlantCount, setRemovePlantCount] = useState(0);
+  const [reloadPage, setReloadPage] = useState(0);
+
+  function decreaseQuantity() {
+    let quantityVal = plant.quantity - removePlantCount;
+    const newPlant = { plant_id: plant.plant_id, quantity: quantityVal };
+    patchPutOwnerPlantsQuantity(newPlant, user_id);
+    plant.quantity = quantityVal;
+    setRemovePlantCount(0);
+  }
+
+  const removeDecrease = () => {
+    let newRemovePlantCount = removePlantCount - 1;
+    if (newRemovePlantCount < 0) {
+      console.log("better idea would be good");
+    } else {
+      setRemovePlantCount(newRemovePlantCount);
+    }
+  };
+  const removeIncrease = () => {
+    if (removePlantCount + 2 <= plant.quantity) {
+      let newRemovePlantCount = removePlantCount + 1;
+      setRemovePlantCount(newRemovePlantCount);
+    } else {
+      console.log("still need a better idea");
+    }
+  };
+
+  const handleDelete = () => {
+    deletePlant(user_id, plant.plant_id).then(() => {
+      let newReloadPage = reloadPage + 1;
+      setReloadPage(newReloadPage);
+    });
+  };
+
+  useEffect(() => {
+    router.push("/");
+    router.push("/profile");
+  }, [reloadPage]);
 
   return (
     <View style={styles.card}>
@@ -28,6 +72,33 @@ const PlantCard = ({ plant, user_id }) => {
           value={careInstructions}
         />
         <Text style={styles.quantity}>Quantity: {plant.quantity}</Text>
+        <TouchableOpacity style={styles.button} onPress={decreaseQuantity}>
+          <Text>Remove</Text>
+        </TouchableOpacity>
+        <View style={styles.quantityControl}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              removeDecrease();
+            }}
+          >
+            <Text style={styles.buttonText}>-</Text>
+          </TouchableOpacity>
+          <Text style={styles.quantityText}>{removePlantCount}</Text>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              removeIncrease();
+            }}
+          >
+            <Text style={styles.buttonText}>+</Text>
+          </TouchableOpacity>
+        </View>
+        {plant.quantity === 1 && (
+          <TouchableOpacity style={styles.saveButton} onPress={handleDelete}>
+            <Text style={styles.saveButtonText}>Delete</Text>
+          </TouchableOpacity>
+        )}
       </View>
       {hasChanges && (
         <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
@@ -101,6 +172,24 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
     fontSize: 14,
+  },
+  quantityControl: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  button: {
+    padding: 10,
+    backgroundColor: "#e0e0e0",
+    borderRadius: 5,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  quantityText: {
+    marginHorizontal: 10,
+    fontSize: 16,
   },
 });
 

@@ -33,11 +33,12 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen
           name="(tabs)"
-          
           options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>}}
         />
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="profile" />
+        <Stack.Screen name="Authentication/signin" options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>}}/>
+        <Stack.Screen name="Authentication/registration" options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>}}/>
       </Stack>
       <StatusBar style="auto" />
     </LoggedInUserProvider>

@@ -89,6 +89,10 @@ export const getJobById = (owner_id, job_id) => {
     .then((response) => response.data.items[0]);
 };
 
+export const getCareGuides = () => {
+  return apiClient.get(`/careguides`).then((response) => response.data.items);
+};
+
 export const patchPutOwnerPlants = (plant, user_id, newCareInstructions) => {
   const updatedPlant = {
     owner_id: user_id,
@@ -134,7 +138,18 @@ export const postNewOwnerPlants = (arrOfPlants, owner_id) => {
 export const postJobRequest = (sitter_id, job_id) => {
   return apiClient
     .post(`/sitters/${sitter_id}/requests`, { job_id: job_id })
-    .then((response) => response);
+    .then((response) => {
+      response;
+    });
+};
+
+export const deletePlant = (owner_id, plant_id) => {
+  return apiClient
+    .delete(`/owners/${owner_id}/plants?plant_id=${plant_id}`)
+    .then((response) => response)
+    .catch((err) => {
+      return Promise.reject(err.status);
+    });
 };
 
 export const getSitterJobs = (sitter_id) => {

@@ -1,4 +1,4 @@
-import { Tabs} from "expo-router";
+import { Tabs } from "expo-router";
 import React from "react";
 import { HapticTab } from "@/components/HapticTab";
 import { useColorScheme } from "@/hooks/useColorScheme";
@@ -18,10 +18,10 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: 'black',
-        tabBarInactiveTintColor: 'black',
-        tabBarStyle: {fontSize: 10, fontFamily: 'PT Sans', fontWeight: 700},
-        tabBarActiveBackgroundColor: 'rgb(106, 153, 78)',
+        tabBarActiveTintColor: "black",
+        tabBarInactiveTintColor: "black",
+        tabBarStyle: { fontSize: 10, fontFamily: "PT Sans", fontWeight: 700 },
+        tabBarActiveBackgroundColor: "rgb(106, 153, 78)",
         // headerTitle: 'Mind My Plants',
         // headerTitleAlign: 'center',
         // headerTitleStyle: {fontSize: 30, fontWeight: 'bold'},
@@ -31,11 +31,11 @@ export default function TabLayout() {
         tabBarButton: HapticTab,
       }}
     >
-      <Tabs.Screen 
+      <Tabs.Screen
         name="index"
         options={{
           title: "Home",
-          tabBarStyle: { backgroundColor: "#D77F33", height: 55},
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="home-assistant"
@@ -44,14 +44,18 @@ export default function TabLayout() {
             />
           ),
         }}
-      />    
+      />
       <Tabs.Screen
         name="sitters"
         options={{
           title: "Sitters",
-          tabBarStyle: { backgroundColor: "#D77F33", height: 55},
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           tabBarIcon: ({ color }) => (
-            <FontAwesome6 name="hand-holding-droplet" size={24} color="rgb(254, 250, 224)" />
+            <FontAwesome6
+              name="hand-holding-droplet"
+              size={24}
+              color="rgb(254, 250, 224)"
+            />
           ),
         }}
       />
@@ -59,9 +63,13 @@ export default function TabLayout() {
         name="jobs/index"
         options={{
           title: "Jobs",
-          tabBarStyle: { backgroundColor: "#D77F33", height: 55},
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           tabBarIcon: ({ color }) => (
-            <FontAwesome5 name="clipboard-list" size={24} color="rgb(254, 250, 224)" />
+            <FontAwesome5
+              name="clipboard-list"
+              size={24}
+              color="rgb(254, 250, 224)"
+            />
           ),
         }}
       />
@@ -69,18 +77,55 @@ export default function TabLayout() {
         name="messages"
         options={{
           title: "Messages",
-          tabBarStyle: { backgroundColor: "#D77F33", height: 55},
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           tabBarIcon: ({ color }) => (
-            <Feather name="send" size={24} color="rgb(254, 250, 224)"/>
+            <Feather name="send" size={24} color="rgb(254, 250, 224)" />
           ),
         }}
       />
-     
-      <Tabs.Screen name="jobs/layout" options={{tabBarStyle: { backgroundColor: "#D77F33", height: 55}, href: null }} />
-      <Tabs.Screen name="jobs/JobCard" options={{tabBarStyle: { backgroundColor: "#D77F33", height: 55}, href: null }} />
-      <Tabs.Screen name="jobs/[userId]/[jobId]" options={{tabBarStyle: { backgroundColor: "#D77F33", height: 55}, href: null }} />
-      <Tabs.Screen name="jobs/addjobs" options={{ tabBarStyle: { backgroundColor: "#D77F33", height: 55}, href: null }} />
-   
+
+      <Tabs.Screen
+        name="jobs/layout"
+        options={{
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="jobs/JobCard"
+        options={{
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="jobs/[userId]/[jobId]"
+        options={{
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="jobs/addjobs"
+        options={{
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="Careguides/index"
+        options={{
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
+          href: null,
+        }}
+      />
+       <Tabs.Screen
+        name="Careguides/[guide]"
+        options={{
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }
@@ -88,16 +133,16 @@ export default function TabLayout() {
 const styles = StyleSheet.create({
   nav: {
     // color: 'blue',
-      // height: 70,
-      // borderWidth: 1,
-      // borderRadius: 50,
-      // borderColor: 'blue',
-      // borderTopColor: 'blue',
-      // backgroundColor: 'blue',
-      // },
-      // tabBarLabelStyle: {
-      // fontSize: 12,
-      // fontWeight: "bold",
-      // marginBottom: 10,
-      },
-    })
+    // height: 70,
+    // borderWidth: 1,
+    // borderRadius: 50,
+    // borderColor: 'blue',
+    // borderTopColor: 'blue',
+    // backgroundColor: 'blue',
+    // },
+    // tabBarLabelStyle: {
+    // fontSize: 12,
+    // fontWeight: "bold",
+    // marginBottom: 10,
+  },
+});
