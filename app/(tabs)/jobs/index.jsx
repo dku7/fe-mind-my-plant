@@ -7,12 +7,15 @@ import { getJobsList, getOwnersJobs } from "../../api";
 import { ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
 import { Pressable } from "react-native";
+import { useRole } from "../../contexts/role";
+
 
 const jobs = () => {
   const { loggedInUser } = useContext(LoggedInUserContext);
   const [currentJobs, setCurrentJobs] = useState([]);
   const [ownerJobs, setOwnerJobs] = useState([]);
-  const [ownerView, setOwnerView] = useState(true);
+  const {userType} = useRole()
+
 
   useEffect(() => {
     getJobsList().then((response) => {
@@ -28,15 +31,9 @@ const jobs = () => {
 
   return (
     <ScrollView className="flex items-center">
-      <Pressable
-        className=" mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 shadow-md font-bold font-custom justify-center items-center flex"
-        onPress={() => setOwnerView(!ownerView)}
-      >
-        <Text>
-          {ownerView ? "Switch to Sitter View" : "Switch to Owner View"}
-        </Text>
-      </Pressable>
-      {ownerView ? (
+      {console.log(userType)}
+      
+      {userType === 'owner' ? (
         <>
           <View className="my-3">
             <Link className="items-center" href="jobs/addjobs">

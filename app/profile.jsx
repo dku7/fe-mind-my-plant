@@ -19,6 +19,7 @@ import {
 import PlantCard from "./PlantCard";
 import AddPlantModal from "./AddPlantModal";
 import SitterProfile from "./SitterProfile";
+import { useRole } from "./contexts/role";
 
 const Profile = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
@@ -27,7 +28,7 @@ const Profile = () => {
   const [currentOwnerPlants, setCurrentOwnerPlants] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [allPlantsList, setAllPlantsList] = useState([]);
-  const [ownerView, setOwnerView] = useState(true);
+  const {userType, setUserType } = useRole()
   const [profileDetails, setProfileDetails] = useState({
     first_name: loggedInUser.first_name,
     last_name: loggedInUser.last_name,
@@ -128,12 +129,12 @@ const Profile = () => {
       <Pressable
         style={[
           styles.switchButton,
-          ownerView ? styles.ownerView : styles.sitterView,
+          userType === 'owner' ? styles.ownerView : styles.sitterView,
         ]}
-        onPress={() => setOwnerView(!ownerView)}
+        onPress={() => userType === 'owner' ? setUserType('sitter') : setUserType('owner')}
       >
         <Text style={styles.switchButtonText}>
-          {ownerView ? "Switch to Sitter View" : "Switch to Owner View"}
+          {userType === 'owner' ? "Switch to Sitter View" : "Switch to Owner View"}
         </Text>
       </Pressable>
 
@@ -238,7 +239,7 @@ const Profile = () => {
       </Pressable>
       <Text>{sucessMsg}</Text>
 
-      {ownerView ? (
+      {userType === 'owner' ? (
         <>
           <View style={styles.container}>
             <TouchableOpacity
