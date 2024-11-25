@@ -87,8 +87,20 @@ const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
             </View>
           )}
         />
-        <Button title="Add Plants" onPress={handleAddPlants} />
-        <Button title="Close" onPress={handleCloseAddPlants} />
+        <TouchableOpacity
+          styles={styles.button}
+          title="Add Plants"
+          onPress={handleAddPlants}
+        >
+          Add Plants
+        </TouchableOpacity>
+        <TouchableOpacity
+          styles={styles.button}
+          title="Close"
+          onPress={handleCloseAddPlants}
+        >
+          Close
+        </TouchableOpacity>
       </View>
     </Modal>
   );
