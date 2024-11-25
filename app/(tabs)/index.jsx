@@ -49,21 +49,21 @@ const index = () => {
   }
 
   return (
-    <SafeAreaView className="flex">
+    <SafeAreaView >
       <View className="mt-5">
         {loggedInUser ? (
           <>
-            <Text className="mt-3 ml-3 text-xl font-custom">
+            <Text className="mt-3 ml-8 text-xl font-custom">
               Welcome back, {loggedInUser.username}!
             </Text>
-            <Button onPress={handleSignOut} title='Sign Out'></Button>
-            <View style={styles.pressable}>
+            <Pressable className="mx-5 ml-64 text-center justify-center h-10 w-24 border-[#D77F33] rounded-md bg-[#D77F33] text-gray-50 font-bold font-custom shadow-md" onPress={handleSignOut} title='Sign Out'>Sign Out</Pressable>
+            <View className="ml-5" >
               <Link href="../profile" asChild>
-                <Pressable>
-                  <Image source={{ uri: avatarImg }} style={styles.avatar} />
+                <Pressable >
+                  <Image className='ml-3 shadow-md' source={{ uri: avatarImg }} style={styles.avatar} />
                 </Pressable>
               </Link>
-              <View className="border rounded-md flex-wrap">
+              <View className=" mt-5 w-80">
                 <CareGuides />
               </View>
             </View>
@@ -87,9 +87,6 @@ const styles = StyleSheet.create({
     borderColor: "black",
   },
   pressable: {
-    position: "absolute",
-    top: 50,
-    left: 50,
     width: 100,
     height: 100,
   },

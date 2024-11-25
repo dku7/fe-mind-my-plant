@@ -21,24 +21,31 @@ const CareGuides = () => {
 
   return (
     <SafeAreaView>
-      {careGuideInfo.map((careGuide) => {
-        let careGuideImg = careGuide.img_url;
-        let guide = careGuide.title;
+      <Text className="text-lg font-custom mb-7 ml-4">
+        Check out our careguides for more information on keeping your plants
+        happy
+      </Text>
+      <View className="grid grid-cols-3 gap-6 ml-5">
+        {careGuideInfo.map((careGuide) => {
+          let careGuideImg = careGuide.img_url;
+          let guide = careGuide.title;
 
-        return (
-          <Pressable
-            onPress={() => {
-              router.push(`/(tabs)/Careguides/${guide}`);
-            }}
-          >
-            <View className="flex-col flex-wrap">
-              <Text>{careGuide.title}</Text>
-              <Image source={{ uri: careGuideImg }} style={styles.image} />
-            </View>
-          </Pressable>
-        );
-      })}
-      <Text>CareGuides</Text>
+          return (
+            <Pressable
+              onPress={() => {
+                router.push(`/(tabs)/Careguides/${guide}`);
+              }}
+            >
+              <View className="items-center col-span-3">
+                <Text className="text-center text-lg font-custom mb-2 ">
+                  {careGuide.title}
+                </Text>
+                <Image className='shadow-md' source={{ uri: careGuideImg }} style={styles.image} />
+              </View>
+            </Pressable>
+          );
+        })}
+      </View>
     </SafeAreaView>
   );
 };
@@ -49,5 +56,7 @@ const styles = StyleSheet.create({
   image: {
     height: 100,
     width: 100,
+    borderRadius: 50,
+    
   },
 });
