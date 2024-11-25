@@ -1,6 +1,6 @@
 import { View, Text, Pressable, Image } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
 import { useContext } from "react";
 import { getUserList } from "../api";
@@ -8,6 +8,8 @@ import SignIn from "../Authentication/signin";
 import { SafeAreaView } from "react-native-safe-area-context";
 import aloePlant from "../../assets/images/MMPimg.png";
 import { StyleSheet } from "nativewind";
+import { Button } from "react-native";
+import { useRouter } from "expo-router";
 
 import { Redirect } from "expo-router";
 
@@ -17,6 +19,14 @@ const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const savedUserId = localStorage.getItem("user_id");
   const [isLoading, setIsLoading] = useState(true);
+
+  const router = useRouter()
+
+  const handleSignOut = () => {
+    setLoggedInUser({})
+    localStorage.clear()
+    router.push("/Authentication/signin")
+  }
 
   useEffect(() => {
     getUserList().then((users) => {
@@ -44,6 +54,7 @@ const index = () => {
             <Text className="mt-3 ml-3 text-xl font-custom">
               Welcome back, {loggedInUser.username}!
             </Text>
+            <Button onPress={handleSignOut} title='Sign Out'></Button>
             <View style={styles.pressable}>
               <Link href="../profile" asChild>
                 <Pressable>
