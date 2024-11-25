@@ -94,7 +94,6 @@ export const patchPutOwnerPlants = (plant, user_id, newCareInstructions) => {
     });
 };
 
-
 export const patchPutOwnerPlantsQuantity = (plant, user_id) => {
   return apiClient
     .put(`/owners/${user_id}/plants`, plant)
@@ -118,12 +117,22 @@ export const postNewOwnerPlants = (arrOfPlants, owner_id) => {
     .catch((response) => {
       return Promise.reject(response.status);
     });
+};
 
 export const postJobRequest = (sitter_id, job_id) => {
   return apiClient
     .post(`/sitters/${sitter_id}/requests`, { job_id: job_id })
-    .then((response) => response);
+    .then((response) => {
+      response;
+    });
+};
 
+export const deletePlant = (owner_id, plant_id) => {
+  return apiClient
+    .delete(`/owners/${owner_id}/plants?plant_id=${plant_id}`)
+    .catch((response) => {
+      return Promise.reject(response.status);
+    });
 };
 
 export default apiClient;
