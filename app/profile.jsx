@@ -1,24 +1,33 @@
-import { Text, View } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  Pressable,
+  TextInput,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { LoggedInUserContext } from "./contexts/loggedInUser";
-import { useContext, useState, useEffect } from "react";
-import { Pressable, TextInput } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet } from "react-native";
-import { updateProfile, getOwnerPlants } from "./api";
+import {
+  updateProfile,
+  getOwnerPlants,
+  getPlantsSummary,
+  postNewOwnerPlants,
+  patchPutOwnerPlantsQuantity,
+} from "./api";
 import PlantCard from "./PlantCard";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import AddPlantModal from "./AddPlantModal";
-import { getPlantsSummary } from "./api";
-import { postNewOwnerPlants } from "./api";
-import { patchPutOwnerPlantsQuantity } from "./api";
+import SitterProfile from "./SitterProfile";
 
 const Profile = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const savedUserId = localStorage.getItem("user_id");
   const [sucessMsg, setSucessMsg] = useState("");
-  const [currentPlants, setCurrentPlants] = useState([]);
+  const [currentOwnerPlants, setCurrentOwnerPlants] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [plants, setPlants] = useState([]);
+  const [allPlantsList, setAllPlantsList] = useState([]);
+  const [ownerView, setOwnerView] = useState(true);
   const [profileDetails, setProfileDetails] = useState({
     first_name: loggedInUser.first_name,
     last_name: loggedInUser.last_name,
@@ -33,7 +42,7 @@ const Profile = () => {
   useEffect(() => {
     getOwnerPlants(savedUserId)
       .then((plants) => {
-        setCurrentPlants(plants);
+        setCurrentOwnerPlants(plants);
       })
       .catch((error) => {
         console.log(error);
@@ -43,7 +52,7 @@ const Profile = () => {
   useEffect(() => {
     getPlantsSummary()
       .then((plants) => {
-        setPlants(plants);
+        setAllPlantsList(plants);
       })
       .catch((error) => {
         console.log(error);
@@ -58,12 +67,6 @@ const Profile = () => {
     });
   };
 
-  // const onChange = (e) => {
-  //   setProfileDetails({
-  //     ...profileDetails,
-  //     [e.target.placeholder]: e.target.value,
-  //   });
-  // };
   const onChange = (name, value) => {
     setProfileDetails({
       ...profileDetails,
@@ -74,9 +77,12 @@ const Profile = () => {
   const handleProfileUpdate = () => {
     updateProfile(profileDetails, loggedInUser.user_id)
       .then((updatedUser) => {
-        setSucessMsg("Update Successful!");
+        setSucessMsg("Profile Details Update Successful!");
         setProfileDetails(updatedUser);
         setLoggedInUser(updatedUser);
+        setTimeout(() => {
+          setSucessMsg("");
+        }, 3000);
       })
       .catch((error) => {
         console.log(error);
@@ -92,7 +98,7 @@ const Profile = () => {
   };
 
   const handleAddPlants = (selectedPlants) => {
-    setCurrentPlants((prev) => {
+    setCurrentOwnerPlants((prev) => {
       const updatedCurrent = [...prev];
       selectedPlants.forEach((selectedPlant) => {
         const existingPlant = updatedCurrent.find(
@@ -117,15 +123,26 @@ const Profile = () => {
   };
 
   return (
+
     <ScrollView style={styles.container}>
+      <Pressable
+        style={[
+          styles.switchButton,
+          ownerView ? styles.ownerView : styles.sitterView,
+        ]}
+        onPress={() => setOwnerView(!ownerView)}
+      >
+        <Text style={styles.switchButtonText}>
+          {ownerView ? "Switch to Sitter View" : "Switch to Owner View"}
+        </Text>
+      </Pressable>
+
       <Text>{loggedInUser.username}'s Profile Page</Text>
-
       <Text>Update Profile Information</Text>
-
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>First Name:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">First Name:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("first_name", text)}
           placeholder="Enter First Name"
@@ -133,10 +150,10 @@ const Profile = () => {
           value={profileDetails.first_name}
         />
       </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Last Name:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Last Name:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("last_name", text)}
           placeholder="Enter Last Name"
@@ -145,10 +162,10 @@ const Profile = () => {
         />
       </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Email:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Email:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="email"
           onChangeText={(text) => onChange("email", text)}
           placeholder="Enter Email"
@@ -156,10 +173,10 @@ const Profile = () => {
           value={profileDetails.email}
         />
       </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Avatar URL:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Avatar URL:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("avatar_url", text)}
           placeholder="Enter Avatar URL"
@@ -168,23 +185,23 @@ const Profile = () => {
         />
       </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Password:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Password:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="password"
           onChangeText={(text) => onChange("password", text)}
           placeholder="Enter Password"
           name="password"
           value={profileDetails.password}
-          secureTextEntry={true} // Secure input for password
+          secureTextEntry={true}
         />
       </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Street Address:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Street Address:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("street_address", text)}
           placeholder="Enter Street Address"
@@ -192,10 +209,10 @@ const Profile = () => {
           value={profileDetails.street_address}
         />
       </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Postcode:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Postcode:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("postcode", text)}
           placeholder="Enter Postcode"
@@ -204,10 +221,10 @@ const Profile = () => {
         />
       </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>City:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">City:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("city", text)}
           placeholder="Enter City"
@@ -215,34 +232,43 @@ const Profile = () => {
           value={profileDetails.city}
         />
       </View>
-      <Pressable style={styles.button} onPress={handleProfileUpdate}>
-        <Text style={styles.buttonText}>Update</Text>
+      <Pressable className="mx-20 my-3 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md"
+       onPress={handleProfileUpdate}>
+        Update
       </Pressable>
+      <Text>{sucessMsg}</Text>
 
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.addButtonText}>Add New Plants</Text>
-        </TouchableOpacity>
-        <AddPlantModal
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-          plants={plants}
-          onAddPlants={handleAddPlants}
-          postPlantFunc={postPlantFunc}
-        />
-      </View>
-      {currentPlants.map((plant) => {
-        return (
-          <PlantCard
-            plant={plant}
-            key={plant.plant_id}
-            user_id={loggedInUser.user_id}
-          />
-        );
-      })}
+      {ownerView ? (
+        <>
+          <View style={styles.container}>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => setModalVisible(true)}
+            >
+              <Text style={styles.addButtonText}>Add New Plants</Text>
+            </TouchableOpacity>
+            <AddPlantModal
+              visible={modalVisible}
+              onClose={() => setModalVisible(false)}
+              plants={allPlantsList}
+              onAddPlants={handleAddPlants}
+              postPlantFunc={postPlantFunc}
+            />
+          </View>
+          {currentOwnerPlants.map((plant) => {
+            return (
+              <PlantCard
+                plant={plant}
+                key={plant.plant_id}
+                user_id={loggedInUser.user_id}
+              />
+            );
+          })}
+        </>
+      ) : (
+        <SitterProfile />
+      )}
+
     </ScrollView>
   );
 };
@@ -250,6 +276,27 @@ const Profile = () => {
 export default Profile;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  switchButton: {
+    marginTop: 20,
+    marginBottom: 20,
+    padding: 10,
+    borderRadius: 8,
+    alignSelf: "center",
+  },
+  switchButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  ownerView: {
+    backgroundColor: "#4CAF50",
+  },
+  sitterView: {
+    backgroundColor: "#FF5722",
+  },
   container: {
     flex: 1,
     // justifyContent: "center",
@@ -280,8 +327,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
     color: "#555",
-    textAlign: "right", // Align text to the right
-    marginRight: 8, // Space between label and input
+    textAlign: "right",
+    marginRight: 8,
   },
   input: {
     backgroundColor: "#fff",

@@ -1,15 +1,14 @@
-import { View, Text, Pressable, ImageBackground } from "react-native";
+import { View, Text, Pressable, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Link } from "expo-router";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
 import { useContext } from "react";
 import { getUserList } from "../api";
-import loadingDisplay from "../components/loading-display";
 import SignIn from "../signin";
 import { SafeAreaView } from "react-native-safe-area-context";
-import aloePlant from "../../assets/images/aloe-aloe-plant.gif"
-
-
+import aloePlant from "../../assets/images/MMPimg.png";
+import { StyleSheet } from "nativewind";
+import CareGuides from "./Careguides";
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
@@ -29,38 +28,37 @@ const index = () => {
   }, []);
 
   if (isLoading) return <loadingDisplay />;
+  let avatarImg;
+  if (loggedInUser) {
+    avatarImg = loggedInUser.avatar_url;
+  }
 
   return (
     <SafeAreaView className="flex">
-      <View>
-
+      <View className="mt-5">
         {loggedInUser ? (
           <>
-            <Text className="mt-3 ml-3 text-xl">
-              Welcome Back {loggedInUser.username}
+            <Text className="mt-3 ml-3 text-xl font-custom">
+              Welcome back, {loggedInUser.username}!
             </Text>
-            <Link href="../profile" asChild>
-              <Pressable>
-                <Text>Profile</Text>
-              </Pressable>
-            </Link>
-          </>
-
-        ) : (
-          <>
-          <ImageBackground 
-      source={aloePlant}/>
-            <View className="mt-64">
-              <SignIn />
-            </View>
-            <View className="mt-1 px-16 flex text-center">
-              <Link href="../components/registration" asChild>
-                <Pressable className="mt-1 mx-16 py-2 border-green-700 rounded-md bg-green-700 text-gray-200 font-bold">
-                  Sign Up
+            <View style={styles.pressable}>
+              <Link href="../profile" asChild>
+                <Pressable>
+                  <Image source={{ uri: avatarImg }} style={styles.avatar} />
                 </Pressable>
               </Link>
+              <View className="border rounded-md flex-wrap">
+              <CareGuides/>
+              </View>
             </View>
           </>
+        ) : (
+          <SafeAreaView style={styles.container}>
+            <Image source={aloePlant} style={styles.background} />
+            <View className="mt-1">
+              <SignIn />
+            </View>
+          </SafeAreaView>
         )}
       </View>
     </SafeAreaView>
@@ -68,3 +66,35 @@ const index = () => {
 };
 
 export default index;
+
+const styles = StyleSheet.create({
+  avatar: {
+    flex: 1,
+    width: 100,
+    height: 100,
+    borderRadius: 100,
+    borderColor: "black",
+  },
+  pressable: {
+    position: "absolute",
+    top: 50,
+    left: 50,
+    width: 100,
+    height: 100,
+  },
+  text: {
+    fontFamily: "DM Sans",
+  },
+  background: {
+    flex: 1,
+    height: 300,
+    marginTop: 50,
+    width: 300,
+    borderRadius: 130,
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

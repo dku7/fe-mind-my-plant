@@ -14,6 +14,8 @@ const JobDetails = () => {
   const [requests, setRequests] = useState(0);
   const { userId, jobId } = useLocalSearchParams();
   const [feedbackMsg, setFeedbackMsg] = useState("");
+  const applicationSuccessful =
+    "Your application has been posted successfully.";
 
   const handlePostRequest = () => {
     setFeedbackMsg("Posting application...");
@@ -22,9 +24,7 @@ const JobDetails = () => {
     });
 
     postJobRequest(loggedInUser.user_id, jobId)
-      .then((response) =>
-        setFeedbackMsg("Your application has been posted successfully.")
-      )
+      .then((response) => setFeedbackMsg(applicationSuccessful))
       .catch((error) => {
         setRequests((curRequests) => {
           return curRequests - 1;
@@ -50,50 +50,57 @@ const JobDetails = () => {
       .catch((error) => setError(error));
   }, [jobId, userId]);
 
-  if (isLoading) return <Text>Loading....</Text>;
+  if (isLoading) return <Text className="font-custom ml-3">Loading....</Text>;
   if (error) return <Text>{error}</Text>;
 
   return (
     <SafeAreaView>
-      <View className="text-lg ml-3">
-        <Text className="text-lg w-full mb-1">
-          Owner: {job.owner_first_name}
-        </Text>
-        <Text className="text-lg  w-full mb-1">Location: {job.city}</Text>
-        <Text className="text-lg  w-full mb-1">
-          Dates: {new Date(job.start_date).toLocaleDateString()} -{" "}
-          {new Date(job.end_date).toLocaleDateString()}
-        </Text>
-        <Text className="text-lg  w-full mb-1">
-          Daily rate: £ {job.daily_rate}
-        </Text>
-        <Text className="text-lg  w-full mb-1">
-          {`${job.job_length ?? 0} day${job.job_length === 1 ? "" : "s"} `}
-        </Text>
-        <Text className="text-lg  w-full mb-1">
-          {`${job.number_of_plants ?? 0} plant${
-            job.number_of_plants === 1 ? "" : "s"
-          } `}
-        </Text>
-        <Text className="text-lg  w-full mb-1">
-          Looking after{" "}
+      <View>
+        <View className="flex m-6 rounded-lg shadow-xl p-5">
+            <Text className="font-custom text-base">Owner: {job.owner_first_name}</Text>
+            <Text className="font-custom text-base">Location: {job.city}</Text>
+            <Text className="font-custom text-base">
+              Dates: {new Date(job.start_date).toLocaleDateString()} -{" "}
+              {new Date(job.end_date).toLocaleDateString()}
+            </Text>
+            <Text className="font-custom text-base">Daily rate: £{job.daily_rate}</Text>
+            <Text className="font-custom text-base">
+              {`${job.job_length ?? 0} day${job.job_length === 1 ? "" : "s"} `}
+            </Text>
+            <Text className="font-custom text-base">
+              {`${job.number_of_plants ?? 0} plant${
+                job.number_of_plants === 1 ? "" : "s"
+              } `}
+            </Text>
+
+        </View>
+        <Text className="font-custom text-base m-6 mb-3 ">
+          Looking after {"\n"}
           {userPlants.map(
             (plant) => `${plant.quantity} x ${plant.common_name}  `
           )}
         </Text>
-        <Text className="text-lg  w-full mb-1">
-          Job instructions: {job.job_instructions}
+        <Text className="font-custom text-base mb-3 ml-6">
+          Job instructions: 
+          {"\n"}
+            {job.job_instructions}
         </Text>
-        <Text className="text-lg  w-full mb-1">
-          Number of reqests: {requests}
-        </Text>
+
         <Pressable
           onPress={handlePostRequest}
-          className="mt-12 py-2 border-green-700 w-32 text-center rounded-md bg-green-700 text-lg text-gray-200 font-bold"
+          disabled={feedbackMsg === applicationSuccessful}
+          className={
+            feedbackMsg === applicationSuccessful
+              ? "mx-6 px-12 py-2 border-[#386641] rounded-md bg-[#386641] text-gray-50 font-bold font-custom shadow-md text-center"
+              : "mx-6 px-12 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md text-center"
+          }
         >
           Apply
         </Pressable>
-        <Text>{feedbackMsg}</Text>
+        <Text className="ml-5 mt-3 font-custom text-base font-semibold">
+          Number of applications: {requests}
+        </Text>
+        <Text className="ml-5 mt-3 font-custom text-base font-semibold">{feedbackMsg}</Text>
       </View>
     </SafeAreaView>
   );
