@@ -126,6 +126,15 @@ export const postNewOwnerPlants = (arrOfPlants, owner_id) => {
 export const postJobRequest = (sitter_id, job_id) => {
   return apiClient
     .post(`/sitters/${sitter_id}/requests`, { job_id: job_id })
+    .then((response) => {
+      response;
+    });
+};
+
+export const deletePlant = (owner_id, plant_id) => {
+  return apiClient
+    .delete(`/owners/${owner_id}/plants?plant_id=${plant_id}`)
+    .catch((response) => {
     .then((response) => response);
 };
 
