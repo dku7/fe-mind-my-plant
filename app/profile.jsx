@@ -117,15 +117,15 @@ const Profile = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Text>{loggedInUser.username}'s Profile Page</Text>
+    <ScrollView>
+      <Text className="font-custom text-xl text-center my-1">{loggedInUser.username}'s Profile Page</Text>
 
-      <Text>Update Profile Information</Text>
+      <Text className="font-custom text-lg my-1 mx-5 mb-5">Update Profile Information</Text>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>First Name:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">First Name:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("first_name", text)}
           placeholder="Enter First Name"
@@ -133,10 +133,10 @@ const Profile = () => {
           value={profileDetails.first_name}
         />
       </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Last Name:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Last Name:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("last_name", text)}
           placeholder="Enter Last Name"
@@ -145,10 +145,10 @@ const Profile = () => {
         />
       </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Email:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Email:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="email"
           onChangeText={(text) => onChange("email", text)}
           placeholder="Enter Email"
@@ -156,10 +156,10 @@ const Profile = () => {
           value={profileDetails.email}
         />
       </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Avatar URL:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Avatar URL:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("avatar_url", text)}
           placeholder="Enter Avatar URL"
@@ -168,10 +168,10 @@ const Profile = () => {
         />
       </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Password:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Password:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="password"
           onChangeText={(text) => onChange("password", text)}
           placeholder="Enter Password"
@@ -181,10 +181,10 @@ const Profile = () => {
         />
       </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Street Address:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Street Address:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("street_address", text)}
           placeholder="Enter Street Address"
@@ -192,10 +192,10 @@ const Profile = () => {
           value={profileDetails.street_address}
         />
       </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Postcode:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Postcode:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("postcode", text)}
           placeholder="Enter Postcode"
@@ -204,10 +204,10 @@ const Profile = () => {
         />
       </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>City:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">City:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("city", text)}
           placeholder="Enter City"
@@ -215,17 +215,17 @@ const Profile = () => {
           value={profileDetails.city}
         />
       </View>
-      <Pressable style={styles.button} onPress={handleProfileUpdate}>
-        <Text style={styles.buttonText}>Update</Text>
+      <Pressable className="mx-20 my-3 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md"
+       onPress={handleProfileUpdate}>
+        Update
       </Pressable>
-
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.addButton}
+    <Text className="font-custom text-lg my-1 mx-5 my-5">Add or remove plants from your profile below:</Text>
+      <View>
+        <Pressable className="mx-20 my-3 py-2 border-[#6A994E] rounded-md bg-[#6A994E] shadow-md"
           onPress={() => setModalVisible(true)}
         >
-          <Text style={styles.addButtonText}>Add New Plants</Text>
-        </TouchableOpacity>
+          <Text className="mx-10 text-base text-gray-50 font-bold font-custom text-center">Add New Plants</Text>
+        </Pressable>
         <AddPlantModal
           visible={modalVisible}
           onClose={() => setModalVisible(false)}
@@ -250,54 +250,54 @@ const Profile = () => {
 export default Profile;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
-    backgroundColor: "#fff",
-  },
-  inputcontainer: {
-    flexDirection: "column",
-    width: "100%",
-    alignItems: "center",
-    pointerEvents: "auto",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 16,
-    color: "#333",
-    textAlign: "center",
-  },
-  inputGroup: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 12,
-    paddingRight: 50,
-  },
-  label: {
-    flex: 1,
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#555",
-    textAlign: "right", // Align text to the right
-    marginRight: 8, // Space between label and input
-  },
-  input: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 10,
-    marginBottom: 12,
-    fontSize: 16,
-    color: "#333",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
-  },
+  // container: {
+  //   flex: 1,
+  //   // justifyContent: "center",
+  //   // alignItems: "center",
+  //   backgroundColor: "#fff",
+  // },
+  // inputcontainer: {
+  //   flexDirection: "column",
+  //   width: "100%",
+  //   alignItems: "center",
+  //   pointerEvents: "auto",
+  // },
+  // title: {
+  //   fontSize: 24,
+  //   fontWeight: "bold",
+  //   marginBottom: 16,
+  //   color: "#333",
+  //   textAlign: "center",
+  // },
+  // inputGroup: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   marginBottom: 12,
+  //   paddingRight: 50,
+  // },
+  // label: {
+  //   flex: 1,
+  //   fontSize: 14,
+  //   fontWeight: "500",
+  //   color: "#555",
+  //   textAlign: "right", // Align text to the right
+  //   marginRight: 8, // Space between label and input
+  // },
+  // input: {
+  //   backgroundColor: "#fff",
+  //   borderWidth: 1,
+  //   borderColor: "#ccc",
+  //   borderRadius: 8,
+  //   padding: 10,
+  //   marginBottom: 12,
+  //   fontSize: 16,
+  //   color: "#333",
+  //   shadowColor: "#000",
+  //   shadowOffset: { width: 0, height: 1 },
+  //   shadowOpacity: 0.1,
+  //   shadowRadius: 2,
+  //   elevation: 2,
+  // },
   button: {
     backgroundColor: "#4CAF50",
     paddingVertical: 12,

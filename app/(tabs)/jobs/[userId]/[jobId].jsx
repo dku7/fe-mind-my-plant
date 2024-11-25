@@ -50,13 +50,13 @@ const JobDetails = () => {
       .catch((error) => setError(error));
   }, [jobId, userId]);
 
-  if (isLoading) return <Text>Loading....</Text>;
+  if (isLoading) return <Text className="font-custom ml-3">Loading....</Text>;
   if (error) return <Text>{error}</Text>;
 
   return (
     <SafeAreaView>
       <View>
-        <View className="flex m-5 rounded-lg shadow-xl p-5">
+        <View className="flex m-6 rounded-lg shadow-xl p-5">
             <Text className="font-custom text-base">Owner: {job.owner_first_name}</Text>
             <Text className="font-custom text-base">Location: {job.city}</Text>
             <Text className="font-custom text-base">
@@ -74,13 +74,13 @@ const JobDetails = () => {
             </Text>
 
         </View>
-        <Text className="font-custom text-base ml-5 mb-3">
-          Looking after{" "}
+        <Text className="font-custom text-base m-6 mb-3 ">
+          Looking after {"\n"}
           {userPlants.map(
             (plant) => `${plant.quantity} x ${plant.common_name}  `
           )}
         </Text>
-        <Text className="font-custom text-base mb-3 ml-5">
+        <Text className="font-custom text-base mb-3 ml-6">
           Job instructions: 
           {"\n"}
             {job.job_instructions}
@@ -91,8 +91,8 @@ const JobDetails = () => {
           disabled={feedbackMsg === applicationSuccessful}
           className={
             feedbackMsg === applicationSuccessful
-              ? "mx-5 px-12 py-2 border-[#386641] rounded-md bg-[#386641] text-gray-50 font-bold font-custom shadow-md text-center"
-              : "mx-5 px-12 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md text-center"
+              ? "mx-6 px-12 py-2 border-[#386641] rounded-md bg-[#386641] text-gray-50 font-bold font-custom shadow-md text-center"
+              : "mx-6 px-12 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md text-center"
           }
         >
           Apply
@@ -100,7 +100,7 @@ const JobDetails = () => {
         <Text className="ml-5 mt-3 font-custom text-base font-semibold">
           Number of applications: {requests}
         </Text>
-        <Text>{feedbackMsg}</Text>
+        <Text className="ml-5 mt-3 font-custom text-base font-semibold">{feedbackMsg}</Text>
       </View>
     </SafeAreaView>
   );

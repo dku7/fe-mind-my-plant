@@ -35,7 +35,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-          tabBarStyle: { backgroundColor: "#BC6C25", height: 55},
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55},
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="home-assistant"
@@ -49,7 +49,7 @@ export default function TabLayout() {
         name="sitters"
         options={{
           title: "Sitters",
-          tabBarStyle: { backgroundColor: "#BC6C25", height: 55},
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55},
           tabBarIcon: ({ color }) => (
             <FontAwesome6 name="hand-holding-droplet" size={24} color="rgb(254, 250, 224)" />
           ),
@@ -59,7 +59,7 @@ export default function TabLayout() {
         name="jobs/index"
         options={{
           title: "Jobs",
-          tabBarStyle: { backgroundColor: "#BC6C25", height: 55},
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55},
           tabBarIcon: ({ color }) => (
             <FontAwesome5 name="clipboard-list" size={24} color="rgb(254, 250, 224)" />
           ),
@@ -69,17 +69,17 @@ export default function TabLayout() {
         name="messages"
         options={{
           title: "Messages",
-          tabBarStyle: { backgroundColor: "#BC6C25", height: 55},
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55},
           tabBarIcon: ({ color }) => (
             <Feather name="send" size={24} color="rgb(254, 250, 224)"/>
           ),
         }}
       />
      
-      <Tabs.Screen name="jobs/layout" options={{tabBarStyle: { backgroundColor: "#BC6C25", height: 55}, href: null }} />
-      <Tabs.Screen name="jobs/JobCard" options={{tabBarStyle: { backgroundColor: "#BC6C25", height: 55}, href: null }} />
-      <Tabs.Screen name="jobs/[userId]/[jobId]" options={{tabBarStyle: { backgroundColor: "#BC6C25", height: 55}, href: null }} />
-      <Tabs.Screen name="jobs/addjobs" options={{ tabBarStyle: { backgroundColor: "#BC6C25", height: 55}, href: null }} />
+      <Tabs.Screen name="jobs/layout" options={{tabBarStyle: { backgroundColor: "#D77F33", height: 55}, href: null }} />
+      <Tabs.Screen name="jobs/JobCard" options={{tabBarStyle: { backgroundColor: "#D77F33", height: 55}, href: null }} />
+      <Tabs.Screen name="jobs/[userId]/[jobId]" options={{tabBarStyle: { backgroundColor: "#D77F33", height: 55}, href: null }} />
+      <Tabs.Screen name="jobs/addjobs" options={{ tabBarStyle: { backgroundColor: "#D77F33", height: 55}, href: null }} />
    
     </Tabs>
   );

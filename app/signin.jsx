@@ -42,6 +42,7 @@ const signin = () => {
           className="border rounded-md p-1 text-lg font-custom"
           placeholder="Password"
           onChange={(e) => setPassword(e.target.value)}
+          secureTextEntry={true}
         />
         </View>
         <View className="flex-row justify-center mt-4 ">
