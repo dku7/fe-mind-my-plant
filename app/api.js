@@ -134,8 +134,10 @@ export const postJobRequest = (sitter_id, job_id) => {
 export const deletePlant = (owner_id, plant_id) => {
   return apiClient
     .delete(`/owners/${owner_id}/plants?plant_id=${plant_id}`)
-    .catch((response) => {
-    .then((response) => response);
+    .then((response) => response)
+    .catch((err) => {
+      return Promise.reject(err.status);
+    });
 };
 
 export const getSitterJobs = (sitter_id) => {
