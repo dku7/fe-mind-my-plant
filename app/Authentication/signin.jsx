@@ -33,7 +33,7 @@ const signin = () => {
   if (loggedInUser) return <Redirect href="/" />;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className="items-center">
       <Image source={aloePlant} style={styles.background} />
       {/* <View className="mt-1">
         <SignIn />
@@ -94,6 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 300,
     marginTop: 50,
+    marginBottom: 40,
     width: 300,
     borderRadius: 130,
   },
