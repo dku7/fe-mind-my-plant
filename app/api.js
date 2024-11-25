@@ -77,6 +77,10 @@ export const getJobById = (owner_id, job_id) => {
     .then((response) => response.data.items[0]);
 };
 
+export const getCareGuides = () => {
+  return apiClient.get(`/careguides`).then((response) => response.data.items);
+};
+
 export const patchPutOwnerPlants = (plant, user_id, newCareInstructions) => {
   const updatedPlant = {
     owner_id: user_id,
