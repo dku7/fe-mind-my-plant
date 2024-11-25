@@ -38,7 +38,7 @@ const PlantCard = ({ plant, user_id }) => {
     }
   };
   const removeIncrease = () => {
-    if (removePlantCount + 1 <= plant.quantity) {
+    if (removePlantCount + 2 <= plant.quantity) {
       let newRemovePlantCount = removePlantCount + 1;
       setRemovePlantCount(newRemovePlantCount);
     } else {
