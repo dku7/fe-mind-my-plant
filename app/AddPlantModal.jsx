@@ -87,7 +87,7 @@ const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
             </View>
           )}
         />
-        <Button title="Add Plants" onPress={handleAddPlants} />
+        <Button style={styles.button}  title="Add Plants" onPress={handleAddPlants} />
         <Button title="Close" onPress={handleCloseAddPlants} />
       </View>
     </Modal>
@@ -127,6 +127,10 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 2,
   },
+mainButton: {
+  backgroundColor: "black",
+  color: "green"
+},
   image: {
     width: 60,
     height: 60,

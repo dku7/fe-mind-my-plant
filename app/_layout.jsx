@@ -37,7 +37,7 @@ export default function RootLayout() {
           options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>}}
         />
         <Stack.Screen name="+not-found" />
-        <Stack.Screen name="profile" />
+        <Stack.Screen name="profile" options={{headerTitle: 'Profile'}}/>
       </Stack>
       <StatusBar style="auto" />
     </LoggedInUserProvider>
