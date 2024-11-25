@@ -123,6 +123,7 @@ const Profile = () => {
   };
 
   return (
+
     <ScrollView style={styles.container}>
       <Pressable
         style={[
@@ -138,11 +139,10 @@ const Profile = () => {
 
       <Text>{loggedInUser.username}'s Profile Page</Text>
       <Text>Update Profile Information</Text>
-
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>First Name:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">First Name:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("first_name", text)}
           placeholder="Enter First Name"
@@ -150,10 +150,10 @@ const Profile = () => {
           value={profileDetails.first_name}
         />
       </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Last Name:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Last Name:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("last_name", text)}
           placeholder="Enter Last Name"
@@ -162,10 +162,10 @@ const Profile = () => {
         />
       </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Email:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Email:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="email"
           onChangeText={(text) => onChange("email", text)}
           placeholder="Enter Email"
@@ -173,10 +173,10 @@ const Profile = () => {
           value={profileDetails.email}
         />
       </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Avatar URL:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Avatar URL:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("avatar_url", text)}
           placeholder="Enter Avatar URL"
@@ -185,10 +185,10 @@ const Profile = () => {
         />
       </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Password:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Password:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="password"
           onChangeText={(text) => onChange("password", text)}
           placeholder="Enter Password"
@@ -198,10 +198,10 @@ const Profile = () => {
         />
       </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Street Address:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Street Address:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("street_address", text)}
           placeholder="Enter Street Address"
@@ -209,10 +209,10 @@ const Profile = () => {
           value={profileDetails.street_address}
         />
       </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Postcode:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Postcode:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("postcode", text)}
           placeholder="Enter Postcode"
@@ -221,10 +221,10 @@ const Profile = () => {
         />
       </View>
 
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>City:</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">City:</Text>
         <TextInput
-          style={styles.input}
+          className="border rounded-md p-1 text-base font-custom"
           type="text"
           onChangeText={(text) => onChange("city", text)}
           placeholder="Enter City"
@@ -232,10 +232,10 @@ const Profile = () => {
           value={profileDetails.city}
         />
       </View>
-      <Pressable style={styles.button} onPress={handleProfileUpdate}>
-        <Text style={styles.buttonText}>Update</Text>
+      <Pressable className="mx-20 my-3 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md"
+       onPress={handleProfileUpdate}>
+        Update
       </Pressable>
-
       <Text>{sucessMsg}</Text>
 
       {ownerView ? (
@@ -268,6 +268,7 @@ const Profile = () => {
       ) : (
         <SitterProfile />
       )}
+
     </ScrollView>
   );
 };
