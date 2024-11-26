@@ -6,7 +6,6 @@ import {
   StyleSheet,
   FlatList,
   Pressable,
-  Alert,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native"; //  React Navigation is set up
@@ -33,7 +32,7 @@ const SitterCards = () => {
         //PATCH pending to JOBS table
       )
     );
-    Alert.alert("Accepted", "You have accepted this sitter.");
+    console.log("Accepted", "You have accepted this sitter.");
   };
 
   const renderCard = ({ item }) => {
@@ -75,7 +74,7 @@ const SitterCards = () => {
             {isCompleted && (
               <Pressable
                 style={styles.reviewButton}
-                onPress={() => Alert.alert("Navigate", "Go to the review page")}
+                onPress={() => console.log("Navigate", "Go to the review page")}
               >
                 <Text style={styles.buttonText}>
                   {item.feedback ? "Review Feedback" : "Leave a Review"}

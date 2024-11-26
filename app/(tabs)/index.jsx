@@ -14,33 +14,41 @@ import { getUserId } from "../async-storage";
 import { removeUserId } from "../async-storage";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
-
 import { Redirect } from "expo-router";
 
 import CareGuides from "./Careguides";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import { logoutUser } from "../authentication";
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
-  const [localUser, setLocalUser] = useState([])
+  const [localUser, setLocalUser] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const router = useRouter()
+  const router = useRouter();
 
   const handleSignOut = () => {
-    setLoggedInUser({})
-    router.replace("/Authentication/signin")
-    removeUserId().then(()=> {
-      console.log('removed ID in index')
-    })
-  }
+    handleLogout();
+    setLoggedInUser({});
+    router.replace("/Authentication/signin");
+    removeUserId().then(() => {
+      console.log("removed ID in index");
+    });
+  };
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      console.log("Logged Out", "You have successfully logged out.");
+    } catch (error) {
+      console.log("Error", "Logout failed. Please try again.");
+    }
+  };
 
-  useEffect(()=> {
-    getUserId().then((user_id)=> {
-      setLocalUser(user_id)
-    })
-  },[])
+  useEffect(() => {
+    getUserId().then((user_id) => {
+      setLocalUser(user_id);
+    });
+  }, []);
 
   useEffect(() => {
     getUserList().then((users) => {
@@ -53,27 +61,35 @@ const index = () => {
     });
   }, []);
 
-
-
-  if (isLoading) return <Text>Loading...</Text>
+  if (isLoading) return <Text>Loading...</Text>;
   let avatarImg;
   if (loggedInUser) {
     avatarImg = loggedInUser.avatar_url;
   }
 
   return (
-    <SafeAreaView >
+    <SafeAreaView>
       <View className="mt-5">
         {loggedInUser ? (
           <>
             <Text className="mt-3 ml-8 text-xl font-custom">
               Welcome back, {loggedInUser.username}!
             </Text>
-            <Pressable className="mx-5 ml-64 text-center justify-center h-10 w-24 border-[#D77F33] rounded-md bg-[#D77F33] text-gray-50 font-bold font-custom shadow-md" onPress={handleSignOut} title='Sign Out'>Sign Out</Pressable>
-            <View className="ml-5" >
+            <Pressable
+              className="mx-5 ml-64 text-center justify-center h-10 w-24 border-[#D77F33] rounded-md bg-[#D77F33] text-gray-50 font-bold font-custom shadow-md"
+              onPress={handleSignOut}
+              title="Sign Out"
+            >
+              Sign Out
+            </Pressable>
+            <View className="ml-5">
               <Link href="../profile" asChild>
-                <Pressable >
-                  <Image className='ml-3 shadow-md' source={{ uri: avatarImg }} style={styles.avatar} />
+                <Pressable>
+                  <Image
+                    className="ml-3 shadow-md"
+                    source={{ uri: avatarImg }}
+                    style={styles.avatar}
+                  />
                 </Pressable>
               </Link>
               <View className=" mt-5 w-80">
