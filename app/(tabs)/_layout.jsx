@@ -10,6 +10,9 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useRouter } from "expo-router";
 import { StyleSheet } from "react-native";
 import { useRole } from "../contexts/role";
+import { Button } from "react-native";
+import NewHeader from "../Header";
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -20,11 +23,12 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
         tabBarActiveTintColor: "black",
         tabBarInactiveTintColor: "black",
         tabBarStyle: { fontSize: 10, fontFamily: "PT Sans", fontWeight: 700 },
         tabBarActiveBackgroundColor: "rgb(106, 153, 78)",
+        
         // headerTitle: 'Mind My Plants',
         // headerTitleAlign: 'center',
         // headerTitleStyle: {fontSize: 30, fontWeight: 'bold'},
@@ -40,6 +44,8 @@ export default function TabLayout() {
         options={{
           title: "Home",
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
+          headerBackground: (props) => <NewHeader {...props}/>,
+          headerTitle: '',
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               name="home-assistant"
@@ -54,6 +60,11 @@ export default function TabLayout() {
           name="myjobs"
           options={{
             title: "My Jobs",
+            headerBackground: (props) => <NewHeader {...props}/>,
+          headerTitle: '',
+          headerLeft: () => (
+            <AntDesign className="ml-4 mt-1" 
+            name="leftcircleo" size={32} color="white" onPress={() => {router.push('/')}} />),
             tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
             tabBarIcon: ({ color }) => (
               <FontAwesome6
@@ -68,6 +79,11 @@ export default function TabLayout() {
         <Tabs.Screen
           name="myjobs"
           options={{
+            headerBackground: (props) => <NewHeader {...props}/>,
+          headerTitle: '',
+          headerLeft: () => (
+            <AntDesign className="ml-4 mt-1" 
+            name="leftcircleo" size={32} color="white" onPress={() => {router.push('/')}} />),
             tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
             href: null,
           }}
@@ -77,6 +93,11 @@ export default function TabLayout() {
         name="jobs/index"
         options={{
           title: "Jobs",
+          headerBackground: (props) => <NewHeader {...props}/>,
+          headerTitle: '',
+          headerLeft: () => (
+            <AntDesign className="ml-4 mt-1" 
+            name="leftcircleo" size={32} color="white" onPress={() => {router.push('/')}} />),
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           tabBarIcon: ({ color }) => (
             <FontAwesome5
@@ -91,6 +112,11 @@ export default function TabLayout() {
         name="messages"
         options={{
           title: "Messages",
+          headerBackground: (props) => <NewHeader {...props}/>,
+          headerTitle: '',
+          headerLeft: () => (
+            <AntDesign className="ml-4 mt-1" 
+            name="leftcircleo" size={32} color="white" onPress={() => {router.push('/')}} />),
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           tabBarIcon: ({ color }) => (
             <Feather name="send" size={24} color="rgb(254, 250, 224)" />
@@ -101,6 +127,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="jobs/layout"
         options={{
+          headerBackground: (props) => <NewHeader {...props}/>,
+          headerTitle: '',
+          headerLeft: () => (
+            <AntDesign className="ml-4 mt-1" 
+            name="leftcircleo" size={32} color="white" onPress={() => {router.push('/')}} />),
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           href: null,
         }}
@@ -108,6 +139,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="jobs/JobCard"
         options={{
+          headerBackground: (props) => <NewHeader {...props}/>,
+          headerTitle: '',
+          headerLeft: () => (
+            <AntDesign className="ml-4 mt-1" 
+            name="leftcircleo" size={32} color="white" onPress={() => {router.push('/')}} />),
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           href: null,
         }}
@@ -115,6 +151,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="jobs/sitters/[userId]/[jobId]"
         options={{
+          headerBackground: (props) => <NewHeader {...props}/>,
+          headerTitle: '',
+          headerLeft: () => (
+            <AntDesign className="ml-4 mt-1" 
+            name="leftcircleo" size={32} color="white" onPress={() => {router.push('/jobs')}} />),
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           href: null,
         }}
@@ -122,6 +163,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="jobs/[userId]/[jobId]"
         options={{
+          headerBackground: (props) => <NewHeader {...props}/>,
+          headerTitle: '',
+          headerLeft: () => (
+            <AntDesign className="ml-4 mt-1" 
+            name="leftcircleo" size={32} color="white" onPress={() => {router.push('/jobs')}} />),
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           href: null,
         }}
@@ -129,13 +175,24 @@ export default function TabLayout() {
       <Tabs.Screen
         name="jobs/addjobs"
         options={{
+          headerTitle: '',
+          headerBackButtonDisplayMode: true,
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           href: null,
+          headerBackground: (props) => <NewHeader {...props}/>,
+          headerLeft: () => (
+            <AntDesign className="ml-4 mt-1" 
+            name="leftcircleo" size={32} color="white" onPress={() => {router.push('/jobs')}} />)
         }}
       />
       <Tabs.Screen
         name="Careguides/index"
         options={{
+          headerBackground: (props) => <NewHeader {...props}/>,
+          headerTitle: '',
+          headerLeft: () => (
+            <AntDesign className="ml-4 mt-1" 
+            name="leftcircleo" size={32} color="white" onPress={() => {router.push('/')}} />),
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           href: null,
         }}
@@ -143,6 +200,11 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Careguides/[guide]"
         options={{
+          headerBackground: (props) => <NewHeader {...props}/>,
+          headerTitle: '',
+          headerLeft: () => (
+            <AntDesign className="ml-4 mt-1" 
+            name="leftcircleo" size={32} color="white" onPress={() => {router.push('/')}} />),
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           href: null,
         }}
