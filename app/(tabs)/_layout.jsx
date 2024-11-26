@@ -9,10 +9,13 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useRouter } from "expo-router";
 import { StyleSheet } from "react-native";
+import { useRole } from "../contexts/role";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
   const router = useRouter();
+  const { userType } = useRole();
+  const showView = userType === "sitter";
 
   return (
     <Tabs
@@ -45,20 +48,30 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="sitters"
-        options={{
-          title: "Sitters",
-          tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
-          tabBarIcon: ({ color }) => (
-            <FontAwesome6
-              name="hand-holding-droplet"
-              size={24}
-              color="rgb(254, 250, 224)"
-            />
-          ),
-        }}
-      />
+      {showView ? (
+        <Tabs.Screen
+          name="myjobs"
+          options={{
+            title: "My Jobs",
+            tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
+            tabBarIcon: ({ color }) => (
+              <FontAwesome6
+                name="hand-holding-droplet"
+                size={24}
+                color="rgb(254, 250, 224)"
+              />
+            ),
+          }}
+        />
+      ) : (
+        <Tabs.Screen
+          name="myjobs"
+          options={{
+            tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
+            href: null,
+          }}
+        />
+      )}
       <Tabs.Screen
         name="jobs/index"
         options={{
@@ -119,7 +132,7 @@ export default function TabLayout() {
           href: null,
         }}
       />
-       <Tabs.Screen
+      <Tabs.Screen
         name="Careguides/[guide]"
         options={{
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
