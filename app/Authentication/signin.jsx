@@ -9,6 +9,7 @@ import { Link } from "expo-router";
 import aloePlantImg from "../../assets/images/MMPimg.png";
 import { Image } from "react-native";
 import { savedUser } from "../async-storage";
+import { login } from "../authentication";
 
 const signin = () => {
   const [user, setUser] = useState("");
@@ -23,14 +24,26 @@ const signin = () => {
       const currentUser = users.filter((eachUser) => {
         return eachUser.username === user && eachUser.password === password;
       });
+      const email = currentUser[0].email;
+      console.log(email, "<<<<<<EMAIL", password);
       if (currentUser.length > 0) {
+        handleLoginFirebase(email, password);
         setLoggedInUser(currentUser[0]);
-        savedUser(currentUser[0].user_id)
-        router.replace('/')
+        savedUser(currentUser[0].user_id);
+        router.replace("/");
       } else setErrorMsg("Sorry, your sign-in details are incorrect");
     });
   };
-console.log(loggedInUser, "loggedinuser")
+
+  const handleLoginFirebase = async (email, password) => {
+    try {
+      await login(email, password);
+      console.log("Success", "You are now logged in!");
+    } catch (error) {
+      console.log("Error", "Invalid credentials. Please try again.");
+    }
+  };
+  console.log(loggedInUser, "loggedinuser");
   // if (!loggedInUser == {}) return <Redirect href="/" />;
 
   return (
