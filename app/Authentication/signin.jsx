@@ -4,10 +4,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Pressable, TextInput } from "react-native-gesture-handler";
 import { getUserList } from "../api";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
-import { Redirect } from "expo-router";
+import { Redirect, router } from "expo-router";
 import { Link } from "expo-router";
 import aloePlantImg from "../../assets/images/MMPimg.png";
 import { Image } from "react-native";
+import { savedUser } from "../async-storage";
 
 const signin = () => {
   const [user, setUser] = useState("");
@@ -24,13 +25,13 @@ const signin = () => {
       });
       if (currentUser.length > 0) {
         setLoggedInUser(currentUser[0]);
-        console.log("signin", currentUser[0]);
-        localStorage.setItem("user_id", currentUser[0].user_id);
+        savedUser(currentUser[0].user_id)
+        router.replace('/')
       } else setErrorMsg("Sorry, your sign-in details are incorrect");
     });
   };
-
-  if (loggedInUser) return <Redirect href="/" />;
+console.log(loggedInUser, "loggedinuser")
+  // if (!loggedInUser == {}) return <Redirect href="/" />;
 
   return (
     <SafeAreaView className="items-center">
@@ -57,11 +58,11 @@ const signin = () => {
           disabled={!user || !password}
           onClick={userAuthentication}
         >
-          Sign In
+          <Text>Sign In</Text>
         </Pressable>
         <Link href="/Authentication/registration" asChild>
           <Pressable className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md">
-            Sign Up
+            <Text>Sign Up</Text>
           </Pressable>
         </Link>
       </View>
