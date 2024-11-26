@@ -38,9 +38,9 @@ export default function RootLayout() {
       <Stack>
         <Stack.Screen
           name="(tabs)"
-          options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>, 
+          options={{ headerShown: false, headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>, 
 
-          headerLeft: () => (<Button title='Back' onPress={() => {}}></Button>)}}
+        }}
         />
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="profile" options={{headerTitle: 'Profile'}}/>
