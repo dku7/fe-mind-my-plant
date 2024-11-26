@@ -19,10 +19,20 @@ const SitterProfile = () => {
   const [jobs, setJobs] = useState([]);
   const [successMsg, setSuccessMsg] = useState("");
   const [jobFilter, setJobFilter] = useState(1);
+  const [averageRating, setAverageRating] = useState(0);
 
   useEffect(() => {
     getSitterJobs(loggedInUser.user_id)
       .then((fetchedJobs) => {
+        let total = 0;
+        let jobNum = 0;
+        const totalRatingNum = fetchedJobs.map((job) => {
+          total = total + job.star_rating;
+          if (job.star_rating !== null) {
+            jobNum += 1;
+          }
+        });
+        setAverageRating(total / jobNum);
         const filteredJobs = fetchedJobs.filter((job) => {
           return job.status === jobFilter;
         });
@@ -43,7 +53,9 @@ const SitterProfile = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.title}>Sitter Profile</Text>
+      <Text style={styles.title}>
+        Sitter Profile <br></br> Average Rating: {averageRating}
+      </Text>
       <View style={styles.inputGroup}>
         <Text style={styles.label}>Your Description:</Text>
         <TextInput
@@ -102,6 +114,9 @@ const SitterProfile = () => {
               </Text>
             )}
             <Text style={styles.jobDetails}>Daily Rate: {job.daily_rate}</Text>
+            <Text style={styles.jobDetails}>
+              Rating: {job.star_rating || "No Rating"}
+            </Text>
           </View>
         ))
       ) : (

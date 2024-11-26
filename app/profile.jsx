@@ -28,7 +28,10 @@ const Profile = () => {
   const [currentOwnerPlants, setCurrentOwnerPlants] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [allPlantsList, setAllPlantsList] = useState([]);
-  const {userType, setUserType } = useRole()
+  const { userType, setUserType } = useRole();
+  const [reloadPage, setReloadPage] = useState(0);
+  const [passwordIsVis, setPasswordIsVis] = useState(true);
+  const [passwordButton, setPasswordButton] = useState("show");
   const [profileDetails, setProfileDetails] = useState({
     first_name: loggedInUser.first_name,
     last_name: loggedInUser.last_name,
@@ -48,7 +51,7 @@ const Profile = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [reloadPage]);
 
   useEffect(() => {
     getPlantsSummary()
@@ -59,6 +62,16 @@ const Profile = () => {
         console.log(error);
       });
   }, []);
+
+  const handlePasswordVis = () => {
+    if (passwordIsVis === false) {
+      setPasswordIsVis(true);
+      setPasswordButton("show");
+    } else {
+      setPasswordIsVis(false);
+      setPasswordButton("hide");
+    }
+  };
 
   const postPlantFunc = (newPlantsArr) => {
     newPlantsArr.forEach((plant) => {
@@ -124,17 +137,20 @@ const Profile = () => {
   };
 
   return (
-
     <ScrollView style={styles.container}>
       <Pressable
         style={[
           styles.switchButton,
-          userType === 'owner' ? styles.ownerView : styles.sitterView,
+          userType === "owner" ? styles.ownerView : styles.sitterView,
         ]}
-        onPress={() => userType === 'owner' ? setUserType('sitter') : setUserType('owner')}
+        onPress={() =>
+          userType === "owner" ? setUserType("sitter") : setUserType("owner")
+        }
       >
         <Text style={styles.switchButtonText}>
-          {userType === 'owner' ? "Switch to Sitter View" : "Switch to Owner View"}
+          {userType === "owner"
+            ? "Switch to Sitter View"
+            : "Switch to Owner View"}
         </Text>
       </Pressable>
 
@@ -195,8 +211,11 @@ const Profile = () => {
           placeholder="Enter Password"
           name="password"
           value={profileDetails.password}
-          secureTextEntry={true}
+          secureTextEntry={passwordIsVis}
         />
+        <Pressable onPress={handlePasswordVis}>
+          <Text>{passwordButton}</Text>
+        </Pressable>
       </View>
 
       <View className="font-custom mx-5">
@@ -233,13 +252,15 @@ const Profile = () => {
           value={profileDetails.city}
         />
       </View>
-      <Pressable className="mx-20 my-3 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md"
-       onPress={handleProfileUpdate}>
+      <Pressable
+        className="mx-20 my-3 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md"
+        onPress={handleProfileUpdate}
+      >
         Update
       </Pressable>
       <Text>{sucessMsg}</Text>
 
-      {userType === 'owner' ? (
+      {userType === "owner" ? (
         <>
           <View style={styles.container}>
             <TouchableOpacity
@@ -262,6 +283,8 @@ const Profile = () => {
                 plant={plant}
                 key={plant.plant_id}
                 user_id={loggedInUser.user_id}
+                setReloadPage={setReloadPage}
+                reloadPage={reloadPage}
               />
             );
           })}
@@ -269,7 +292,6 @@ const Profile = () => {
       ) : (
         <SitterProfile />
       )}
-
     </ScrollView>
   );
 };
