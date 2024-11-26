@@ -4,6 +4,8 @@ import { getOwnerPlants } from "@/app/api";
 import { getJobById, postJobRequest } from "@/app/api";
 import { useLocalSearchParams } from "expo-router";
 import { LoggedInUserContext } from "@/app/contexts/loggedInUser";
+import { StyleSheet } from "react-native";
+import { Image } from "react-native";
 
 const JobDetails = () => {
   const { loggedInUser } = useContext(LoggedInUserContext);
@@ -74,12 +76,16 @@ const JobDetails = () => {
             </Text>
 
         </View>
-        <Text className="font-custom text-base m-6 mb-3 ">
-          Looking after {"\n"}
+        <View className="font-custom text-base m-6 mb-3 ">
+          <Text>Looking after {"\n"} </Text>
           {userPlants.map(
-            (plant) => `${plant.quantity} x ${plant.common_name}  `
+            (plant) => {
+              return <>
+              <Text>{plant.quantity} x {plant.common_name} </Text> 
+            <Image source={plant.image_url} style={styles.image} />    </>}
+          
           )}
-        </Text>
+        </View>
         <Text className="font-custom text-base mb-3 ml-6">
           Job instructions: 
           {"\n"}
@@ -107,3 +113,11 @@ const JobDetails = () => {
 };
 
 export default JobDetails;
+
+
+const styles = StyleSheet.create( {
+  image: {
+    height: 50,
+    width: 50
+  }
+})
