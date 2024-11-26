@@ -9,6 +9,7 @@ import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useRouter } from "expo-router";
 import { StyleSheet } from "nativewind";
+import { Button } from "react-native";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -28,6 +29,7 @@ export default function TabLayout() {
         // headerStyle: {backgroundColor: 'green'},
         // headerTintColor: 'white',
         // headerLeft: () => <Button title='Home' onPress={() => {router.push('/')}}></Button>,
+
         tabBarButton: HapticTab,
       }}
     >
@@ -99,6 +101,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="jobs/sitters/[userId]/[jobId]"
+        options={{
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
+          href: null,
+        }}
+      />
+      <Tabs.Screen
         name="jobs/[userId]/[jobId]"
         options={{
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
@@ -119,7 +128,7 @@ export default function TabLayout() {
           href: null,
         }}
       />
-       <Tabs.Screen
+      <Tabs.Screen
         name="Careguides/[guide]"
         options={{
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },

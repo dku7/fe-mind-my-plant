@@ -9,13 +9,11 @@ import { Link } from "expo-router";
 import { Pressable } from "react-native";
 import { useRole } from "../../contexts/role";
 
-
 const jobs = () => {
   const { loggedInUser } = useContext(LoggedInUserContext);
   const [currentJobs, setCurrentJobs] = useState([]);
   const [ownerJobs, setOwnerJobs] = useState([]);
-  const {userType} = useRole()
-
+  const { userType } = useRole();
 
   useEffect(() => {
     getJobsList().then((response) => {
@@ -32,8 +30,8 @@ const jobs = () => {
   return (
     <ScrollView className="flex items-center">
       {console.log(userType)}
-      
-      {userType === 'owner' ? (
+
+      {userType === "owner" ? (
         <>
           <View className="my-3">
             <Link className="items-center" href="jobs/addjobs">
@@ -47,7 +45,7 @@ const jobs = () => {
               const userId = job.owner_id;
               const jobId = job.job_id;
               return (
-                <Link href={`/jobs/${userId}/${jobId}`}>
+                <Link href={`/jobs/sitters/${userId}/${jobId}`}>
                   <JobCard job={job} key={job.job_id} />
                 </Link>
               );

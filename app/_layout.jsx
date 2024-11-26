@@ -9,6 +9,8 @@ import { LoggedInUserProvider } from "./contexts/loggedInUser";
 import "../global.css";
 import NewHeader from "./Header";
 import { RoleProvider } from "./contexts/role";
+import { Button } from "react-native";
+import { router } from "expo-router";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -32,17 +34,32 @@ export default function RootLayout() {
   return (
     <LoggedInUserProvider>
       <RoleProvider>
-      <Stack>
-        <Stack.Screen
-          name="(tabs)"
-          options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>}}
-        />
-        <Stack.Screen name="+not-found" />
-        <Stack.Screen name="profile" options={{headerTitle: 'Profile'}}/>
-        <Stack.Screen name="Authentication/signin" options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>}}/>
-        <Stack.Screen name="Authentication/registration" options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>}}/>
-      </Stack>
-      <StatusBar style="auto" />
+        <Stack>
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerTitle: "",
+              headerBackground: (props) => <NewHeader {...props} />,
+            }}
+          />
+          <Stack.Screen name="+not-found" />
+          <Stack.Screen name="profile" options={{ headerTitle: "Profile" }} />
+          <Stack.Screen
+            name="Authentication/signin"
+            options={{
+              headerTitle: "",
+              headerBackground: (props) => <NewHeader {...props} />,
+            }}
+          />
+          <Stack.Screen
+            name="Authentication/registration"
+            options={{
+              headerTitle: "",
+              headerBackground: (props) => <NewHeader {...props} />,
+            }}
+          />
+        </Stack>
+        <StatusBar style="auto" />
       </RoleProvider>
     </LoggedInUserProvider>
   );
