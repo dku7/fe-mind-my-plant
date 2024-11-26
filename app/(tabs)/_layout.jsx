@@ -31,6 +31,7 @@ export default function TabLayout() {
         // headerStyle: {backgroundColor: 'green'},
         // headerTintColor: 'white',
         // headerLeft: () => <Button title='Home' onPress={() => {router.push('/')}}></Button>,
+
         tabBarButton: HapticTab,
       }}
     >
@@ -106,6 +107,13 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="jobs/JobCard"
+        options={{
+          tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="jobs/sitters/[userId]/[jobId]"
         options={{
           tabBarStyle: { backgroundColor: "#D77F33", height: 55 },
           href: null,

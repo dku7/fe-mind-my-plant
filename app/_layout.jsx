@@ -9,7 +9,6 @@ import { LoggedInUserProvider } from "./contexts/loggedInUser";
 import "../global.css";
 import NewHeader from "./Header";
 import { RoleProvider } from "./contexts/role";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { Button } from "react-native";
 import { router } from "expo-router";
 
@@ -36,7 +35,6 @@ export default function RootLayout() {
     
     <LoggedInUserProvider>
       <RoleProvider>
-      <GestureHandlerRootView>
       <Stack>
         <Stack.Screen
           name="(tabs)"
@@ -50,7 +48,6 @@ export default function RootLayout() {
         <Stack.Screen name="Authentication/registration" options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>}}/>
       </Stack>
       <StatusBar style="auto" />
-      </GestureHandlerRootView>
       </RoleProvider>
     </LoggedInUserProvider>
     
