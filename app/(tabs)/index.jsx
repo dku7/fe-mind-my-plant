@@ -1,44 +1,76 @@
-import { View, Text, Pressable, ImageBackground } from "react-native";
+import { View, Text, Pressable, Image } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
 import { useContext } from "react";
 import { getUserList } from "../api";
-import loadingDisplay from "../components/loading-display";
-import SignIn from "../signin";
+import SignIn from "../Authentication/signin";
 import { SafeAreaView } from "react-native-safe-area-context";
-import aloePlant from "../../assets/images/aloe-aloe-plant.gif";
+
+import aloePlant from "../../assets/images/MMPimg.png";
+import { StyleSheet } from "react-native";
+import { Button } from "react-native";
+import { useRouter } from "expo-router";
+import { getUserId } from "../async-storage";
+import { removeUserId } from "../async-storage";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
+
+
+import { Redirect } from "expo-router";
+
+import CareGuides from "./Careguides";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
-  const savedUserId = localStorage.getItem("user_id");
+  const [localUser, setLocalUser] = useState([])
   const [isLoading, setIsLoading] = useState(true);
+
+  const router = useRouter()
+
+  const handleSignOut = () => {
+    setLoggedInUser({})
+    router.replace("/Authentication/signin")
+    removeUserId().then(()=> {
+      console.log('removed ID in index')
+    })
+  }
+
+  useEffect(()=> {
+    getUserId().then((user_id)=> {
+      setLocalUser(user_id)
+    })
+  },[])
 
   useEffect(() => {
     getUserList().then((users) => {
-      if (savedUserId !== undefined) {
+      if (localUser !== undefined) {
         const currentUser = users.filter((eachUser) => {
-          return eachUser.user_id == savedUserId;
+          return eachUser.user_id == localUser;
         });
-        setLoggedInUser(currentUser[0]);
       }
       setIsLoading(false);
     });
   }, []);
 
-  if (isLoading) return <loadingDisplay />;
+
+
+  if (isLoading) return <Text>Loading...</Text>
+  let avatarImg;
+  if (loggedInUser) {
+    avatarImg = loggedInUser.avatar_url;
+  }
 
   return (
-    <SafeAreaView className="flex">
-      <View>
-        <Text className="font-bold text-5xl pt-4 pb-5 bg-green-900 text-white text-center">
-          Mind My Plants
-        </Text>
+    <SafeAreaView >
+      <View className="mt-5">
         {loggedInUser ? (
           <>
-            <Text className="mt-3 ml-3 text-xl">
-              Welcome Back {loggedInUser.username}
+            <Text className="mt-3 ml-8 text-xl font-custom">
+              Welcome back, {loggedInUser.username}!
             </Text>
+
             <Link href="../profile" asChild>
               <Pressable>
                 <Text>Profile</Text>
@@ -55,10 +87,22 @@ const index = () => {
               <Link href="../components/registration" asChild>
                 <Pressable className="mt-1 mx-16 py-2 border-green-700 rounded-md bg-green-700 text-gray-200 font-bold">
                   Sign Up
+
+            <Pressable className="mx-5 ml-64 text-center justify-center h-10 w-24 border-[#D77F33] rounded-md bg-[#D77F33] text-gray-50 font-bold font-custom shadow-md" onPress={handleSignOut} title='Sign Out'>Sign Out</Pressable>
+            <View className="ml-5" >
+              <Link href="../profile" asChild>
+                <Pressable >
+                  <Image className='ml-3 shadow-md' source={{ uri: avatarImg }} style={styles.avatar} />
+
                 </Pressable>
               </Link>
+              <View className=" mt-5 w-80">
+                <CareGuides />
+              </View>
             </View>
           </>
+        ) : (
+          <Redirect href="/Authentication/signin" />
         )}
       </View>
     </SafeAreaView>
@@ -66,3 +110,32 @@ const index = () => {
 };
 
 export default index;
+
+const styles = StyleSheet.create({
+  avatar: {
+    flex: 1,
+    width: 100,
+    height: 100,
+    borderRadius: 100,
+    borderColor: "black",
+  },
+  pressable: {
+    width: 100,
+    height: 100,
+  },
+  text: {
+    fontFamily: "DM Sans",
+  },
+  background: {
+    flex: 1,
+    height: 300,
+    marginTop: 50,
+    width: 300,
+    borderRadius: 130,
+  },
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

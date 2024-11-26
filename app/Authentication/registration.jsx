@@ -7,6 +7,7 @@ import { useState, useContext } from "react";
 import { registerUser } from "../api";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
 import { Link } from "expo-router";
+import { savedUser } from "../async-storage";
 
 const registration = () => {
   const [registrationDetails, setRegistrationDetails] = useState({
@@ -52,7 +53,8 @@ const registration = () => {
       registerUser(registrationDetails)
         .then((newUser) => {
           setLoggedInUser(newUser);
-          localStorage.setItem("user_id", newUser.user_id);
+          console.log('registration', newUser)
+          savedUser(newUser.user_id);
           setIsPosting("");
           setIsValidMsg("");
           return newUser;

@@ -1,23 +1,37 @@
-import { Text, View } from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import {
+  Text,
+  View,
+  Pressable,
+  TextInput,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+} from "react-native";
 import { LoggedInUserContext } from "./contexts/loggedInUser";
-import { useContext, useState, useEffect } from "react";
-import { Pressable, TextInput } from "react-native-gesture-handler";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { StyleSheet } from "react-native";
-import { updateProfile, getOwnerPlants } from "./api";
+import {
+  updateProfile,
+  getOwnerPlants,
+  getPlantsSummary,
+  postNewOwnerPlants,
+  patchPutOwnerPlantsQuantity,
+} from "./api";
 import PlantCard from "./PlantCard";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import AddPlantModal from "./AddPlantModal";
-import { getPlantsSummary } from "./api";
+import SitterProfile from "./SitterProfile";
+import { useRole } from "./contexts/role";
 
 const Profile = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
   const savedUserId = localStorage.getItem("user_id");
   const [sucessMsg, setSucessMsg] = useState("");
-  const [currentPlants, setCurrentPlants] = useState([]);
+  const [currentOwnerPlants, setCurrentOwnerPlants] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [plants, setPlants] = useState([]);
-
+  const [allPlantsList, setAllPlantsList] = useState([]);
+  const { userType, setUserType } = useRole();
+  const [reloadPage, setReloadPage] = useState(0);
+  const [passwordIsVis, setPasswordIsVis] = useState(true);
+  const [passwordButton, setPasswordButton] = useState("show");
   const [profileDetails, setProfileDetails] = useState({
     first_name: loggedInUser.first_name,
     last_name: loggedInUser.last_name,
@@ -32,167 +46,280 @@ const Profile = () => {
   useEffect(() => {
     getOwnerPlants(savedUserId)
       .then((plants) => {
-        setCurrentPlants(plants);
+        setCurrentOwnerPlants(plants);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [reloadPage]);
+
+  useEffect(() => {
+    getPlantsSummary()
+      .then((plants) => {
+        setAllPlantsList(plants);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
-  useEffect(() => {
-    getPlantsSummary()
-      .then((plants) => {
-        setPlants(plants);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  });
+  const handlePasswordVis = () => {
+    if (passwordIsVis === false) {
+      setPasswordIsVis(true);
+      setPasswordButton("show");
+    } else {
+      setPasswordIsVis(false);
+      setPasswordButton("hide");
+    }
+  };
 
-  const onChange = (e) => {
+  const postPlantFunc = (newPlantsArr) => {
+    newPlantsArr.forEach((plant) => {
+      postNewOwnerPlants(plant, loggedInUser.user_id).catch((error) => {
+        console.log(error, "Error");
+      });
+    });
+  };
+
+  const onChange = (name, value) => {
     setProfileDetails({
       ...profileDetails,
-      [e.target.placeholder]: e.target.value,
+      [name]: value,
     });
   };
 
   const handleProfileUpdate = () => {
     updateProfile(profileDetails, loggedInUser.user_id)
       .then((updatedUser) => {
-        console.log(updatedUser);
-        setSucessMsg("Update Successful!");
+        setSucessMsg("Profile Details Update Successful!");
+        setProfileDetails(updatedUser);
+        setLoggedInUser(updatedUser);
+        setTimeout(() => {
+          setSucessMsg("");
+        }, 3000);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
+  const handlePlantUpdate = (plantToUpdate) => {
+    patchPutOwnerPlantsQuantity(plantToUpdate, loggedInUser.user_id).catch(
+      (error) => {
+        console.log(error);
+      }
+    );
+  };
+
   const handleAddPlants = (selectedPlants) => {
-    setPlants((prev) => [...prev, ...selectedPlants]);
+    setCurrentOwnerPlants((prev) => {
+      const updatedCurrent = [...prev];
+      selectedPlants.forEach((selectedPlant) => {
+        const existingPlant = updatedCurrent.find(
+          (plant) => plant.plant_id === selectedPlant.plant_id
+        );
+
+        if (existingPlant) {
+          existingPlant.quantity =
+            existingPlant.quantity + selectedPlant.quantity;
+          handlePlantUpdate(existingPlant);
+        } else {
+          updatedCurrent.push({
+            ...selectedPlant,
+            quantity: selectedPlant.quantity,
+          });
+          postPlantFunc(selectedPlants);
+        }
+      });
+
+      return updatedCurrent;
+    });
   };
 
   return (
     <ScrollView style={styles.container}>
+      <Pressable
+        style={[
+          styles.switchButton,
+          userType === "owner" ? styles.ownerView : styles.sitterView,
+        ]}
+        onPress={() =>
+          userType === "owner" ? setUserType("sitter") : setUserType("owner")
+        }
+      >
+        <Text style={styles.switchButtonText}>
+          {userType === "owner"
+            ? "Switch to Sitter View"
+            : "Switch to Owner View"}
+        </Text>
+      </Pressable>
+
       <Text>{loggedInUser.username}'s Profile Page</Text>
-      <View style={styles.inputcontainer}>
-        <>
-          <Text>Update Profile Information</Text>
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="first_name"
-            name="first_name"
-            value={profileDetails.first_name}
-          />
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="last_name"
-            name="last_name"
-            value={profileDetails.last_name}
-          />
-          <TextInput
-            style={styles.input}
-            type="email"
-            onChange={onChange}
-            placeholder="email"
-            name="email"
-            value={profileDetails.email}
-          />
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="avatar_url"
-            name="avatar_url"
-            value={profileDetails.avatar_url}
-          />
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="password"
-            name="password"
-            value={profileDetails.password}
-          />
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="street_address"
-            name="street_address"
-            value={profileDetails.street_address}
-          />
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="postcode"
-            name="postcode"
-            value={profileDetails.postcode}
-          />
-          <TextInput
-            style={styles.input}
-            type="text"
-            onChange={onChange}
-            placeholder="city"
-            name="city"
-            value={profileDetails.city}
-          />
-          <Pressable onPress={handleProfileUpdate}>
-            <Text>Update</Text>
-          </Pressable>
-          <Text>{sucessMsg}</Text>
-        </>
-      </View>
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.addButtonText}>Add New Plants</Text>
-        </TouchableOpacity>
-        <AddPlantModal
-          visible={modalVisible}
-          onClose={() => setModalVisible(false)}
-          plants={plants}
-          onAddPlants={handleAddPlants}
+      <Text>Update Profile Information</Text>
+      <View className="font-custom mx-5">
+        <Text className="my-2">First Name:</Text>
+        <TextInput
+          className="border rounded-md p-1 text-base font-custom"
+          type="text"
+          onChangeText={(text) => onChange("first_name", text)}
+          placeholder="Enter First Name"
+          name="first_name"
+          value={profileDetails.first_name}
         />
       </View>
-      {currentPlants.map((plant) => {
-        return <PlantCard plant={plant} key={plant.plant_id} />;
-      })}
+      <View className="font-custom mx-5">
+        <Text className="my-2">Last Name:</Text>
+        <TextInput
+          className="border rounded-md p-1 text-base font-custom"
+          type="text"
+          onChangeText={(text) => onChange("last_name", text)}
+          placeholder="Enter Last Name"
+          name="last_name"
+          value={profileDetails.last_name}
+        />
+      </View>
+
+      <View className="font-custom mx-5">
+        <Text className="my-2">Email:</Text>
+        <TextInput
+          className="border rounded-md p-1 text-base font-custom"
+          type="email"
+          onChangeText={(text) => onChange("email", text)}
+          placeholder="Enter Email"
+          name="email"
+          value={profileDetails.email}
+        />
+      </View>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Avatar URL:</Text>
+        <TextInput
+          className="border rounded-md p-1 text-base font-custom"
+          type="text"
+          onChangeText={(text) => onChange("avatar_url", text)}
+          placeholder="Enter Avatar URL"
+          name="avatar_url"
+          value={profileDetails.avatar_url}
+        />
+      </View>
+
+      <View className="font-custom mx-5">
+        <Text className="my-2">Password:</Text>
+        <TextInput
+          className="border rounded-md p-1 text-base font-custom"
+          type="password"
+          onChangeText={(text) => onChange("password", text)}
+          placeholder="Enter Password"
+          name="password"
+          value={profileDetails.password}
+          secureTextEntry={passwordIsVis}
+        />
+        <Pressable onPress={handlePasswordVis}>
+          <Text>{passwordButton}</Text>
+        </Pressable>
+      </View>
+
+      <View className="font-custom mx-5">
+        <Text className="my-2">Street Address:</Text>
+        <TextInput
+          className="border rounded-md p-1 text-base font-custom"
+          type="text"
+          onChangeText={(text) => onChange("street_address", text)}
+          placeholder="Enter Street Address"
+          name="street_address"
+          value={profileDetails.street_address}
+        />
+      </View>
+      <View className="font-custom mx-5">
+        <Text className="my-2">Postcode:</Text>
+        <TextInput
+          className="border rounded-md p-1 text-base font-custom"
+          type="text"
+          onChangeText={(text) => onChange("postcode", text)}
+          placeholder="Enter Postcode"
+          name="postcode"
+          value={profileDetails.postcode}
+        />
+      </View>
+
+      <View className="font-custom mx-5">
+        <Text className="my-2">City:</Text>
+        <TextInput
+          className="border rounded-md p-1 text-base font-custom"
+          type="text"
+          onChangeText={(text) => onChange("city", text)}
+          placeholder="Enter City"
+          name="city"
+          value={profileDetails.city}
+        />
+      </View>
+      <Pressable
+        className="mx-20 my-3 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md"
+        onPress={handleProfileUpdate}
+      >
+        Update
+      </Pressable>
+      <Text>{sucessMsg}</Text>
+
+      {userType === "owner" ? (
+        <>
+          <View style={styles.container}>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => setModalVisible(true)}
+            >
+              <Text style={styles.addButtonText}>Add New Plants</Text>
+            </TouchableOpacity>
+            <AddPlantModal
+              visible={modalVisible}
+              onClose={() => setModalVisible(false)}
+              plants={allPlantsList}
+              onAddPlants={handleAddPlants}
+              postPlantFunc={postPlantFunc}
+            />
+          </View>
+          {currentOwnerPlants.map((plant) => {
+            return (
+              <PlantCard
+                plant={plant}
+                key={plant.plant_id}
+                user_id={loggedInUser.user_id}
+                setReloadPage={setReloadPage}
+                reloadPage={reloadPage}
+              />
+            );
+          })}
+        </>
+      ) : (
+        <SitterProfile />
+      )}
     </ScrollView>
   );
 };
 
 export default Profile;
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     width: "100%",
-//     backgroundColor: "#88CC7F",
-//   },
-// inputcontainer: {
-//   flexDirection: "column",
-//   width: "100%",
-//   alignItems: "center",
-//   pointerEvents: "auto",
-// },
-// input: {
-//   flex: 1,
-//   borderColor: "black",
-//   borderWidth: 1,
-//   borderRadius: 5,
-//   alignItems: "center",
-//   fontSize: 18,
-// },
-// });
-
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+  },
+  switchButton: {
+    marginTop: 20,
+    marginBottom: 20,
+    padding: 10,
+    borderRadius: 8,
+    alignSelf: "center",
+  },
+  switchButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  ownerView: {
+    backgroundColor: "#4CAF50",
+  },
+  sitterView: {
+    backgroundColor: "#FF5722",
+  },
   container: {
     flex: 1,
     // justifyContent: "center",
@@ -205,13 +332,64 @@ const styles = StyleSheet.create({
     alignItems: "center",
     pointerEvents: "auto",
   },
-  input: {
-    flex: 1,
-    borderColor: "black",
-    borderWidth: 1,
-    borderRadius: 5,
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 16,
+    color: "#333",
+    textAlign: "center",
+  },
+  inputGroup: {
+    flexDirection: "row",
     alignItems: "center",
-    fontSize: 18,
+    marginBottom: 12,
+    paddingRight: 50,
+  },
+  label: {
+    flex: 1,
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#555",
+    textAlign: "right",
+    marginRight: 8,
+  },
+  input: {
+    backgroundColor: "#fff",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    padding: 10,
+    marginBottom: 12,
+    fontSize: 16,
+    color: "#333",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+  },
+  button: {
+    backgroundColor: "#4CAF50",
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 4,
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  successMsg: {
+    marginTop: 16,
+    color: "#4CAF50",
+    textAlign: "center",
+    fontSize: 16,
   },
   addButton: {
     backgroundColor: "#4CAF50",

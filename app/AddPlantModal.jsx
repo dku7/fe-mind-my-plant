@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { LoggedInUserContext } from "./contexts/loggedInUser";
 import {
   View,
   Text,
@@ -11,7 +12,9 @@ import {
 } from "react-native";
 
 const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
+  // selectedPlants are those in the 'basket' on this page, to be added to the owners list
   const [selectedPlants, setSelectedPlants] = useState({});
+  const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
 
   const handleIncrease = (plantId) => {
     setSelectedPlants((prev) => ({
@@ -24,7 +27,7 @@ const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
     setSelectedPlants((prev) => {
       const newQuantity = (prev[plantId] || 0) - 1;
       if (newQuantity <= 0) {
-        const { [plantId]: _, ...rest } = prev;
+        const { [plantId]: removedQuantity, ...rest } = prev;
         return rest;
       }
       return { ...prev, [plantId]: newQuantity };
@@ -35,8 +38,18 @@ const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
     const selectedPlantList = plants.filter(
       (plant) => selectedPlants[plant.plant_id]
     );
-    console.log(selectedPlantList);
+    selectedPlantList.forEach((item) => {
+      item.quantity = selectedPlants[item.plant_id];
+      item.user_id = loggedInUser.user_id;
+    });
+    onAddPlants(selectedPlantList);
     onClose();
+    setSelectedPlants({});
+  };
+
+  const handleCloseAddPlants = () => {
+    onClose();
+    setSelectedPlants({});
   };
 
   return (
@@ -74,33 +87,22 @@ const AddPlantModal = ({ visible, onClose, plants, onAddPlants }) => {
             </View>
           )}
         />
-        <Button title="Add Plants" onPress={handleAddPlants} />
-        <Button title="Close" onPress={onClose} />
+        <TouchableOpacity
+          styles={styles.button}
+          title="Add Plants"
+          onPress={handleAddPlants}
+        >
+          Add Plants
+        </TouchableOpacity>
+        <TouchableOpacity
+          styles={styles.button}
+          title="Close"
+          onPress={handleCloseAddPlants}
+        >
+          Close
+        </TouchableOpacity>
       </View>
     </Modal>
-  );
-};
-
-const App = () => {
-  const handleAddPlants = (selectedPlants) => {
-    setMyPlants((prev) => [...prev, ...selectedPlants]);
-  };
-
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.addButton}
-        onPress={() => setModalVisible(true)}
-      >
-        <Text style={styles.addButtonText}>Add New Plants</Text>
-      </TouchableOpacity>
-      <PlantModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        plants={plants}
-        onAddPlants={handleAddPlants}
-      />
-    </View>
   );
 };
 
