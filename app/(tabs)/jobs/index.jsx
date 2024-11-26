@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View, Text, Button } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { LoggedInUserContext } from "../../contexts/loggedInUser";
@@ -8,6 +8,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import { Link } from "expo-router";
 import { Pressable } from "react-native";
 import { useRole } from "../../contexts/role";
+import { router } from "expo-router";
 
 const jobs = () => {
   const { loggedInUser } = useContext(LoggedInUserContext);
@@ -29,16 +30,15 @@ const jobs = () => {
 
   return (
     <ScrollView className="flex items-center">
-      {console.log(userType)}
 
-      {userType === "owner" ? (
+      {userType === 'owner' ? (
         <>
           <View className="my-3">
-            <Link className="items-center" href="jobs/addjobs">
-              <Pressable className=" mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 shadow-md font-bold font-custom justify-center items-center flex">
-                Add New Job
-              </Pressable>
-            </Link>
+            <Button  onPress={() => {
+              router.push('/jobs/addjobs')
+            }} title='Add New Job' className=" mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 shadow-md font-bold font-custom justify-center items-center flex">
+
+            </Button>
           </View>
           <View className="flex items-center">
             {ownerJobs.map((job) => {

@@ -166,7 +166,6 @@ export const getSitterJobs = (sitter_id) => {
   return apiClient
     .get(`/sitters/${sitter_id}/jobs`)
     .then((response) => {
-      console.log(response);
       return response.data.items;
     })
     .catch((response) => {

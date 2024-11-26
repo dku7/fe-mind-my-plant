@@ -7,42 +7,55 @@ import { getUserList } from "../api";
 import SignIn from "../Authentication/signin";
 import { SafeAreaView } from "react-native-safe-area-context";
 import aloePlant from "../../assets/images/MMPimg.png";
-import { StyleSheet } from "nativewind";
+import { StyleSheet } from "react-native";
 import { Button } from "react-native";
 import { useRouter } from "expo-router";
+import { getUserId } from "../async-storage";
+import { removeUserId } from "../async-storage";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 
 
 import { Redirect } from "expo-router";
 
 import CareGuides from "./Careguides";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const index = () => {
   const { loggedInUser, setLoggedInUser } = useContext(LoggedInUserContext);
-  const savedUserId = localStorage.getItem("user_id");
+  const [localUser, setLocalUser] = useState([])
   const [isLoading, setIsLoading] = useState(true);
 
   const router = useRouter()
 
   const handleSignOut = () => {
     setLoggedInUser({})
-    localStorage.clear()
-    router.push("/Authentication/signin")
+    router.replace("/Authentication/signin")
+    removeUserId().then(()=> {
+      console.log('removed ID in index')
+    })
   }
+
+  useEffect(()=> {
+    getUserId().then((user_id)=> {
+      setLocalUser(user_id)
+    })
+  },[])
 
   useEffect(() => {
     getUserList().then((users) => {
-      if (savedUserId !== undefined) {
+      if (localUser !== undefined) {
         const currentUser = users.filter((eachUser) => {
-          return eachUser.user_id == savedUserId;
+          return eachUser.user_id == localUser;
         });
-        setLoggedInUser(currentUser[0]);
       }
       setIsLoading(false);
     });
   }, []);
 
-  if (isLoading) return <loadingDisplay />;
+
+
+  if (isLoading) return <Text>Loading...</Text>
   let avatarImg;
   if (loggedInUser) {
     avatarImg = loggedInUser.avatar_url;

@@ -8,7 +8,7 @@ import {
   patchPutOwnerPlantsQuantity,
 } from "./api";
 
-const PlantCard = ({ plant, user_id }) => {
+const PlantCard = ({ plant, user_id, setReloadPage, reloadPage }) => {
   const [careInstructions, setCareInstructions] = useState(plant.instructions);
   const hasChanges = careInstructions !== plant.instructions;
 
@@ -19,7 +19,6 @@ const PlantCard = ({ plant, user_id }) => {
   };
 
   const [removePlantCount, setRemovePlantCount] = useState(0);
-  const [reloadPage, setReloadPage] = useState(0);
 
   function decreaseQuantity() {
     let quantityVal = plant.quantity - removePlantCount;
@@ -48,15 +47,9 @@ const PlantCard = ({ plant, user_id }) => {
 
   const handleDelete = () => {
     deletePlant(user_id, plant.plant_id).then(() => {
-      let newReloadPage = reloadPage + 1;
-      setReloadPage(newReloadPage);
+      setReloadPage(reloadPage + 1);
     });
   };
-
-  useEffect(() => {
-    router.push("/");
-    router.push("/profile");
-  }, [reloadPage]);
 
   return (
     <View style={styles.card}>
@@ -72,28 +65,32 @@ const PlantCard = ({ plant, user_id }) => {
           value={careInstructions}
         />
         <Text style={styles.quantity}>Quantity: {plant.quantity}</Text>
-        <TouchableOpacity style={styles.button} onPress={decreaseQuantity}>
-          <Text>Remove</Text>
-        </TouchableOpacity>
-        <View style={styles.quantityControl}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              removeDecrease();
-            }}
-          >
-            <Text style={styles.buttonText}>-</Text>
-          </TouchableOpacity>
-          <Text style={styles.quantityText}>{removePlantCount}</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => {
-              removeIncrease();
-            }}
-          >
-            <Text style={styles.buttonText}>+</Text>
-          </TouchableOpacity>
-        </View>
+        {plant.quantity > 1 && (
+          <>
+            <TouchableOpacity style={styles.button} onPress={decreaseQuantity}>
+              <Text>Remove</Text>
+            </TouchableOpacity>
+            <View style={styles.quantityControl}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  removeDecrease();
+                }}
+              >
+                <Text style={styles.buttonText}>-</Text>
+              </TouchableOpacity>
+              <Text style={styles.quantityText}>{removePlantCount}</Text>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => {
+                  removeIncrease();
+                }}
+              >
+                <Text style={styles.buttonText}>+</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
         {plant.quantity === 1 && (
           <TouchableOpacity style={styles.saveButton} onPress={handleDelete}>
             <Text style={styles.saveButtonText}>Delete</Text>
