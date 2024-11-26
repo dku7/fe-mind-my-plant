@@ -21,14 +21,15 @@ const CareGuides = () => {
 
   return (
     <SafeAreaView>
-      <Text className="text-lg font-custom mb-7 ml-4">
+      <Text className="text-lg font-custom mt-5 mb-7">
         Check out our careguides for more information on keeping your plants
         happy
       </Text>
-      <View className="grid grid-cols-3 gap-6 ml-5">
+      <View className="grid grid-cols-3 gap-6">
         {careGuideInfo.map((careGuide) => {
           let careGuideImg = careGuide.img_url;
           let guide = careGuide.title;
+          
 
           return (
             <Pressable
@@ -36,6 +37,7 @@ const CareGuides = () => {
                 router.push(`/(tabs)/Careguides/${guide}`);
               }}
             >
+              
               <View className="items-center col-span-3">
                 <Text className="text-center text-lg font-custom mb-2 ">
                   {careGuide.title}
