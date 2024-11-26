@@ -1,27 +1,35 @@
 import { View, Text } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Pressable, TextInput } from "react-native-gesture-handler";
 import { useContext } from "react";
 import { LoggedInUserContext } from "../../contexts/loggedInUser"
 import { postUserJobs } from "@/app/api";
 import { router } from "expo-router";
+import { getUserId } from "@/app/async-storage";
 
 const addjobs = () => {
 
   const { loggedInUser } = useContext(LoggedInUserContext);
-  const [jobBody, setJobBody] = useState({});
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [dailyRate, setDailyRate] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [message, setMessage] = useState("");
-  const savedUserId = localStorage.getItem("user_id");
+  let savedUserId
 
-  const theUser = loggedInUser? loggedInUser : savedUserId
+
+  useEffect(()=> {
+    getUserId('user_id').then((id)=> {
+      console.log(id, 'in use effect')
+      savedUserId = id
+    })
+  },[])
+
+
+  const theUser = loggedInUser? loggedInUser.user_id : savedUserId
   const handleJobSubmit = () => {
-    setJobBody("");
-    // if(jobBody.start_date && jobBody.end_date && jobBody.daily_rate && jobBody.jobDescription){
+    if(startDate && endDate && dailyRate && jobDescription){
     postUserJobs((theUser), {
       start_date: startDate,
       end_date: endDate,
@@ -29,11 +37,10 @@ const addjobs = () => {
       job_instructions: jobDescription,
     }).then((response) => {
       setMessage("Job posted successfully")
-      router.push('/jobs')
-    });
-    //     else {
-    //       setMessage('Please complete all fields')
-    // }
+    })}
+        else {
+          setMessage('Please complete all fields')
+    }
   };
 
   return (
@@ -76,8 +83,8 @@ const addjobs = () => {
           />
           <Pressable className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom items-center shadow-md" onPress={handleJobSubmit}>
             <Text>Add Job</Text>
-            <Text>{message}</Text>
           </Pressable>
+          <Text>{message}</Text>
         </View>
       )}
       {/* {!isValid && <Text>{isValidMsg}</Text>} */}

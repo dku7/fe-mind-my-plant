@@ -9,6 +9,9 @@ import { LoggedInUserProvider } from "./contexts/loggedInUser";
 import "../global.css";
 import NewHeader from "./Header";
 import { RoleProvider } from "./contexts/role";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { Button } from "react-native";
+import { router } from "expo-router";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -30,12 +33,16 @@ export default function RootLayout() {
   }
 
   return (
+    
     <LoggedInUserProvider>
       <RoleProvider>
+      <GestureHandlerRootView>
       <Stack>
         <Stack.Screen
           name="(tabs)"
-          options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>}}
+          options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>, 
+
+          headerLeft: () => (<Button title='Back' onPress={() => {}}></Button>)}}
         />
         <Stack.Screen name="+not-found" />
         <Stack.Screen name="profile" options={{headerTitle: 'Profile'}}/>
@@ -43,7 +50,9 @@ export default function RootLayout() {
         <Stack.Screen name="Authentication/registration" options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>}}/>
       </Stack>
       <StatusBar style="auto" />
+      </GestureHandlerRootView>
       </RoleProvider>
     </LoggedInUserProvider>
+    
   );
 }
