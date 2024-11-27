@@ -9,13 +9,18 @@ import {
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native"; //  React Navigation is set up
-import { getJobSitters } from "../../../../api";
+import {
+  getJobSitters,
+  updateSitterFeedbackRating,
+  postSitterRequest,
+} from "../../../../api";
 import { useLocalSearchParams } from "expo-router";
 
 const SitterCards = () => {
   const [sitterData, setSitterData] = useState([]);
   const navigation = useNavigation();
   const { userId, jobId } = useLocalSearchParams();
+  const [acceptedMsg, setAcceptedMsg] = useState("");
 
   useEffect(() => {
     getJobSitters(userId, jobId).then((response) => {
@@ -24,14 +29,12 @@ const SitterCards = () => {
   }, [jobId]);
 
   const handleAccept = (sitterId) => {
-    // Optimistic rendering
     setSitterData((prev) =>
-      prev.map(
-        (item) =>
-          item.sitter_id === sitterId ? { ...item, accepted: "TRUE" } : item
-        //PATCH pending to JOBS table
+      prev.map((item) =>
+        item.sitter_id === sitterId ? { ...item, accepted: "TRUE" } : item
       )
     );
+    postSitterRequest(sitterId, jobId).then((response) => {});
     console.log("Accepted", "You have accepted this sitter.");
   };
 

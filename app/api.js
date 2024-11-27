@@ -190,6 +190,38 @@ export const updateProfileBio = (newBio, user_id, user) => {
     });
 };
 
+
+export const updateSitterFeedbackRating = (
+  sitter_id,
+  job_id,
+  feedback,
+  star_rating
+) => {
+  const body = {
+    feedback: feedback,
+    star_rating: star_rating,
+  };
+  return apiClient
+    .put(`/sitters/${sitter_id}/jobs/${job_id}`, body)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((response) => {
+      return Promise.reject(response.status);
+    });
+};
+
+export const postSitterRequest = (sitter_id, job_id) => {
+  return apiClient
+    .post(
+      `sitters/${sitter_id}/requests
+`,
+      { job_id: job_id, accepted: true }
+    )
+    .then((response) => {
+      console.log(response, "in API");
+      return response.data;
+
 export const deleteOwnerJob = (owner_id, job_id) => {
   return apiClient
     .delete(`owners/${owner_id}/ads/${job_id}`)
@@ -199,6 +231,7 @@ export const deleteOwnerJob = (owner_id, job_id) => {
     })
     .catch((err) => {
       return Promise.reject(err.status);
+
     });
 };
 

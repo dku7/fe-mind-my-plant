@@ -23,6 +23,7 @@ const addjobs = () => {
   const [message, setMessage] = useState("");
   let savedUserId;
 
+
   useEffect(() => {
     getUserId("user_id").then((id) => {
       console.log(id, "in use effect");
@@ -33,6 +34,7 @@ const addjobs = () => {
   function delay(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
+
 
   const theUser = loggedInUser ? loggedInUser.user_id : savedUserId;
   const handleJobSubmit = () => {
@@ -68,7 +70,6 @@ const addjobs = () => {
             Please fill out the form below to add a job to the site:{" "}
           </Text>
           <Text className="font-custom mb-1 text-base">Start Date</Text>
-
           <DatePicker
             className="rounded-md pl-1"
             isClearable="true"
@@ -109,7 +110,6 @@ const addjobs = () => {
             maxLength={500}
             aria-required="true"
           />
-
           <Pressable
             className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] items-center shadow-md"
             onPress={handleJobSubmit}
