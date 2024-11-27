@@ -33,11 +33,10 @@ const jobs = () => {
 
       {userType === 'owner' ? (
         <>
-          <View className="my-3">
-            <Button  onPress={() => {
+          <View className="my-5">
+            <Button onPress={() => {
               router.push('/jobs/addjobs')
-            }} title='Add New Job' className=" mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 shadow-md font-bold font-custom justify-center items-center flex">
-
+            }} title='Add New Job' color='#6A994E' className=" mx-5 px-6 py-2  rounded-md  shadow-md font-bold font-custom justify-center items-center flex"><Text>Add New Job</Text>
             </Button>
           </View>
           <View className="flex items-center">
@@ -77,25 +76,3 @@ const jobs = () => {
 };
 
 export default jobs;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     width: "100%",
-//     backgroundColor: "white",
-//   },
-//   inputcontainer: {
-//     flexDirection: "column",
-//     width: "100%",
-//     alignItems: "center",
-//     pointerEvents: "auto",
-//   },
-//   input: {
-//     flex: 1,
-//     borderColor: "black",
-//     borderWidth: 1,
-//     borderRadius: 5,
-//     alignItems: "center",
-//     fontSize: 18,
-//   },
-// });

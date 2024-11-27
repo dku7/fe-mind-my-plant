@@ -55,15 +55,15 @@ const addjobs = () => {
         <View className="mx-16">
           <Text className=" font-custom text-2xl mt-5 mb-5">Please fill out the form below to add a job to the site: </Text>
           <Text className="font-custom mb-1 text-base">Start Date</Text>
-          <DatePicker isClearable='true'  selected={startDate} minDate={Date()} locale='en-GB' dateFormat='dd/MM/yyyy' onChange={(date) => {
+          <DatePicker className='rounded-md pl-1' isClearable='true'  selected={startDate} minDate={Date()} locale='en-GB' dateFormat='dd/MM/yyyy' onChange={(date) => {
             setStartDate(date)}
             } />
           <Text className="font-custom mb-1 text-base">End Date</Text>
-          <DatePicker selected={endDate} locale='en-GB' minDate={Date()} dateFormat='dd/MM/yyyy' onChange={(date) => setEndDate(date)} />
+          <DatePicker className='rounded-md pl-1' selected={endDate} locale='en-GB' minDate={Date()} dateFormat='dd/MM/yyyy' onChange={(date) => setEndDate(date)} />
           <Text className="font-custom mb-1 text-base">Daily Rate (£)</Text>
           <TextInput
             onChange={(e) => setDailyRate(e.target.value)}
-            className="font-custom border rounded py-1 mb-4"
+            className="font-custom pl-1 bg-white rounded py-1 mb-4"
             type="number"
             placeholder=" 0"
             name="daily_rate"
@@ -71,14 +71,14 @@ const addjobs = () => {
           <Text className="font-custom mb-1 text-base">Job Description</Text>
           <TextInput
             onChange={(e) => setJobDescription(e.target.value)}
-            className="border rounded mb-4 py-8"
+            className=" bg-white rounded mb-4 py-8"
             type="text"
             placeholder=" (500)"
             name="job_description"
             aria-required="true"
           />
-          <Pressable className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom items-center shadow-md" onPress={handleJobSubmit}>
-            <Text>Add Job</Text>
+          <Pressable className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] items-center shadow-md" onPress={handleJobSubmit}>
+            <Text className=" text-gray-50 font-bold font-custom ">Add Job</Text>
           </Pressable>
           <Text>{message}</Text>
         </View>
