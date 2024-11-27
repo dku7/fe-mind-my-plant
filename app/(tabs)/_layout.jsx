@@ -8,9 +8,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useRouter } from "expo-router";
-import { StyleSheet } from "react-native";
 import { useRole } from "../contexts/role";
-import { Button } from "react-native";
 import NewHeader from "../Header";
 import AntDesign from '@expo/vector-icons/AntDesign';
 
@@ -213,19 +211,4 @@ export default function TabLayout() {
   );
 }
 
-const styles = StyleSheet.create({
-  nav: {
-    // color: 'blue',
-    // height: 70,
-    // borderWidth: 1,
-    // borderRadius: 50,
-    // borderColor: 'blue',
-    // borderTopColor: 'blue',
-    // backgroundColor: 'blue',
-    // },
-    // tabBarLabelStyle: {
-    // fontSize: 12,
-    // fontWeight: "bold",
-    // marginBottom: 10,
-  },
-});
+

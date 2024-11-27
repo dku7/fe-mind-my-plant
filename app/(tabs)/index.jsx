@@ -4,18 +4,13 @@ import { Link, router } from "expo-router";
 import { LoggedInUserContext } from "../contexts/loggedInUser";
 import { useContext } from "react";
 import { getUserList } from "../api";
-import SignIn from "../Authentication/signin";
 import { SafeAreaView } from "react-native-safe-area-context";
-import aloePlant from "../../assets/images/MMPimg.png";
 import { StyleSheet } from "react-native";
-import { Button } from "react-native";
 import { useRouter } from "expo-router";
 import { getUserId } from "../async-storage";
 import { removeUserId } from "../async-storage";
 import { useAsyncStorage } from "@react-native-async-storage/async-storage";
-
 import { Redirect } from "expo-router";
-
 import CareGuides from "./Careguides";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { logoutUser } from "../authentication";
@@ -35,6 +30,7 @@ const index = () => {
       console.log("removed ID in index");
     });
   };
+
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -61,7 +57,8 @@ const index = () => {
     });
   }, []);
 
-  if (isLoading) return <Text>Loading...</Text>;
+
+  if (isLoading) return <Text className="m-5 font-custom">Loading...</Text>;
   let avatarImg;
   if (loggedInUser) {
     avatarImg = loggedInUser.avatar_url;
@@ -72,21 +69,21 @@ const index = () => {
       <View className="mt-5">
         {loggedInUser ? (
           <>
-            <Text className="mt-3 ml-8 text-xl font-custom">
+            <Text className="mt-3 ml-12 mb-4 text-xl font-custom">
               Welcome back, {loggedInUser.username}!
             </Text>
             <Pressable
-              className="mx-5 ml-64 text-center justify-center h-10 w-24 border-[#D77F33] rounded-md bg-[#D77F33] text-gray-50 font-bold font-custom shadow-md"
+              className="mt-3 ml-64 text-center justify-center h-10 w-32 border-[#D77F33] rounded-md bg-[#D77F33] text-gray-50 font-bold font-custom shadow-md"
               onPress={handleSignOut}
               title="Sign Out"
             >
               Sign Out
             </Pressable>
-            <View className="ml-5">
+            <View className="items-center">
               <Link href="../profile" asChild>
                 <Pressable>
                   <Image
-                    className="ml-3 shadow-md"
+                    className="-ml-32 shadow-md"
                     source={{ uri: avatarImg }}
                     style={styles.avatar}
                   />

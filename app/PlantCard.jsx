@@ -10,12 +10,16 @@ import {
 
 const PlantCard = ({ plant, user_id, setReloadPage, reloadPage }) => {
   const [careInstructions, setCareInstructions] = useState(plant.instructions);
+  const [instructionUpdateMsg, setInstructionUpdateMsg] = useState("");
   const hasChanges = careInstructions !== plant.instructions;
 
   const handleSave = () => {
-    patchPutOwnerPlants(plant, user_id, careInstructions).then(
-      (response) => {}
-    );
+    patchPutOwnerPlants(plant, user_id, careInstructions).then((response) => {
+      setInstructionUpdateMsg("Instructions updated!");
+      setTimeout(() => {
+        setInstructionUpdateMsg("");
+      }, 3000);
+    });
   };
 
   const [removePlantCount, setRemovePlantCount] = useState(0);
@@ -52,142 +56,72 @@ const PlantCard = ({ plant, user_id, setReloadPage, reloadPage }) => {
   };
 
   return (
-    <View style={styles.card}>
-      <Image source={{ uri: plant.image_url }} style={styles.image} />
-      <View style={styles.details}>
-        <Text style={styles.commonName}>{plant.common_name}</Text>
+    <View className="flex-row bg-gray-100 my-2 mx-4 p-4 rounded-lg shadow-md overflow-visible">
+      <Image
+        source={{ uri: plant.image_url }}
+        className="w-24 h-24 object-cover"
+      />
+      <View className="flex-1 p-2 justify-center">
+        <Text className="text-xl font-bold text-gray-800">
+          {plant.common_name}
+        </Text>
+        {instructionUpdateMsg}
         <TextInput
-          style={styles.instructions}
-          type="text"
+          className="text-sm text-gray-800 mb-5 my-2 p-4 border border-gray-300 rounded-lg bg-gray-100"
           onChangeText={setCareInstructions}
-          placeholder="Add care instructions"
+          placeholder="Add care instructions here"
           name="care_instructions"
           value={careInstructions}
+          multiline={true}
+          numberOfLines={3}
         />
-        <Text style={styles.quantity}>Quantity: {plant.quantity}</Text>
+        <Text className="text-sm text-gray-800">
+          Quantity: {plant.quantity}
+        </Text>
         {plant.quantity > 1 && (
           <>
-            <TouchableOpacity style={styles.button} onPress={decreaseQuantity}>
+            <TouchableOpacity
+              className="p-2 bg-gray-300 rounded mb-2"
+              onPress={decreaseQuantity}
+            >
               <Text>Remove</Text>
             </TouchableOpacity>
-            <View style={styles.quantityControl}>
+            <View className="flex-row items-center mt-2">
               <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  removeDecrease();
-                }}
+                className="p-2 bg-gray-300 rounded mr-2"
+                onPress={removeDecrease}
               >
-                <Text style={styles.buttonText}>-</Text>
+                <Text className="font-bold text-lg">-</Text>
               </TouchableOpacity>
-              <Text style={styles.quantityText}>{removePlantCount}</Text>
+              <Text className="text-lg">{removePlantCount}</Text>
               <TouchableOpacity
-                style={styles.button}
-                onPress={() => {
-                  removeIncrease();
-                }}
+                className="p-2 bg-gray-300 rounded ml-2"
+                onPress={removeIncrease}
               >
-                <Text style={styles.buttonText}>+</Text>
+                <Text className="font-bold text-lg">+</Text>
               </TouchableOpacity>
             </View>
           </>
         )}
         {plant.quantity === 1 && (
-          <TouchableOpacity style={styles.saveButton} onPress={handleDelete}>
-            <Text style={styles.saveButtonText}>Delete</Text>
+          <TouchableOpacity
+            className="absolute -bottom-0 -left-24 bg-[#6A994E] p-2 rounded-lg shadow-lg"
+            onPress={handleDelete}
+          >
+            <Text className="text-white font-bold text-sm">Delete</Text>
           </TouchableOpacity>
         )}
       </View>
       {hasChanges && (
-        <TouchableOpacity style={styles.saveButton} onPress={handleSave}>
-          <Text style={styles.saveButtonText}>Save</Text>
+        <TouchableOpacity
+          className="absolute bottom-4 right-4 bg-[#6A994E] p-2 rounded-lg shadow-lg"
+          onPress={handleSave}
+        >
+          <Text className="text-white font-bold text-sm">Save</Text>
         </TouchableOpacity>
       )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  card: {
-    flexDirection: "row",
-    backgroundColor: "#f9f9f9",
-    marginVertical: 8,
-    marginHorizontal: 16,
-    borderRadius: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 5,
-    overflow: "visible",
-  },
-  image: {
-    width: 100,
-    height: 100,
-    resizeMode: "cover",
-  },
-  details: {
-    flex: 1,
-    padding: 10,
-    justifyContent: "center",
-  },
-  commonName: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  instructions: {
-    fontSize: 14,
-    color: "#333", // Darker text color for readability
-    marginVertical: 4,
-    padding: 0,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 4,
-    backgroundColor: "#f9f9f9",
-  },
-  quantity: {
-    fontSize: 14,
-    color: "#333",
-  },
-  saveButton: {
-    position: "relative",
-    bottom: 16,
-    right: 16,
-    backgroundColor: "#4CAF50",
-    marginTop: 20,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 4,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 4,
-    zIndex: 10,
-  },
-  saveButtonText: {
-    color: "#fff",
-    fontWeight: "bold",
-    fontSize: 14,
-  },
-  quantityControl: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginTop: 10,
-  },
-  button: {
-    padding: 10,
-    backgroundColor: "#e0e0e0",
-    borderRadius: 5,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  quantityText: {
-    marginHorizontal: 10,
-    fontSize: 16,
-  },
-});
 
 export default PlantCard;
