@@ -30,19 +30,13 @@ const guide = () => {
     });
   }, []);
   const finalGuide = careGuideInfo[0];
+  console.log(finalGuide)
 
   if (!isLoading)
     return (
-      <ScrollView className="mt-3 mx-3">
-        <Button
-          title="Back"
-          onPress={() => {
-            router.back();
-          }}
-        ></Button>
-        <Text>{finalGuide.title}</Text>
-        <Text>{finalGuide.body}</Text>
-        <Image source={{ uri: finalGuide.img_url }} style={styles.image} />
+      <ScrollView className="mt-3 mx-3 font-custom">
+        <Text className="mt-5 text-center font-bold text-2xl">{finalGuide.title}</Text>
+        <Text className="p-5 rounded-lg shadow-md m-5">{finalGuide.body}</Text>
       </ScrollView>
     );
 };

@@ -7,12 +7,18 @@ import { LoggedInUserContext } from "../../contexts/loggedInUser"
 import { postUserJobs } from "@/app/api";
 import { router } from "expo-router";
 import { getUserId } from "@/app/async-storage";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { registerLocale, setDefaultLocale } from  "react-datepicker";
+import { enGB } from 'date-fns/locale/en-GB';
+registerLocale('en-GB', enGB)
+import { format } from "date-fns";
 
 const addjobs = () => {
 
   const { loggedInUser } = useContext(LoggedInUserContext);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [dailyRate, setDailyRate] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [message, setMessage] = useState("");
@@ -31,8 +37,8 @@ const addjobs = () => {
   const handleJobSubmit = () => {
     if(startDate && endDate && dailyRate && jobDescription){
     postUserJobs((theUser), {
-      start_date: startDate,
-      end_date: endDate,
+      start_date: format(startDate, 'dd/MM/yyyy'),
+      end_date: format(endDate, 'dd/MM/yyyy'),
       daily_rate: dailyRate,
       job_instructions: jobDescription,
     }).then((response) => {
@@ -49,25 +55,15 @@ const addjobs = () => {
         <View className="mx-16">
           <Text className=" font-custom text-2xl mt-5 mb-5">Please fill out the form below to add a job to the site: </Text>
           <Text className="font-custom mb-1 text-base">Start Date</Text>
-          <TextInput 
-            onChange={(e) => setStartDate(e.target.value)}
-            className="font-custom border rounded py-1 mb-4"
-            type="date"
-            placeholder=" MM/DD/YYYY"
-            name="start_date"
-          />
+          <DatePicker className='rounded-md pl-1' isClearable='true'  selected={startDate} minDate={Date()} locale='en-GB' dateFormat='dd/MM/yyyy' onChange={(date) => {
+            setStartDate(date)}
+            } />
           <Text className="font-custom mb-1 text-base">End Date</Text>
-          <TextInput
-            onChange={(e) => setEndDate(e.target.value)}
-            className="font-custom border rounded py-1 mb-4"
-            type="date"
-            placeholder=" DD/MM/YYYY"
-            name="end_date"
-          />
+          <DatePicker className='rounded-md pl-1' selected={endDate} locale='en-GB' minDate={Date()} dateFormat='dd/MM/yyyy' onChange={(date) => setEndDate(date)} />
           <Text className="font-custom mb-1 text-base">Daily Rate (£)</Text>
           <TextInput
             onChange={(e) => setDailyRate(e.target.value)}
-            className="font-custom border rounded py-1 mb-4"
+            className="font-custom pl-1 bg-white rounded py-1 mb-4"
             type="number"
             placeholder=" 0"
             name="daily_rate"
@@ -75,14 +71,14 @@ const addjobs = () => {
           <Text className="font-custom mb-1 text-base">Job Description</Text>
           <TextInput
             onChange={(e) => setJobDescription(e.target.value)}
-            className="border rounded mb-4 py-8"
+            className=" bg-white rounded mb-4 py-8"
             type="text"
             placeholder=" (500)"
             name="job_description"
             aria-required="true"
           />
-          <Pressable className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom items-center shadow-md" onPress={handleJobSubmit}>
-            <Text>Add Job</Text>
+          <Pressable className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] items-center shadow-md" onPress={handleJobSubmit}>
+            <Text className=" text-gray-50 font-bold font-custom ">Add Job</Text>
           </Pressable>
           <Text>{message}</Text>
         </View>

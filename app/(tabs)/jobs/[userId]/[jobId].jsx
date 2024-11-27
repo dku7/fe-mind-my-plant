@@ -4,6 +4,9 @@ import { getOwnerPlants } from "@/app/api";
 import { getJobById, postJobRequest } from "@/app/api";
 import { useLocalSearchParams } from "expo-router";
 import { LoggedInUserContext } from "@/app/contexts/loggedInUser";
+import { StyleSheet } from "react-native";
+import { Image } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 const JobDetails = () => {
   const { loggedInUser } = useContext(LoggedInUserContext);
@@ -55,8 +58,8 @@ const JobDetails = () => {
 
   return (
     <SafeAreaView>
-      <View>
-        <View className="flex m-6 rounded-lg shadow-xl p-5">
+      <ScrollView className=" flex-1 font-custom">
+        <View className=" m-6 rounded-lg shadow-xl p-5">
             <Text className="font-custom text-base">Owner: {job.owner_first_name}</Text>
             <Text className="font-custom text-base">Location: {job.city}</Text>
             <Text className="font-custom text-base">
@@ -74,17 +77,25 @@ const JobDetails = () => {
             </Text>
 
         </View>
-        <Text className="font-custom text-base m-6 mb-3 ">
-          Looking after {"\n"}
+          <Text className="text-base font-semibold mx-7" >Looking after {"\n"} </Text>
+
+          <View className="grid grid-cols-3 mx-7 gap-3"  >
           {userPlants.map(
-            (plant) => `${plant.quantity} x ${plant.common_name}  `
-          )}
-        </Text>
-        <Text className="font-custom text-base mb-3 ml-6">
+            (plant) => {
+              return  <Text >{plant.quantity} x {plant.common_name} </Text> })}
+        </View>
+        <Text className="my-3 text-base font-semibold mx-7">
           Job instructions: 
           {"\n"}
             {job.job_instructions}
         </Text>
+
+        <View className="grid grid-cols-5 mx-7 my-3 gap-3"  >
+          {userPlants.map(
+            (plant) => {
+              return  <Image source={plant.image_url} style={styles.image} />}
+          )} 
+        </View>  
 
         <Pressable
           onPress={handlePostRequest}
@@ -97,13 +108,22 @@ const JobDetails = () => {
         >
           Apply
         </Pressable>
-        <Text className="ml-5 mt-3 font-custom text-base font-semibold">
+        <Text className="ml-7 mt-4 font-custom text-base font-semibold">
           Number of applications: {requests}
         </Text>
         <Text className="ml-5 mt-3 font-custom text-base font-semibold">{feedbackMsg}</Text>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default JobDetails;
+
+
+const styles = StyleSheet.create( {
+  image: {
+    height: 60,
+    width: 60,
+    borderRadius:50,
+  }
+})

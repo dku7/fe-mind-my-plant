@@ -11,7 +11,7 @@ import NewHeader from "./Header";
 import { RoleProvider } from "./contexts/role";
 import { Button } from "react-native";
 import { router } from "expo-router";
-
+import AntDesign from '@expo/vector-icons/AntDesign';
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
 
@@ -43,7 +43,10 @@ export default function RootLayout() {
         }}
         />
         <Stack.Screen name="+not-found" />
-        <Stack.Screen name="profile" options={{headerTitle: 'Profile'}}/>
+        <Stack.Screen name="profile" options={{headerLeft: () => (
+            <AntDesign className="ml-4 mt-1" 
+            name="leftcircleo" size={32} color="white" onPress={() => {router.push('/')}} />),
+          href: null, headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>}}/>
         <Stack.Screen name="Authentication/signin" options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>}}/>
         <Stack.Screen name="Authentication/registration" options={{ headerTitle: '', headerBackground: (props) => <NewHeader {...props}/>}}/>
       </Stack>
