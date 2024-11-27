@@ -190,6 +190,7 @@ export const updateProfileBio = (newBio, user_id, user) => {
     });
 };
 
+
 export const updateSitterFeedbackRating = (
   sitter_id,
   job_id,
@@ -220,6 +221,17 @@ export const postSitterRequest = (sitter_id, job_id) => {
     .then((response) => {
       console.log(response, "in API");
       return response.data;
+
+export const deleteOwnerJob = (owner_id, job_id) => {
+  return apiClient
+    .delete(`owners/${owner_id}/ads/${job_id}`)
+    .then((response) => {
+      console.log("Deleted from api");
+      return response;
+    })
+    .catch((err) => {
+      return Promise.reject(err.status);
+
     });
 };
 

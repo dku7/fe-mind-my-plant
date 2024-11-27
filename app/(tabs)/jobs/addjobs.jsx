@@ -18,10 +18,11 @@ const addjobs = () => {
   const { loggedInUser } = useContext(LoggedInUserContext);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [dailyRate, setDailyRate] = useState("");
-  const [jobDescription, setJobDescription] = useState("");
+  const [dailyRate, setDailyRate] = useState(0);
+  const [jobDescription, setJobDescription] = useState("(500 characters)");
   const [message, setMessage] = useState("");
   let savedUserId;
+
 
   useEffect(() => {
     getUserId("user_id").then((id) => {
@@ -30,17 +31,32 @@ const addjobs = () => {
     });
   }, []);
 
+  function delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+
   const theUser = loggedInUser ? loggedInUser.user_id : savedUserId;
   const handleJobSubmit = () => {
     if (startDate && endDate && dailyRate && jobDescription) {
       postUserJobs(theUser, {
-        start_date: format(startDate, "dd/MM/yyyy"),
-        end_date: format(endDate, "dd/MM/yyyy"),
+        start_date: format(startDate, "dd/mm/yyyy"),
+        end_date: format(endDate, "dd/mm/yyyy"),
         daily_rate: dailyRate,
         job_instructions: jobDescription,
-      }).then((response) => {
-        setMessage("Job posted successfully");
-      });
+      })
+        .then((response) => {
+          setMessage("Job posted successfully");
+          return delay(2000);
+        })
+        .then(() => {
+          setStartDate(Date());
+          setEndDate(new Date());
+          setMessage("");
+          setDailyRate(0);
+          setJobDescription("(500 characters)");
+          router.push("/jobs");
+        });
     } else {
       setMessage("Please complete all fields");
     }
@@ -79,7 +95,8 @@ const addjobs = () => {
             onChange={(e) => setDailyRate(e.target.value)}
             className="font-custom pl-1 bg-white rounded py-1 mb-4"
             type="number"
-            placeholder=" 0"
+            value={dailyRate}
+            clearTextOnFocus="true"
             name="daily_rate"
           />
           <Text className="font-custom mb-1 text-base">Job Description</Text>
@@ -87,8 +104,10 @@ const addjobs = () => {
             onChange={(e) => setJobDescription(e.target.value)}
             className=" bg-white rounded mb-4 py-8"
             type="text"
-            placeholder=" (500)"
+            value={jobDescription}
+            clearTextOnFocus="true"
             name="job_description"
+            maxLength={500}
             aria-required="true"
           />
           <Pressable
