@@ -39,91 +39,95 @@ const jobs = () => {
     deleteOwnerJob(user_id, job_id);
     console.log("delete", user_id, job_id);
 
-  const handleSearch = (text) => {
-    setSearchQuery(text);
-    if (text === "") {
+    const handleSearch = (text) => {
+      setSearchQuery(text);
+      if (text === "") {
+        setCurrentJobs(allJobs);
+      } else {
+        const jobsByLocation = currentJobs.filter((item) => {
+          return item.city.includes(text);
+        });
+        setCurrentJobs(jobsByLocation);
+      }
+    };
+
+    const clearSearch = () => {
       setCurrentJobs(allJobs);
-    } else {
-      const jobsByLocation = currentJobs.filter((item) => {
-        return item.city.includes(text);
-      });
-      setCurrentJobs(jobsByLocation);
-    }
-  };
+    };
 
-  const clearSearch = () => {
-    setCurrentJobs(allJobs);
-
-  };
-
-  return (
-    <ScrollView className="flex items-center">
-
-      {isOwner ? (
-        <>
-          <View className="my-5">
-            <Button
-              onPress={() => {
-                router.push("/jobs/addjobs");
-              }}
-              title="Add New Job"
-              color="#6A994E"
-              className=" mx-5 px-6 py-2  rounded-md  shadow-md font-bold font-custom justify-center items-center flex"
+    return (
+      <ScrollView className="flex items-center">
+        {isOwner ? (
+          <>
+            <View className="my-5">
+              <Button
+                onPress={() => {
+                  router.push("/jobs/addjobs");
+                }}
+                title="Add New Job"
+                color="#6A994E"
+                className=" mx-5 px-6 py-2  rounded-md  shadow-md font-bold font-custom justify-center items-center flex"
+              >
+                <Text>Add New Job</Text>
+              </Button>
+            </View>
+            <View className="flex items-center">
+              {ownerJobs.map((job) => {
+                const userId = job.owner_id;
+                const jobId = job.job_id;
+                return (
+                  <>
+                    <JobCard job={job} key={userId} />
+                    <Pressable
+                      className="mb-12 mt-0 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] items-center shadow-md"
+                      onPress={() => deleteJob(userId, jobId)}
+                    >
+                      <Text className="text-gray-50 font-bold font-custom ">
+                        DELETE JOB
+                      </Text>
+                    </Pressable>
+                  </>
+                );
+              })}
+            </View>
+          </>
+        ) : (
+          <>
+            <View className="mt-5 flex items-center">
+              <Text className="font-custom text-xl">
+                {loggedInUser?.username}, please find a list of jobs below
+              </Text>
+            </View>
+            <TextInput
+              className="font-custom border rounded-md mt-2 p-1"
+              placeholder="Search city"
+              value={searchQuery}
+              onChangeText={handleSearch}
+            ></TextInput>
+            <Pressable
+              className="p-2 my-4 mx-20 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md"
+              onPress={clearSearch}
             >
-              <Text>Add New Job</Text>
-            </Button>
-          </View>
-          <View className="flex items-center">
-            {ownerJobs.map((job) => {
-              const userId = job.owner_id;
-              const jobId = job.job_id;
-              return (
-                <>
-                  <JobCard job={job} key={userId} />
-                  <Pressable
-                    className="mb-12 mt-0 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] items-center shadow-md"
-                    onPress={() => deleteJob(userId, jobId)}
-                  >
-                    <Text className="text-gray-50 font-bold font-custom ">
-                      DELETE JOB
-                    </Text>
-                  </Pressable>
-                </>
-              );
-            })}
-          </View>
-        </>
-      ) : (
-        <>
-          <View className="mt-5 flex items-center">
-            <Text className="font-custom text-xl">
-              {loggedInUser?.username}, please find a list of jobs below
-            </Text>
-          </View>
-          <TextInput className="font-custom border rounded-md mt-2 p-1"
-            placeholder="Search city"
-            value={searchQuery}
-            onChangeText={handleSearch}
-          ></TextInput>
-          <Pressable className="p-2 my-4 mx-20 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md" onPress={clearSearch}>
-            <Text className="font-custom text-center text-gray-50 font-semibold">Clear Search</Text>
-          </Pressable>
+              <Text className="font-custom text-center text-gray-50 font-semibold">
+                Clear Search
+              </Text>
+            </Pressable>
 
-          <View className="flex items-center">
-            {currentJobs.map((job) => {
-              const userId = job.owner_id;
-              const jobId = job.job_id;
-              return (
-                <Link href={`/jobs/${userId}/${jobId}`}>
-                  <JobCard job={job} key={job.job_id} />
-                </Link>
-              );
-            })}
-          </View>
-        </>
-      )}
-    </ScrollView>
-  );
+            <View className="flex items-center">
+              {currentJobs.map((job) => {
+                const userId = job.owner_id;
+                const jobId = job.job_id;
+                return (
+                  <Link href={`/jobs/${userId}/${jobId}`}>
+                    <JobCard job={job} key={job.job_id} />
+                  </Link>
+                );
+              })}
+            </View>
+          </>
+        )}
+      </ScrollView>
+    );
+  };
 };
-
 export default jobs;
