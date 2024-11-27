@@ -10,7 +10,7 @@ import {
   Platform,
   SafeAreaView,
 } from "react-native";
-import { auth } from "./firebase"; // Assume user authentication is handled
+import { auth } from "./firebase"; // Assume user authentication is handled.
 import { useChatMessages, sendMessage } from "./chatFunctions";
 import { logoutUser } from "./authentication";
 
