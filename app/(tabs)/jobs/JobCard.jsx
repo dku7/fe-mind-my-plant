@@ -16,6 +16,7 @@ const JobCard = ({ job }) => {
   return (
     <SafeAreaView >
       <View className={cardClassName}>
+          {job.last_minute === "TRUE" ? <Text className="text-lg font-semibold text-center">Last Minute Job</Text> : <Text></Text>}
           <Text className="text-lg text-black">
             <Entypo
               className="ml-1 pr-2"
