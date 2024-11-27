@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { LoggedInUserContext } from "../../contexts/loggedInUser";
 import JobCard from "./JobCard";
-import { getJobsList, getOwnersJobs } from "../../api";
+import { deleteOwnerJob, getJobsList, getOwnersJobs } from "../../api";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { Link } from "expo-router";
 import { Pressable } from "react-native";
@@ -20,6 +20,8 @@ const jobs = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [allJobs, setAllJobs] = useState([]);
 
+  const isOwner = userType === "owner";
+
   useEffect(() => {
     getJobsList().then((response) => {
       setCurrentJobs(response);
@@ -32,6 +34,10 @@ const jobs = () => {
       setOwnerJobs(response);
     });
   }, []);
+
+  const deleteJob = (user_id, job_id) => {
+    deleteOwnerJob(user_id, job_id);
+    console.log("delete", user_id, job_id);
 
   const handleSearch = (text) => {
     setSearchQuery(text);
@@ -47,11 +53,13 @@ const jobs = () => {
 
   const clearSearch = () => {
     setCurrentJobs(allJobs);
+
   };
 
   return (
     <ScrollView className="flex items-center">
-      {userType === "owner" ? (
+
+      {isOwner ? (
         <>
           <View className="my-5">
             <Button
@@ -70,9 +78,17 @@ const jobs = () => {
               const userId = job.owner_id;
               const jobId = job.job_id;
               return (
-                <Link href={`/jobs/sitters/${userId}/${jobId}`}>
-                  <JobCard job={job} key={job.job_id} />
-                </Link>
+                <>
+                  <JobCard job={job} key={userId} />
+                  <Pressable
+                    className="mb-12 mt-0 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] items-center shadow-md"
+                    onPress={() => deleteJob(userId, jobId)}
+                  >
+                    <Text className="text-gray-50 font-bold font-custom ">
+                      DELETE JOB
+                    </Text>
+                  </Pressable>
+                </>
               );
             })}
           </View>
