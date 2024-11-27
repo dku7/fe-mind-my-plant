@@ -40,7 +40,7 @@ const index = () => {
         {loggedInUser ? (
           <>
             <Text className="mt-3 ml-3 text-xl font-custom">
-              Welcome back, {loggedInUser.username}!
+              Welcome back ..., {loggedInUser.username}!
             </Text>
             <View style={styles.pressable}>
               <Link href="../profile" asChild>
