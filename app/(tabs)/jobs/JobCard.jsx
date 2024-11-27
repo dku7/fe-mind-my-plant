@@ -15,6 +15,7 @@ const JobCard = ({ job }) => {
   return (
     <SafeAreaView>
       <View className={cardClassName}>
+
         <Text className="text-lg text-black">
           <Entypo
             className="ml-1 pr-2"
@@ -29,6 +30,43 @@ const JobCard = ({ job }) => {
             <Foundation
               className="ml-2 pr-3"
               name="calendar"
+
+          {job.last_minute === "TRUE" ? <Text className="text-lg font-semibold text-center">Last Minute Job</Text> : <Text></Text>}
+          <Text className="text-lg text-black">
+            <Entypo
+              className="ml-1 pr-2"
+              name="location-pin"
+              size={24}
+              color="black"
+            />
+            {job.city}
+          </Text>
+          <Text className="text-lg text-black">
+            <Text className="text-lg text-black font-bold">
+              <Foundation
+                className="ml-2 pr-3"
+                name="calendar"
+                size={24}
+                color="black"
+              />
+            </Text>
+            {new Date(job.start_date).toLocaleDateString()} -{" "}
+            {new Date(job.end_date).toLocaleDateString()}
+          </Text>
+          <Text className="text-lg text-black">
+            <FontAwesome5
+              className="ml-1 pr-2"
+              name="money-bill-wave"
+              size={18}
+              color="black"
+            />
+            £{job.daily_rate}
+          </Text>
+          <Text className="text-lg text-black">
+            <Entypo
+              className="ml-1 pr-2"
+              name="location-pin"
+
               size={24}
               color="black"
             />

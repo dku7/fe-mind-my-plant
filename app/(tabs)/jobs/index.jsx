@@ -4,23 +4,28 @@ import { StyleSheet } from "react-native";
 import { LoggedInUserContext } from "../../contexts/loggedInUser";
 import JobCard from "./JobCard";
 import { deleteOwnerJob, getJobsList, getOwnersJobs } from "../../api";
-import { ScrollView } from "react-native-gesture-handler";
+import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { Link } from "expo-router";
 import { Pressable } from "react-native";
 import { useRole } from "../../contexts/role";
 import { router } from "expo-router";
+import { SearchBar } from "react-native-elements";
+import { all } from "axios";
 
 const jobs = () => {
   const { loggedInUser } = useContext(LoggedInUserContext);
   const [currentJobs, setCurrentJobs] = useState([]);
   const [ownerJobs, setOwnerJobs] = useState([]);
   const { userType } = useRole();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [allJobs, setAllJobs] = useState([]);
 
   const isOwner = userType === "owner";
 
   useEffect(() => {
     getJobsList().then((response) => {
       setCurrentJobs(response);
+      setAllJobs(response);
     });
   }, []);
 
@@ -33,10 +38,27 @@ const jobs = () => {
   const deleteJob = (user_id, job_id) => {
     deleteOwnerJob(user_id, job_id);
     console.log("delete", user_id, job_id);
+
+  const handleSearch = (text) => {
+    setSearchQuery(text);
+    if (text === "") {
+      setCurrentJobs(allJobs);
+    } else {
+      const jobsByLocation = currentJobs.filter((item) => {
+        return item.city.includes(text);
+      });
+      setCurrentJobs(jobsByLocation);
+    }
+  };
+
+  const clearSearch = () => {
+    setCurrentJobs(allJobs);
+
   };
 
   return (
     <ScrollView className="flex items-center">
+
       {isOwner ? (
         <>
           <View className="my-5">
@@ -78,6 +100,15 @@ const jobs = () => {
               {loggedInUser?.username}, please find a list of jobs below
             </Text>
           </View>
+          <TextInput className="font-custom border rounded-md mt-2 p-1"
+            placeholder="Search city"
+            value={searchQuery}
+            onChangeText={handleSearch}
+          ></TextInput>
+          <Pressable className="p-2 my-4 mx-20 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md" onPress={clearSearch}>
+            <Text className="font-custom text-center text-gray-50 font-semibold">Clear Search</Text>
+          </Pressable>
+
           <View className="flex items-center">
             {currentJobs.map((job) => {
               const userId = job.owner_id;
