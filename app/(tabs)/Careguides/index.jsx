@@ -19,6 +19,7 @@ const CareGuides = () => {
     });
   }, [careGuideInfo]);
 
+  
   return (
     <SafeAreaView>
       <Text className="text-lg font-custom mt-5 mb-7">
@@ -33,7 +34,7 @@ const CareGuides = () => {
 
           return (
             <Pressable
-              onPress={() => {
+              onPress={() => {delayPush
                 router.push(`/(tabs)/Careguides/${guide}`);
               }}
             >

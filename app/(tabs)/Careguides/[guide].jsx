@@ -28,7 +28,7 @@ const guide = () => {
       }
       setIsLoading(false);
     });
-  }, []);
+  }, [guide]);
   const finalGuide = careGuideInfo[0];
   console.log(finalGuide)
 
