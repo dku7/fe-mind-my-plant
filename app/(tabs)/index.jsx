@@ -9,8 +9,10 @@ import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { getUserId } from "../async-storage";
 import { removeUserId } from "../async-storage";
+import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { Redirect } from "expo-router";
 import CareGuides from "./Careguides";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { logoutUser } from "../authentication";
 
 const index = () => {
@@ -28,6 +30,7 @@ const index = () => {
       console.log("removed ID in index");
     });
   };
+
   const handleLogout = async () => {
     try {
       await logoutUser();
@@ -53,6 +56,7 @@ const index = () => {
       setIsLoading(false);
     });
   }, []);
+
 
   if (isLoading) return <Text className="m-5 font-custom">Loading...</Text>;
   let avatarImg;

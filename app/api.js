@@ -22,6 +22,7 @@ export const registerUser = (newUser) => {
 };
 
 export const updateProfile = (updateData, user_id) => {
+  console.log(updateData, "Profile update");
   return apiClient
     .post(`/users/${user_id}`, updateData)
     .then((response) => {
@@ -170,6 +171,21 @@ export const getSitterJobs = (sitter_id) => {
     })
     .catch((response) => {
       console.log(response);
+      return Promise.reject(response.status);
+    });
+};
+
+export const updateProfileBio = (newBio, user_id, user) => {
+  const updatedUser = { ...user };
+  updatedUser.bio = newBio;
+  console.log(updatedUser, "UPDATE BIO");
+  return apiClient
+    .post(`/users/${user_id}`, updatedUser)
+    .then((response) => {
+      console.log(response);
+      return response.data.bio;
+    })
+    .catch((response) => {
       return Promise.reject(response.status);
     });
 };

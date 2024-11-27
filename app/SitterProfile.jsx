@@ -8,12 +8,12 @@ import {
   Pressable,
 } from "react-native";
 import { LoggedInUserContext } from "./contexts/loggedInUser";
-import { getSitterJobs } from "./api";
+import { getSitterJobs, updateProfileBio } from "./api";
 
-const SitterProfile = () => {
+const SitterProfile = ({ profileDetails }) => {
   const { loggedInUser } = useContext(LoggedInUserContext);
   const [description, setDescription] = useState(
-    loggedInUser.description || ""
+    loggedInUser.bio || "Tell plant owners about yourself..."
   );
 
   const [successMsg, setSuccessMsg] = useState("");
@@ -37,107 +37,44 @@ const SitterProfile = () => {
   }, [loggedInUser.user_id]);
 
   const handleDescriptionUpdate = () => {
-    console.log("need to figure out endpoint");
-    setSuccessMsg("Description updated successfully!");
-    setTimeout(() => {
-      setSuccessMsg("");
-    }, 3000);
+    updateProfileBio(description, loggedInUser.user_id, profileDetails).then(
+      (newBio) => {
+        setDescription(newBio);
+        setSuccessMsg("Description updated successfully!");
+        setTimeout(() => {
+          setSuccessMsg("");
+        }, 3000);
+      }
+    );
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>
-        Sitter Profile <br></br> Average Rating: {averageRating}
+    <ScrollView className="flex-1 bg-white p-5">
+      <Text className=" pb-3 text-2xl font-bold text-center">
+        Sitter Profile <br /> Average Rating:{" "}
+        {averageRating || "No ratings given"}
       </Text>
-      <View style={styles.inputGroup}>
-        <Text style={styles.label}>Your Description:</Text>
+      <View className="mb-4">
+        <Text className="text-lg pb-2">Your Description:</Text>
         <TextInput
-          style={styles.input}
-          multiline
+          className="bg-gray-100 border border-gray-300 rounded-lg p-3 text-lg text-left h-24"
+          multiline={true}
           placeholder="Tell others about yourself..."
           value={description}
           onChangeText={setDescription}
         />
       </View>
-      <Pressable style={styles.button} onPress={handleDescriptionUpdate}>
-        <Text style={styles.buttonText}>Update Description</Text>
+      <Pressable
+        className="p-3 bg-gray-300 rounded-lg"
+        onPress={handleDescriptionUpdate}
+      >
+        <Text className="text-lg font-bold">Update Description</Text>
       </Pressable>
-      {successMsg ? <Text style={styles.successMsg}>{successMsg}</Text> : null}
+      {successMsg ? (
+        <Text className="text-lg text-center mt-2">{successMsg}</Text>
+      ) : null}
     </ScrollView>
   );
 };
 
 export default SitterProfile;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-
-    textAlign: "center",
-  },
-  inputGroup: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: 16,
-  },
-  input: {
-    backgroundColor: "#f9f9f9",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 10,
-    fontSize: 16,
-    textAlignVertical: "top",
-    height: 100,
-  },
-  button: {
-    padding: 10,
-    backgroundColor: "#e0e0e0",
-    borderRadius: 5,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  successMsg: {
-    fontSize: 16,
-    textAlign: "center",
-    marginTop: 8,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 12,
-  },
-  card: {
-    backgroundColor: "#fff",
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    padding: 16,
-    marginBottom: 12,
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  jobTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#333",
-  },
-  jobDetails: {
-    fontSize: 14,
-    marginTop: 4,
-  },
-  noJobsText: {
-    fontSize: 16,
-    textAlign: "center",
-  },
-});
