@@ -65,10 +65,10 @@ const SitterProfile = ({ profileDetails }) => {
         />
       </View>
       <Pressable
-        className="p-3 bg-gray-300 rounded-lg"
+        className="p-3 bg-[#6A994E] border-[#6A994E] rounded-md shadow-md"
         onPress={handleDescriptionUpdate}
       >
-        <Text className="text-lg font-bold">Update Description</Text>
+        <Text className="text-lg font-bold text-center text-white">Update Description</Text>
       </Pressable>
       {successMsg ? (
         <Text className="text-lg text-center mt-2">{successMsg}</Text>

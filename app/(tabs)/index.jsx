@@ -9,10 +9,8 @@ import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { getUserId } from "../async-storage";
 import { removeUserId } from "../async-storage";
-import { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { Redirect } from "expo-router";
 import CareGuides from "./Careguides";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { logoutUser } from "../authentication";
 
 const index = () => {
