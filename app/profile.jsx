@@ -145,7 +145,7 @@ const Profile = () => {
   return (
     <ScrollView className="flex-1 bg-white">
       <Pressable
-        className={`mt-5 mb-5 p-2 rounded-xl self-center ${
+        className={`mt-5 mb-5 p-2 rounded-md self-center ${
           userType === "owner" ? "bg-[#6A994E]" : "bg-[#D77F33]"
         }`}
         onPress={() =>
@@ -268,10 +268,10 @@ const Profile = () => {
         />
       </View>
       <Pressable
-        className="mx-20 my-3 py-2 border-b-4 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md text-center"
+        className="mx-20 my-3 py-2 border-b-4 border-[#6A994E] rounded-md bg-[#6A994E] shadow-md"
         onPress={handleProfileUpdate}
       >
-        Update
+       <Text className="text-gray-50 font-bold font-custom text-center text-xl"> Update</Text>
       </Pressable>
       <Text>{sucessMsg}</Text>
 
@@ -315,166 +315,3 @@ const Profile = () => {
 
 export default Profile;
 
-// const styles = StyleSheet.create({
-//   avatar: {
-//     flex: 1,
-//     width: 100,
-//     height: 100,
-//     borderRadius: 100,
-//     borderColor: "black",
-//   },
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//   },
-//   switchButton: {
-//     marginTop: 20,
-//     marginBottom: 20,
-//     padding: 10,
-//     borderRadius: 8,
-//     alignSelf: "center",
-//   },
-//   switchButtonText: {
-//     fontSize: 16,
-//     fontWeight: "bold",
-//   },
-//   ownerView: {
-//     backgroundColor: "#4CAF50",
-//   },
-//   sitterView: {
-//     backgroundColor: "#FF5722",
-//   },
-//   container: {
-//     flex: 1,
-//     // justifyContent: "center",
-//     // alignItems: "center",
-//     backgroundColor: "#fff",
-//   },
-//   inputcontainer: {
-//     flexDirection: "column",
-//     width: "100%",
-//     alignItems: "center",
-//     pointerEvents: "auto",
-//   },
-//   title: {
-//     fontSize: 24,
-//     fontWeight: "bold",
-//     marginBottom: 16,
-//     color: "#333",
-//     textAlign: "center",
-//   },
-//   inputGroup: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     marginBottom: 12,
-//     paddingRight: 50,
-//   },
-//   label: {
-//     flex: 1,
-//     fontSize: 14,
-//     fontWeight: "500",
-//     color: "#555",
-//     textAlign: "right",
-//     marginRight: 8,
-//   },
-//   input: {
-//     backgroundColor: "#fff",
-//     borderWidth: 1,
-//     borderColor: "#ccc",
-//     borderRadius: 8,
-//     padding: 10,
-//     marginBottom: 12,
-//     fontSize: 16,
-//     color: "#333",
-//     shadowColor: "#000",
-//     shadowOffset: { width: 0, height: 1 },
-//     shadowOpacity: 0.1,
-//     shadowRadius: 2,
-//     elevation: 2,
-//   },
-//   button: {
-//     backgroundColor: "#4CAF50",
-//     paddingVertical: 12,
-//     paddingHorizontal: 20,
-//     borderRadius: 8,
-//     alignItems: "center",
-//     shadowColor: "#000",
-//     shadowOffset: { width: 0, height: 2 },
-//     shadowOpacity: 0.3,
-//     shadowRadius: 3,
-//     elevation: 4,
-//   },
-//   buttonText: {
-//     color: "#fff",
-//     fontWeight: "bold",
-//     fontSize: 16,
-//   },
-//   successMsg: {
-//     marginTop: 16,
-//     color: "#4CAF50",
-//     textAlign: "center",
-//     fontSize: 16,
-//   },
-//   addButton: {
-//     backgroundColor: "#6A994E",
-//     padding: 15,
-//     borderRadius: 10,
-//   },
-//   addButtonText: {
-//     color: "#fff",
-//     fontSize: 18,
-//     fontWeight: "bold",
-//   },
-//   modalContainer: {
-//     flex: 1,
-//     padding: 20,
-//     backgroundColor: "#f8f8f8",
-//   },
-//   card: {
-//     flexDirection: "row",
-//     marginBottom: 15,
-//     padding: 10,
-//     backgroundColor: "#fff",
-//     borderRadius: 8,
-//     shadowColor: "#000",
-//     shadowOpacity: 0.1,
-//     shadowRadius: 4,
-//     elevation: 2,
-//   },
-//   image: {
-//     width: 60,
-//     height: 60,
-//     borderRadius: 8,
-//     marginRight: 10,
-//   },
-//   cardInfo: {
-//     flex: 1,
-//     justifyContent: "center",
-//   },
-//   commonName: {
-//     fontSize: 16,
-//     fontWeight: "bold",
-//   },
-//   scientificName: {
-//     fontSize: 14,
-//     color: "#666",
-//   },
-//   quantityControl: {
-//     flexDirection: "row",
-//     alignItems: "center",
-//     marginTop: 10,
-//   },
-//   button: {
-//     padding: 10,
-//     backgroundColor: "#e0e0e0",
-//     borderRadius: 5,
-//   },
-//   buttonText: {
-//     fontSize: 16,
-//     fontWeight: "bold",
-//   },
-//   quantityText: {
-//     marginHorizontal: 10,
-//     fontSize: 16,
-//   },
-// });

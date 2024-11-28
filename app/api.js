@@ -22,7 +22,6 @@ export const registerUser = (newUser) => {
 };
 
 export const updateProfile = (updateData, user_id) => {
-  console.log(updateData, "Profile update");
   return apiClient
     .post(`/users/${user_id}`, updateData)
     .then((response) => {

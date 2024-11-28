@@ -79,13 +79,13 @@ const registration = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView >
       {!loggedInUser && (
-        <View style={styles.inputcontainer}>
+        <View className="font-custom px-14"  >
           <>
-            <Text>registration</Text>
+            <Text className="text-xl p-7 text-center">Registration</Text>
             <TextInput
-              style={styles.input}
+              className="border rounded-md pl-2 text-lg font-custom mb-2"
               type="text"
               onChange={onChange}
               placeholder="first_name"
@@ -93,7 +93,7 @@ const registration = () => {
               value={registrationDetails.first_name}
             />
             <TextInput
-              style={styles.input}
+              className="border rounded-md pl-2 text-lg font-custom mb-2"
               type="text"
               onChange={onChange}
               placeholder="last_name"
@@ -101,14 +101,14 @@ const registration = () => {
               value={registrationDetails.last_name}
             />
             <TextInput
-              style={styles.input}
+              className="border rounded-md pl-2 text-lg font-custom mb-2"
               type="email"
               onChange={onChange}
               placeholder="email"
               name="email"
             />
             <TextInput
-              style={styles.input}
+              className="border rounded-md pl-2 text-lg font-custom mb-2"
               type="text"
               onChange={onChange}
               placeholder="username"
@@ -117,7 +117,7 @@ const registration = () => {
               aria-required="true"
             />
             <TextInput
-              style={styles.input}
+              className="border rounded-md pl-2 text-lg font-custom mb-2"
               type="text"
               onChange={onChange}
               placeholder="password"
@@ -125,16 +125,18 @@ const registration = () => {
               value={registrationDetails.password}
               aria-required="true"
             />
-            <Pressable onPress={handleRegistrationSubmit}>
-              <Text>Register</Text>
+            <Pressable 
+            className="mx-16 mt-3 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md"
+            onPress={handleRegistrationSubmit}>
+              <Text  className="font-custom text-lg font-bold text-white text-center">Register</Text>
             </Pressable>
           </>
         </View>
       )}
 
-      {!isValid && <Text>{isValidMsg}</Text>}
-      <Text>{isPosting}</Text>
-      <Text>{isErrorMsg}</Text>
+      {!isValid && <Text className="text-xl p-7 text-center">{isValidMsg}</Text>}
+      <Text className="text-xl p-7 text-center">{isPosting}</Text>
+      <Text className="text-xl p-7 text-center">{isErrorMsg}</Text>
 
       {loggedInUser && (
         <View>
