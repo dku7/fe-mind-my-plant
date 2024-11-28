@@ -34,7 +34,7 @@ const CareGuides = () => {
 
           return (
             <Pressable
-              onPress={() => {delayPush
+              onPress={() => {
                 router.push(`/(tabs)/Careguides/${guide}`);
               }}
             >
