@@ -81,24 +81,24 @@ const PlantCard = ({ plant, user_id, setReloadPage, reloadPage }) => {
         {plant.quantity > 1 && (
           <>
             <TouchableOpacity
-              className="p-2 bg-gray-300 rounded mb-2"
+              className="p-2 mt-2 bg-[#D77F33] border-[#D77F33] rounded-md mb-2"
               onPress={decreaseQuantity}
             >
-              <Text>Remove</Text>
+              <Text className="font-lg text-white text-center">Remove</Text>
             </TouchableOpacity>
             <View className="flex-row items-center mt-2">
               <TouchableOpacity
-                className="p-2 bg-gray-300 rounded mr-2"
+                className="p-2 bg-[#D77F33] border-[#D77F33 rounded-md mr-2"
                 onPress={removeDecrease}
               >
-                <Text className="font-bold text-lg">-</Text>
+                <Text className="font-bold text-lg text-white">-</Text>
               </TouchableOpacity>
               <Text className="text-lg">{removePlantCount}</Text>
               <TouchableOpacity
-                className="p-2 bg-gray-300 rounded ml-2"
+                className="p-2 bg-[#D77F33] border-[#D77F33 rounded-md ml-2"
                 onPress={removeIncrease}
               >
-                <Text className="font-bold text-lg">+</Text>
+                <Text className="font-bold text-white text-lg">+</Text>
               </TouchableOpacity>
             </View>
           </>

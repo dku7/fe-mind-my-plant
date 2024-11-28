@@ -63,12 +63,12 @@ const SitterCards = () => {
         {isAccepted ? (
           <>
             <Pressable
-              style={styles.contactButton}
+               className='bg-[#6A994E] p-2 border-[#6A994E] rounded-md'
               onPress={() =>
                 navigation.navigate("Chat", { sitterId: item.sitter_id })
               }
             >
-              <Text style={styles.buttonText}>Contact</Text>
+              <Text className="text-center p-2 font-semibold text-white">Contact</Text>
             </Pressable>
             {/* && !item.feedback */}
             {isCompleted && (
@@ -84,14 +84,14 @@ const SitterCards = () => {
           </>
         ) : (
           <Pressable
+          className='bg-[#D77F33] p-2 border-[#D77F33 rounded-md'
             style={[
-              styles.acceptButton,
               hasAcceptedSitter ? styles.disabledButton : null,
             ]}
             disabled={hasAcceptedSitter}
             onPress={() => handleAccept(item.sitter_id)}
           >
-            <Text style={styles.buttonText}>
+            <Text className="text-center p-2 font-semibold text-white">
               {hasAcceptedSitter ? "Disabled" : "Accept"}
             </Text>
           </Pressable>

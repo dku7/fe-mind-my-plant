@@ -67,15 +67,15 @@ const signin = () => {
       </View>
       <View className="flex-row justify-center mt-4 ">
         <Pressable
-          className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md"
+          className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E]  shadow-md"
           disabled={!user || !password}
           onClick={userAuthentication}
         >
-          <Text>Sign In</Text>
+          <Text className="text-gray-50 font-bold font-custom">Sign In</Text>
         </Pressable>
         <Link href="/Authentication/registration" asChild>
-          <Pressable className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] text-gray-50 font-bold font-custom shadow-md">
-            <Text>Sign Up</Text>
+          <Pressable className="mx-5 px-6 py-2 border-[#6A994E] rounded-md bg-[#6A994E] shadow-md">
+            <Text className="text-gray-50 font-bold font-custom">Sign Up</Text>
           </Pressable>
         </Link>
       </View>
