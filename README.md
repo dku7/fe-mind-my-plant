@@ -2,9 +2,22 @@
 
 ## About
 
-_Mind My Plants_ was created as a collaborative graduation project for Northcoders' JavaScript Development Bootcamp (2024). It was design and implemented using Agile best practice with **Expo**/**React Native** and **NativeWind CSS** for the front end and **Oracle Apex** RESTFul services and **Firebase** for the back end.
+_Mind My Plants_ was created as a collaborative [graduation project](https://northcoders.com/project-phase/mind-my-plants) for Northcoders' JavaScript Development Bootcamp (2024). It was design and implemented using Agile best practice with **Expo**/**React Native** and **NativeWind CSS** for the front end and **Oracle Apex** RESTFul services and **Firebase** for the back end.
 
-The application implements a two-sided marketplace platform that enables plant owner and sitters to interact to arrange for plant sitting jobs. Owners can post a plant sitting job with the plants they own, choose from a list of requests, accept and communicate in real time with the plant sitter.
+The application implements a two-sided marketplace platform that enables plant owners and sitters to interact and arrange for plant sitting jobs.
+
+### Owners can:
+
+- add a list of plants they own together with specific care instructions
+- advertise for plant sitting jobs
+- choose from and confirm a job from a list of applications
+
+### Sitters can:
+
+- browse for a list of jobs and filter by location
+- apply for an advertised job
+
+Additionally, both parties can communicate with each other in real time using the in-built chat functionality.
 
 ## Installation
 
@@ -43,7 +56,5 @@ In the output, you'll find options to open the app in a
 	<code><img width="50" src="https://user-images.githubusercontent.com/25181517/183568594-85e280a7-0d7e-4d1a-9028-c8c2209e073c.png" alt="Node.js" title="Node.js"/></code>
 	<code><img width="50" src="https://user-images.githubusercontent.com/25181517/117208736-bdedc080-adf5-11eb-912f-61c7d43705f6.png" alt="Oracle" title="Oracle"/></code>
 </div>
-
----
 
 This portfolio project was created as part of a Digital Skills Bootcamp in Software Engineering provided by [Northcoders](https://northcoders.com/)
