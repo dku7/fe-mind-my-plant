@@ -132,12 +132,9 @@ export const patchPutOwnerPlantsQuantity = (plant, user_id) => {
 };
 
 export const postNewOwnerPlants = (arrOfPlants, owner_id) => {
-  console.log(arrOfPlants);
-
   return apiClient
     .post(`/owners/${owner_id}/plants`, arrOfPlants)
     .then((response) => {
-      console.log(response, "IN API THEN");
       return response;
     })
     .catch((response) => {
@@ -169,7 +166,6 @@ export const getSitterJobs = (sitter_id) => {
       return response.data.items;
     })
     .catch((response) => {
-      console.log(response);
       return Promise.reject(response.status);
     });
 };
@@ -177,49 +173,15 @@ export const getSitterJobs = (sitter_id) => {
 export const updateProfileBio = (newBio, user_id, user) => {
   const updatedUser = { ...user };
   updatedUser.bio = newBio;
-  console.log(updatedUser, "UPDATE BIO");
   return apiClient
     .post(`/users/${user_id}`, updatedUser)
     .then((response) => {
-      console.log(response);
       return response.data.bio;
     })
     .catch((response) => {
       return Promise.reject(response.status);
     });
 };
-
-
-export const updateSitterFeedbackRating = (
-  sitter_id,
-  job_id,
-  feedback,
-  star_rating
-) => {
-  const body = {
-    feedback: feedback,
-    star_rating: star_rating,
-  };
-  return apiClient
-    .put(`/sitters/${sitter_id}/jobs/${job_id}`, body)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((response) => {
-      return Promise.reject(response.status);
-    });
-};
-
-export const postSitterRequest = (sitter_id, job_id) => {
-  return apiClient
-    .post(
-      `sitters/${sitter_id}/requests
-`,
-      { job_id: job_id, accepted: true }
-    )
-    .then((response) => {
-      console.log(response, "in API");
-      return response.data;
 
 export const deleteOwnerJob = (owner_id, job_id) => {
   return apiClient
@@ -230,7 +192,6 @@ export const deleteOwnerJob = (owner_id, job_id) => {
     })
     .catch((err) => {
       return Promise.reject(err.status);
-
     });
 };
 
