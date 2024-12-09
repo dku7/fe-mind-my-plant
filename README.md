@@ -57,4 +57,6 @@ In the output, you'll find options to open the app in a
 	<code><img width="50" src="https://user-images.githubusercontent.com/25181517/117208736-bdedc080-adf5-11eb-912f-61c7d43705f6.png" alt="Oracle" title="Oracle"/></code>
 </div>
 
+---
+
 This portfolio project was created as part of a Digital Skills Bootcamp in Software Engineering provided by [Northcoders](https://northcoders.com/)
